@@ -2,6 +2,12 @@
 
 This project can run from this computer without Vercel.
 
+Current purchased Gabia domain:
+
+```text
+ethichouseseoul.com
+```
+
 ## Start The Server
 
 Run from PowerShell:
@@ -105,6 +111,8 @@ For Google indexing, the final public URL must serve:
 - `/`
 - `/robots.txt`
 - `/sitemap.xml`
+
+For the current Gabia domain setup, see `docs/gabia-domain-setup.md`.
 
 ## Important
 

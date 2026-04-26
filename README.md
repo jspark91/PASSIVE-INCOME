@@ -46,6 +46,14 @@ cd C:\#TUNNEL\PASSIVE-INCOME
 
 See `docs/self-host-windows.md` for firewall, LAN, router port forwarding, and public URL notes.
 
+The current purchased Gabia domain is:
+
+```text
+ethichouseseoul.com
+```
+
+See `docs/gabia-domain-setup.md` for the exact DNS and ipTIME port forwarding records.
+
 For a stable public home-server URL, use DuckDNS:
 
 ```powershell

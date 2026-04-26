@@ -21,6 +21,18 @@ This project now includes brand SEO signals for:
 5. Submit `/sitemap.xml`.
 6. Use URL Inspection for the homepage and request indexing.
 
+Current target public URL:
+
+```text
+http://ethichouseseoul.com
+```
+
+Current sitemap target:
+
+```text
+http://ethichouseseoul.com/sitemap.xml
+```
+
 Google decides when and where the page appears. The code can provide clear brand signals, but it
 cannot force instant ranking before the site is deployed, crawled, and indexed.
 
