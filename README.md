@@ -32,6 +32,9 @@ npm run dev
 
 Copy `.env.example` to `.env.local` only when you want to add optional values such as a Kakao channel URL, Supabase, or analytics IDs.
 
+For public deployment, set `NEXT_PUBLIC_SITE_URL` to the real deployed domain so
+`sitemap.xml`, canonical URLs, and OpenGraph metadata use the public URL.
+
 ## Verification
 
 ```bash

@@ -3,10 +3,53 @@ import "./globals.css";
 import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { getSiteUrl, instagramProfileUrl, siteDescription, siteName } from "@/lib/site";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
-  title: "ETHNIC HOUSE | Seoul Tattoo Booking",
-  description: "English-friendly ETHNIC HOUSE tattoo booking support in Seoul."
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${siteName} | Seoul Tattoo Booking`,
+    template: `%s | ${siteName}`
+  },
+  description: siteDescription,
+  applicationName: siteName,
+  keywords: [
+    "ETHNIC HOUSE",
+    "Seoul tattoo",
+    "Sillim tattoo",
+    "Korea tattoo booking",
+    "English tattoo Seoul",
+    "fine line tattoo Seoul",
+    "lettering tattoo Seoul"
+  ],
+  alternates: {
+    canonical: "/"
+  },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    title: `${siteName} | Seoul Tattoo Booking`,
+    description: siteDescription,
+    siteName
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteName} | Seoul Tattoo Booking`,
+    description: siteDescription
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true
+    }
+  },
+  other: {
+    "instagram:profile": instagramProfileUrl
+  }
 };
 
 export default function RootLayout({

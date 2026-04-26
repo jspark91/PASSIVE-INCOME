@@ -29,12 +29,15 @@ Use these settings:
 Optional environment variables for the DM-first version:
 
 ```text
+NEXT_PUBLIC_SITE_URL
 NEXT_PUBLIC_KAKAO_CHANNEL_URL
 NEXT_PUBLIC_GA_ID
 NEXT_PUBLIC_META_PIXEL_ID
 ```
 
-`NEXT_PUBLIC_GA_ID` and `NEXT_PUBLIC_META_PIXEL_ID` can be blank during the first deploy.
+`NEXT_PUBLIC_SITE_URL` should be the final public URL, for example
+`https://your-project.vercel.app` or a custom domain. Analytics IDs can be blank during the first
+deploy.
 
 ## 3. After Deploy
 
@@ -46,6 +49,8 @@ Check:
 /booking?design=design-seoul-line&utm_source=instagram&utm_medium=paid_social
 /artists
 /api/health
+/robots.txt
+/sitemap.xml
 ```
 
 Confirm:
