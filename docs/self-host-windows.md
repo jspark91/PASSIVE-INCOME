@@ -66,16 +66,19 @@ The current Windows session could not create this firewall rule because it was n
 
 ## Public Internet Access
 
-For people outside your Wi-Fi to access the site, configure the router:
+For HTTPS, use Caddy. See `docs/https-caddy.md`.
+
+Router setup:
 
 ```text
-External TCP 3000 -> this PC 192.168.0.2:3000
+External TCP 80  -> this PC 192.168.0.2:80
+External TCP 443 -> this PC 192.168.0.2:443
 ```
 
-Then use a public domain or dynamic DNS and set:
+Then start:
 
 ```powershell
-.\scripts\start-ethnic-house-server.cmd -SiteUrl "https://your-domain.com"
+.\scripts\start-ethnic-house-https-server.cmd
 ```
 
 For DuckDNS, see `docs/ddns-duckdns.md`.

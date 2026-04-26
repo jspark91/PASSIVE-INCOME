@@ -24,13 +24,13 @@ This project now includes brand SEO signals for:
 Current target public URL:
 
 ```text
-http://ethnichouseseoul.com
+https://ethnichouseseoul.com
 ```
 
 Current sitemap target:
 
 ```text
-http://ethnichouseseoul.com/sitemap.xml
+https://ethnichouseseoul.com/sitemap.xml
 ```
 
 Google decides when and where the page appears. The code can provide clear brand signals, but it
@@ -42,11 +42,12 @@ The local LAN URL is not enough for Google. Google must reach the site from the 
 
 Minimum requirements:
 
-- Run the server on `0.0.0.0:3000`.
-- Open Windows Firewall inbound TCP `3000`.
-- Configure router port forwarding to this PC.
+- Run the Next.js server on `127.0.0.1:3000`.
+- Run Caddy on `80/443`.
+- Open Windows Firewall inbound TCP `80,443`.
+- Configure router port forwarding to this PC for `80` and `443`.
 - Prefer using a real domain or dynamic DNS such as DuckDNS.
-- Start the server with `-SiteUrl "https://your-domain.com"` so canonical and sitemap URLs use the public domain.
+- Start the HTTPS stack with `.\scripts\start-ethnic-house-https-server.cmd` so canonical and sitemap URLs use the public domain.
 
 If using DuckDNS with external port `80` forwarded to this PC's internal port `3000`, start with:
 

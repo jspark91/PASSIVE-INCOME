@@ -54,6 +54,15 @@ ethnichouseseoul.com
 
 See `docs/gabia-domain-setup.md` for the exact DNS and ipTIME port forwarding records.
 
+For HTTPS without Vercel, run the Caddy reverse proxy setup:
+
+```powershell
+cd C:\#TUNNEL\PASSIVE-INCOME
+.\scripts\start-ethnic-house-https-server.cmd
+```
+
+See `docs/https-caddy.md` for the `80/443` router and firewall requirements.
+
 For a stable public home-server URL, use DuckDNS:
 
 ```powershell

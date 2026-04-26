@@ -51,30 +51,22 @@ TTL: default
 
 ## ipTIME Port Forwarding
 
-Preferred setup:
+For HTTPS, use Caddy as the reverse proxy and forward `80` and `443` to this PC:
 
 ```text
-Rule name: ETHNIC HOUSE
+Rule name: ETHNIC HOUSE HTTP
 Protocol: TCP
 External port: 80
 Internal IP: 192.168.0.2
-Internal port: 3000
+Internal port: 80
 ```
 
-Then the public URL is:
-
 ```text
-http://ethnichouseseoul.com
-```
-
-Alternative setup:
-
-```text
-Rule name: ETHNIC HOUSE
+Rule name: ETHNIC HOUSE HTTPS
 Protocol: TCP
-External port: 3000
+External port: 443
 Internal IP: 192.168.0.2
-Internal port: 3000
+Internal port: 443
 ```
 
 Because this is a home network, the internal IP can change after reconnecting Wi-Fi or rebooting the router.
@@ -83,23 +75,16 @@ If possible, reserve `192.168.0.2` for this PC in ipTIME DHCP/static lease setti
 Then the public URL is:
 
 ```text
-http://ethnichouseseoul.com:3000
+https://ethnichouseseoul.com
 ```
 
 ## Start Server With Domain URL
 
-If using external port `80`:
+For HTTPS:
 
 ```powershell
 cd C:\#TUNNEL\PASSIVE-INCOME
-.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouseseoul.com"
-```
-
-If using external port `3000`:
-
-```powershell
-cd C:\#TUNNEL\PASSIVE-INCOME
-.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouseseoul.com:3000"
+.\scripts\start-ethnic-house-https-server.cmd
 ```
 
 ## Test
@@ -107,24 +92,24 @@ cd C:\#TUNNEL\PASSIVE-INCOME
 Use mobile data, not the same Wi-Fi:
 
 ```text
-http://ethnichouseseoul.com
-http://ethnichouseseoul.com/robots.txt
-http://ethnichouseseoul.com/sitemap.xml
+https://ethnichouseseoul.com
+https://ethnichouseseoul.com/robots.txt
+https://ethnichouseseoul.com/sitemap.xml
 ```
 
 ## Search Console
 
 After the domain is reachable from outside the local network:
 
-1. Add `http://ethnichouseseoul.com` to Google Search Console.
+1. Add `https://ethnichouseseoul.com` to Google Search Console.
 2. Submit:
 
 ```text
-http://ethnichouseseoul.com/sitemap.xml
+https://ethnichouseseoul.com/sitemap.xml
 ```
 
 3. Use URL Inspection and request indexing for:
 
 ```text
-http://ethnichouseseoul.com
+https://ethnichouseseoul.com
 ```
