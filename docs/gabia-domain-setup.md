@@ -11,7 +11,7 @@ ethnichouseseoul.com
 This PC runs the Next.js server on:
 
 ```text
-192.168.0.4:3000
+192.168.0.2:3000
 ```
 
 Current public IP:
@@ -57,7 +57,7 @@ Preferred setup:
 Rule name: ETHNIC HOUSE
 Protocol: TCP
 External port: 80
-Internal IP: 192.168.0.4
+Internal IP: 192.168.0.2
 Internal port: 3000
 ```
 
@@ -73,9 +73,12 @@ Alternative setup:
 Rule name: ETHNIC HOUSE
 Protocol: TCP
 External port: 3000
-Internal IP: 192.168.0.4
+Internal IP: 192.168.0.2
 Internal port: 3000
 ```
+
+Because this is a home network, the internal IP can change after reconnecting Wi-Fi or rebooting the router.
+If possible, reserve `192.168.0.2` for this PC in ipTIME DHCP/static lease settings.
 
 Then the public URL is:
 

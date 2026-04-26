@@ -44,7 +44,7 @@ The task updates DuckDNS every 5 minutes and at Windows startup.
 Preferred setup:
 
 ```text
-External TCP 80 -> 192.168.0.4:3000
+External TCP 80 -> 192.168.0.2:3000
 ```
 
 This lets visitors use:
@@ -56,7 +56,7 @@ http://ethnichouse.duckdns.org
 Alternative setup:
 
 ```text
-External TCP 3000 -> 192.168.0.4:3000
+External TCP 3000 -> 192.168.0.2:3000
 ```
 
 Then visitors must use:
@@ -111,5 +111,6 @@ http://ethnichouse.duckdns.org/sitemap.xml
 
 - The PC must stay powered on.
 - The server process must keep running.
+- Reserve this PC's internal IP in the router if possible. The current observed IP is `192.168.0.2`.
 - The public URL is HTTP unless you add HTTPS through a reverse proxy, tunnel, or certificate setup.
 - For Google Search Console, add the final public URL after it is reachable from outside the local network.

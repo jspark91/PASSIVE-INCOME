@@ -34,7 +34,7 @@ http://<this-pc-lan-ip>:3000
 On the current Wi-Fi network this may look like:
 
 ```text
-http://192.168.0.4:3000
+http://192.168.0.2:3000
 ```
 
 The current public IP check returned:
@@ -69,7 +69,7 @@ The current Windows session could not create this firewall rule because it was n
 For people outside your Wi-Fi to access the site, configure the router:
 
 ```text
-External TCP 3000 -> this PC 192.168.0.4:3000
+External TCP 3000 -> this PC 192.168.0.2:3000
 ```
 
 Then use a public domain or dynamic DNS and set:
@@ -83,7 +83,7 @@ For DuckDNS, see `docs/ddns-duckdns.md`.
 Preferred DDNS router setup:
 
 ```text
-External TCP 80 -> this PC 192.168.0.4:3000
+External TCP 80 -> this PC 192.168.0.2:3000
 ```
 
 Then start the server with:
@@ -117,3 +117,4 @@ For the current Gabia domain setup, see `docs/gabia-domain-setup.md`.
 ## Important
 
 This PC must stay powered on, connected to the internet, and the server process must keep running.
+The current observed internal IP is `192.168.0.2`; reserve it in ipTIME if possible so port forwarding does not break after reboot.
