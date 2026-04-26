@@ -15,6 +15,7 @@ export default async function BookingPage({
   const selectedDesignId = first(query?.design);
   const selectedDesign = designs.find((design) => design.id === selectedDesignId);
   const selectedArtistId = first(query?.artist) ?? selectedDesign?.artist_id;
+  const kakaoChannelUrl = process.env.NEXT_PUBLIC_KAKAO_CHANNEL_URL;
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
@@ -23,8 +24,8 @@ export default async function BookingPage({
       </p>
       <h1 className="mt-3 text-4xl font-semibold text-ink-900">Book a tattoo in Seoul</h1>
       <p className="mt-4 max-w-3xl leading-7 text-ink-700">
-        Tell us your travel dates, preferred style, size, placement, budget, and contact
-        method. V1 uses manual matching so we can learn what foreign travelers actually request.
+        Fill out the request details, create a DM message, then send it to ETHNIC HOUSE on
+        Instagram. This first test does not require Supabase or database setup.
       </p>
       <div className="mt-8">
         <BookingForm
@@ -37,6 +38,7 @@ export default async function BookingPage({
           preferred_design_id={selectedDesignId}
           preferred_design_title={selectedDesign?.title}
           initial_style={selectedDesign?.style ?? undefined}
+          kakaoChannelUrl={kakaoChannelUrl}
         />
       </div>
     </section>

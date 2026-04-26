@@ -2,14 +2,14 @@
 
 A standalone web MVP for testing foreigner-friendly ETHNIC HOUSE tattoo booking demand in Seoul.
 
-The first version focuses on collecting booking requests, tracking acquisition data, and manually matching foreign travelers with available tattoo artists at ETHNIC HOUSE in Sillim, Seoul.
+The first public test focuses on sending booking requests to ETHNIC HOUSE Instagram DM without requiring Supabase. The backend schema remains in the repository for a later lead database/admin workflow.
 
 ## MVP Goals
 
 - Present an English landing page for ETHNIC HOUSE tattoo booking in Seoul.
 - Show artist and flash design data.
-- Collect booking requests with travel dates, style, budget, contact details, and UTM source data.
-- Provide a lightweight admin lead workflow.
+- Generate copy-ready Instagram DM booking requests with travel dates, style, budget, contact details, and UTM source data.
+- Keep the Supabase/admin lead workflow available for a later version.
 - Keep this project separate from unrelated engineering work.
 
 ## Stack
@@ -17,7 +17,7 @@ The first version focuses on collecting booking requests, tracking acquisition d
 - Next.js App Router
 - TypeScript
 - Tailwind CSS
-- Supabase
+- Optional Supabase lead database for v2
 - Vercel
 - GA4 and Meta Pixel hooks
 
@@ -30,7 +30,7 @@ npm install
 npm run dev
 ```
 
-Copy `.env.example` to `.env.local` and fill in Supabase and analytics values before testing live data writes.
+Copy `.env.example` to `.env.local` only when you want to add optional values such as a Kakao channel URL, Supabase, or analytics IDs.
 
 ## Verification
 
@@ -40,7 +40,15 @@ npm run typecheck
 npm run build
 ```
 
-## Backend And Deployment
+## Booking Flow
+
+The current `/booking` page does not write to a database. It creates a formatted booking message and links the visitor to:
+
+- Instagram DM: `https://ig.me/m/ETHNIC_HOUSE_SILLIM`
+- Instagram profile: `https://www.instagram.com/ETHNIC_HOUSE_SILLIM/`
+- Optional Kakao channel URL through `NEXT_PUBLIC_KAKAO_CHANNEL_URL`
+
+## Optional Backend And Deployment
 
 The backend runs through Next.js server actions and route handlers. Supabase stores artists, flash designs, booking requests, lead events, reviews, and future partner shops.
 
