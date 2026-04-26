@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LeadStatusBadge } from "@/components/LeadStatusBadge";
-import { getAdminTokenFromSearch, isAdminTokenConfigured, isValidAdminToken } from "@/lib/admin";
+import { getAdminAccess } from "@/lib/admin-session";
 import { getBookingRequests } from "@/lib/data";
 import { formatDate, formatKrw } from "@/lib/format";
 
@@ -9,10 +9,8 @@ export default async function AdminLeadsPage({
 }: {
   searchParams?: { token?: string | string[] };
 }) {
-  const token = getAdminTokenFromSearch(searchParams);
-  const configured = isAdminTokenConfigured();
-  const allowed = isValidAdminToken(token);
-  const leads = allowed || !configured ? await getBookingRequests() : [];
+  const { configured, allowed } = await getAdminAccess(searchParams);
+  const leads = allowed ? await getBookingRequests() : [];
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -23,7 +21,7 @@ export default async function AdminLeadsPage({
           </p>
           <h1 className="mt-3 text-4xl font-semibold text-ink-900">Booking leads</h1>
         </div>
-        <Link href={`/admin?token=${token ?? ""}`} className="text-sm font-semibold text-moss-700">
+        <Link href="/admin" className="text-sm font-semibold text-moss-700">
           Admin home
         </Link>
       </div>
@@ -57,7 +55,7 @@ export default async function AdminLeadsPage({
                   <td className="px-4 py-3">{formatDate(lead.created_at)}</td>
                   <td className="px-4 py-3">
                     <Link
-                      href={`/admin/leads/${lead.id}?token=${token ?? ""}`}
+                      href={`/admin/leads/${lead.id}`}
                       className="font-semibold text-moss-700"
                     >
                       {lead.name}
@@ -80,4 +78,3 @@ export default async function AdminLeadsPage({
     </section>
   );
 }
-

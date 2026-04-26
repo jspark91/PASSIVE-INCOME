@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeadStatusBadge } from "@/components/LeadStatusBadge";
-import { getAdminTokenFromSearch, isAdminTokenConfigured, isValidAdminToken } from "@/lib/admin";
+import { getAdminAccess } from "@/lib/admin-session";
 import { getBookingRequest } from "@/lib/data";
 import { formatDate, formatKrw } from "@/lib/format";
 import { getStatusLabel, leadStatuses } from "@/lib/status";
@@ -14,11 +14,9 @@ export default async function LeadDetailPage({
   params: { id: string };
   searchParams?: { token?: string | string[] };
 }) {
-  const token = getAdminTokenFromSearch(searchParams);
-  const configured = isAdminTokenConfigured();
-  const allowed = isValidAdminToken(token);
+  const { configured, allowed } = await getAdminAccess(searchParams);
 
-  if (configured && !allowed) {
+  if (!allowed) {
     return (
       <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
@@ -36,7 +34,7 @@ export default async function LeadDetailPage({
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
-      <Link href={`/admin/leads?token=${token ?? ""}`} className="text-sm font-semibold text-moss-700">
+      <Link href="/admin/leads" className="text-sm font-semibold text-moss-700">
         Back to leads
       </Link>
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_0.8fr]">
@@ -109,7 +107,6 @@ export default async function LeadDetailPage({
             </p>
           ) : (
             <form action={updateLeadStatus} className="mt-5 grid gap-4">
-              <input type="hidden" name="admin_token" value={token ?? ""} />
               <input type="hidden" name="lead_id" value={lead.id} />
               <label className="grid gap-2 text-sm font-medium text-ink-900">
                 Status
@@ -144,4 +141,3 @@ export default async function LeadDetailPage({
     </section>
   );
 }
-

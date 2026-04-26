@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const bookingRequestSchema = z.object({
+export const bookingPayloadSchema = z.object({
   name: z.string().min(2, "Please enter your name."),
   nationality: z.string().optional(),
   language: z.string().optional(),
@@ -20,11 +20,14 @@ export const bookingRequestSchema = z.object({
   source: z.string().optional(),
   utm_source: z.string().optional(),
   utm_medium: z.string().optional(),
-  utm_campaign: z.string().optional(),
+  utm_campaign: z.string().optional()
+});
+
+export const bookingRequestSchema = bookingPayloadSchema.extend({
   privacy_agreement: z.literal("on", {
     errorMap: () => ({ message: "Please agree to the privacy notice." })
   })
 });
 
 export type BookingRequestInput = z.infer<typeof bookingRequestSchema>;
-
+export type BookingPayloadInput = z.infer<typeof bookingPayloadSchema>;

@@ -40,3 +40,34 @@ npm run typecheck
 npm run build
 ```
 
+## Backend And Deployment
+
+The backend runs through Next.js server actions and route handlers. Supabase stores artists, flash designs, booking requests, lead events, reviews, and future partner shops.
+
+Public booking API:
+
+```http
+POST /api/booking-requests
+```
+
+Admin lead API:
+
+```http
+GET /api/admin/leads
+PATCH /api/admin/leads/:id/status
+```
+
+Admin API requests must send `x-admin-token: <ADMIN_ACCESS_TOKEN>`.
+
+Run `supabase/schema.sql` or `supabase/migrations/202604260001_initial_schema.sql` in a new Supabase project, then set these Vercel environment variables:
+
+```text
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+ADMIN_ACCESS_TOKEN
+NEXT_PUBLIC_GA_ID
+NEXT_PUBLIC_META_PIXEL_ID
+```
+
+See `docs/deployment-checklist.md` for the full public deployment checklist.

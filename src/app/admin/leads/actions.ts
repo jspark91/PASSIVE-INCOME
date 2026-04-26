@@ -1,13 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getAdminSessionToken } from "@/lib/admin-session";
 import { isValidAdminToken } from "@/lib/admin";
 import { getAdminSupabase } from "@/lib/supabase";
 import { leadStatuses } from "@/lib/status";
 import type { LeadStatus } from "@/types/domain";
 
 export async function updateLeadStatus(formData: FormData) {
-  const token = String(formData.get("admin_token") ?? "");
+  const token = await getAdminSessionToken();
   const leadId = String(formData.get("lead_id") ?? "");
   const status = String(formData.get("status") ?? "") as LeadStatus;
   const note = String(formData.get("note") ?? "");
@@ -45,4 +46,3 @@ export async function updateLeadStatus(formData: FormData) {
   revalidatePath("/admin/leads");
   revalidatePath(`/admin/leads/${leadId}`);
 }
-

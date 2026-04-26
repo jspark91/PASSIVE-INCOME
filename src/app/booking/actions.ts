@@ -1,7 +1,7 @@
 "use server";
 
 import { bookingRequestSchema } from "@/lib/booking-schema";
-import { getAdminSupabase } from "@/lib/supabase";
+import { insertBookingRequest } from "@/lib/booking-service";
 
 export type BookingFormState = {
   ok: boolean;
@@ -50,56 +50,18 @@ export async function createBookingRequest(
     };
   }
 
-  const supabase = getAdminSupabase();
-
-  if (!supabase) {
-    return {
-      ok: false,
-      message:
-        "Booking request captured locally by the form, but Supabase is not configured yet. Add environment variables before running live ads."
-    };
-  }
-
   const input = parsed.data;
-  const budget =
-    typeof input.budget_krw === "number" ? input.budget_krw : null;
+  const result = await insertBookingRequest(input);
 
-  const { error } = await supabase.from("booking_requests").insert({
-    name: input.name,
-    nationality: input.nationality || null,
-    language: input.language || null,
-    email: input.email || null,
-    instagram: input.instagram || null,
-    whatsapp: input.whatsapp || null,
-    travel_start: input.travel_start || null,
-    travel_end: input.travel_end || null,
-    preferred_date: input.preferred_date || null,
-    preferred_time: input.preferred_time || null,
-    style: input.style,
-    size_cm: input.size_cm || null,
-    placement: input.placement || null,
-    budget_krw: budget,
-    reference_image_url: input.reference_image_url || null,
-    preferred_artist_id: input.preferred_artist_id || null,
-    source: input.source || null,
-    utm_source: input.utm_source || null,
-    utm_medium: input.utm_medium || null,
-    utm_campaign: input.utm_campaign || null,
-    memo: null,
-    status: "new"
-  });
-
-  if (error) {
+  if (!result.ok) {
     return {
       ok: false,
-      message: `Could not save booking request: ${error.message}`
+      message: result.message
     };
   }
 
   return {
     ok: true,
-    message:
-      "Request received. We will review your idea, travel dates, and artist availability before replying."
+    message: result.message
   };
 }
-
