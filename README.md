@@ -46,6 +46,16 @@ cd C:\#TUNNEL\PASSIVE-INCOME
 
 See `docs/self-host-windows.md` for firewall, LAN, router port forwarding, and public URL notes.
 
+For a stable public home-server URL, use DuckDNS:
+
+```powershell
+cd C:\#TUNNEL\PASSIVE-INCOME
+.\scripts\install-duckdns-task.cmd -Domain "ethnichouse" -Token "YOUR_DUCKDNS_TOKEN"
+.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouse.duckdns.org"
+```
+
+See `docs/ddns-duckdns.md` for the full DDNS setup.
+
 ## Verification
 
 ```bash

@@ -33,5 +33,17 @@ Minimum requirements:
 - Run the server on `0.0.0.0:3000`.
 - Open Windows Firewall inbound TCP `3000`.
 - Configure router port forwarding to this PC.
-- Prefer using a real domain or dynamic DNS.
+- Prefer using a real domain or dynamic DNS such as DuckDNS.
 - Start the server with `-SiteUrl "https://your-domain.com"` so canonical and sitemap URLs use the public domain.
+
+If using DuckDNS with external port `80` forwarded to this PC's internal port `3000`, start with:
+
+```powershell
+.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouse.duckdns.org"
+```
+
+If using external port `3000`, start with:
+
+```powershell
+.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouse.duckdns.org:3000"
+```

@@ -72,6 +72,26 @@ Then use a public domain or dynamic DNS and set:
 .\scripts\start-ethnic-house-server.cmd -SiteUrl "https://your-domain.com"
 ```
 
+For DuckDNS, see `docs/ddns-duckdns.md`.
+
+Preferred DDNS router setup:
+
+```text
+External TCP 80 -> this PC 192.168.0.4:3000
+```
+
+Then start the server with:
+
+```powershell
+.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouse.duckdns.org"
+```
+
+If the router only forwards external port `3000`, use:
+
+```powershell
+.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouse.duckdns.org:3000"
+```
+
 Without a domain, you may be able to test with:
 
 ```text
