@@ -1,12 +1,12 @@
-# Seoul Ink Booking
+# ETHNIC HOUSE
 
-A standalone web MVP for testing foreigner-friendly tattoo booking demand in Seoul.
+A standalone web MVP for testing foreigner-friendly ETHNIC HOUSE tattoo booking demand in Seoul.
 
-The first version focuses on collecting booking requests, tracking acquisition data, and manually matching foreign travelers with available tattoo artists at the initial test studio, Ethnic House Sillim.
+The first version focuses on collecting booking requests, tracking acquisition data, and manually matching foreign travelers with available tattoo artists at ETHNIC HOUSE in Sillim, Seoul.
 
 ## MVP Goals
 
-- Present an English landing page for Seoul tattoo booking.
+- Present an English landing page for ETHNIC HOUSE tattoo booking in Seoul.
 - Show artist and flash design data.
 - Collect booking requests with travel dates, style, budget, contact details, and UTM source data.
 - Provide a lightweight admin lead workflow.

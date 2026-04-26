@@ -2,7 +2,7 @@
 
 ## 1. Supabase
 
-Create a new Supabase project for Seoul Ink Booking.
+Create a new Supabase project for ETHNIC HOUSE.
 
 Run the schema:
 
@@ -81,4 +81,3 @@ Confirm:
 - Review privacy notice.
 - Review tattoo/legal risk notes in `docs/legal-and-risk-notes.md`.
 - Confirm cancellation/deposit rules.
-

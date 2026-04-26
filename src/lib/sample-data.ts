@@ -8,7 +8,7 @@ export const sampleArtists: Artist[] = [
     instagram: "https://instagram.com/",
     bio_en:
       "Fine-line and small symbolic tattoo artist. Good fit for first tattoos and simple travel-memory pieces.",
-    bio_ko: "파인라인과 미니타투 중심의 샘플 작가입니다.",
+    bio_ko: null,
     styles: ["fine-line", "small tattoo", "lettering"],
     starting_price_krw: 100000,
     languages: ["English booking support", "Korean"],
@@ -20,9 +20,8 @@ export const sampleArtists: Artist[] = [
     name: "June",
     slug: "june",
     instagram: "https://instagram.com/",
-    bio_en:
-      "Blackwork and Korean-inspired flash designs for compact one-day sessions.",
-    bio_ko: "블랙워크와 한국 여행 기념 플래시 도안 중심의 샘플 작가입니다.",
+    bio_en: "Blackwork and Korean-inspired flash designs for compact one-day sessions.",
+    bio_ko: null,
     styles: ["blackwork", "flash", "korean-inspired"],
     starting_price_krw: 120000,
     languages: ["English booking support", "Korean"],
@@ -34,9 +33,8 @@ export const sampleArtists: Artist[] = [
     name: "Arin",
     slug: "arin",
     instagram: "https://instagram.com/",
-    bio_en:
-      "Lettering and friend/couple tattoo concepts with clear sizing and price guidance.",
-    bio_ko: "레터링과 우정/커플 타투 중심의 샘플 작가입니다.",
+    bio_en: "Lettering and friend/couple tattoo concepts with clear sizing and price guidance.",
+    bio_ko: null,
     styles: ["lettering", "couple tattoo", "minimal"],
     starting_price_krw: 80000,
     languages: ["English booking support", "Korean"],
@@ -89,6 +87,50 @@ export const sampleDesigns: FlashDesign[] = [
     duration_minutes: 90,
     image_url: null,
     is_available: true
+  },
+  {
+    id: "design-moon-line",
+    artist_id: "artist-mina",
+    title: "Quiet moon line",
+    style: "fine-line",
+    size_hint: "3-4 cm",
+    price_from_krw: 100000,
+    duration_minutes: 45,
+    image_url: null,
+    is_available: true
+  },
+  {
+    id: "design-seal-symbol",
+    artist_id: "artist-june",
+    title: "Korean seal symbol",
+    style: "blackwork",
+    size_hint: "4-5 cm",
+    price_from_krw: 130000,
+    duration_minutes: 60,
+    image_url: null,
+    is_available: true
+  },
+  {
+    id: "design-script-date",
+    artist_id: "artist-arin",
+    title: "Travel date script",
+    style: "lettering",
+    size_hint: "2-4 cm",
+    price_from_krw: 80000,
+    duration_minutes: 40,
+    image_url: null,
+    is_available: true
+  },
+  {
+    id: "design-branch-mini",
+    artist_id: "artist-june",
+    title: "Minimal branch",
+    style: "small tattoo",
+    size_hint: "5-6 cm",
+    price_from_krw: 140000,
+    duration_minutes: 70,
+    image_url: null,
+    is_available: true
   }
 ];
 
@@ -120,4 +162,3 @@ export const sampleLeads: BookingRequest[] = [
     created_at: new Date().toISOString()
   }
 ];
-

@@ -4,7 +4,7 @@ This file is an operating checklist, not legal advice.
 
 ## Platform Role
 
-Seoul Ink Booking is positioned as a booking support and artist matching service.
+ETHNIC HOUSE is positioned as a tattoo studio booking support and artist matching service for foreign travelers in Seoul.
 
 The actual tattoo procedure, hygiene management, consent, customer service delivery, and legal compliance are handled by the individual artist or partner studio.
 
@@ -28,4 +28,3 @@ Before adding partner artists or studios, collect:
 - Language support capability
 - Hygiene and aftercare process
 - Permission to use portfolio images and reviews
-

@@ -9,7 +9,7 @@ const faqs = [
   },
   {
     q: "Where is the first studio?",
-    a: "The first test studio is Ethnic House Sillim in Seoul. More partner studios can be added after demand is validated."
+    a: "Bookings start at ETHNIC HOUSE in Sillim, Seoul. More partner studios can be added after demand is validated."
   },
   {
     q: "Is a deposit required?",
@@ -41,4 +41,3 @@ export default function FaqPage() {
     </section>
   );
 }
-

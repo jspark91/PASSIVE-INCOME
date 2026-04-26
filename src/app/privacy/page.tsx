@@ -7,7 +7,7 @@ export default function PrivacyPage() {
       <h1 className="mt-3 text-4xl font-semibold text-ink-900">Privacy notice</h1>
       <div className="mt-8 space-y-6 rounded-lg border border-ink-100 bg-white p-6 leading-7 text-ink-700">
         <p>
-          Seoul Ink Booking collects booking request information to review tattoo ideas, check
+          ETHNIC HOUSE collects booking request information to review tattoo ideas, check
           artist availability, and coordinate booking support.
         </p>
         <p>
@@ -27,4 +27,3 @@ export default function PrivacyPage() {
     </section>
   );
 }
-

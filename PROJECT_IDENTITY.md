@@ -1,8 +1,8 @@
 # PROJECT_IDENTITY.md
 
-Project name: Seoul Ink Booking
+Project name: ETHNIC HOUSE
 
-This project is a standalone MVP for foreigner-friendly tattoo booking support in Seoul.
+This project is a standalone MVP for foreigner-friendly ETHNIC HOUSE tattoo booking support in Seoul.
 
 It is not:
 
@@ -17,9 +17,9 @@ It is not:
 
 Collect foreigner booking demand data and manually match booking leads to available tattoo artists.
 
-## Primary Test Studio
+## Primary Brand And Studio
 
-Ethnic House Sillim
+ETHNIC HOUSE, Sillim, Seoul
 
 ## Initial Customer
 
@@ -28,4 +28,3 @@ Foreigners visiting Korea who want small tattoos, lettering, fine-line tattoos, 
 ## Initial Language
 
 English only. Japanese and Chinese can be added after demand is validated.
-

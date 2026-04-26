@@ -1,16 +1,16 @@
-# AGENTS.md - Seoul Ink Booking
+# AGENTS.md - ETHNIC HOUSE
 
 ## Project Identity
 
-This repository is a standalone project called Seoul Ink Booking.
+This repository is a standalone project for ETHNIC HOUSE.
 
 Do not use assumptions, files, architecture, naming conventions, database schema, routes, or business logic from any previous project. This project is separate from all existing engineering, CAD, tunnel, and internal tooling work.
 
 ## Product Goal
 
-Build a web MVP for English-speaking foreigners who want booking support for tattoo artists in Seoul.
+Build a web MVP for English-speaking foreigners who want booking support for ETHNIC HOUSE tattoo sessions in Seoul.
 
-The MVP must collect booking requests, artist data, flash design data, and acquisition/conversion data. The first test studio is Ethnic House Sillim.
+The MVP must collect booking requests, artist data, flash design data, and acquisition/conversion data. The primary studio brand is ETHNIC HOUSE in Sillim, Seoul.
 
 ## Stack
 
@@ -71,4 +71,3 @@ Before saying a task is complete:
 - Confirm admin lead pages can read and update lead status.
 - Confirm UTM values are captured.
 - Confirm no unrelated project references were introduced.
-

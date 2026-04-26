@@ -156,7 +156,7 @@ export function BookingForm({
       <label className="flex items-start gap-3 text-sm leading-6 text-ink-700">
         <input name="privacy_agreement" type="checkbox" required className="mt-1" />
         <span>
-          I agree that Seoul Ink Booking may use my submitted information to review this booking
+          I agree that ETHNIC HOUSE may use my submitted information to review this booking
           request and share relevant details with a matched artist or partner studio.
         </span>
       </label>
@@ -172,4 +172,3 @@ export function BookingForm({
     </form>
   );
 }
-

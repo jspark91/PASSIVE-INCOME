@@ -5,8 +5,8 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Seoul Ink Booking",
-  description: "English-friendly tattoo booking support in Seoul."
+  title: "ETHNIC HOUSE | Seoul Tattoo Booking",
+  description: "English-friendly ETHNIC HOUSE tattoo booking support in Seoul."
 };
 
 export default function RootLayout({
