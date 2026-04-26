@@ -23,3 +23,15 @@ This project now includes brand SEO signals for:
 
 Google decides when and where the page appears. The code can provide clear brand signals, but it
 cannot force instant ranking before the site is deployed, crawled, and indexed.
+
+## If Self Hosting From This PC
+
+The local LAN URL is not enough for Google. Google must reach the site from the public internet.
+
+Minimum requirements:
+
+- Run the server on `0.0.0.0:3000`.
+- Open Windows Firewall inbound TCP `3000`.
+- Configure router port forwarding to this PC.
+- Prefer using a real domain or dynamic DNS.
+- Start the server with `-SiteUrl "https://your-domain.com"` so canonical and sitemap URLs use the public domain.

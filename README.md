@@ -35,6 +35,17 @@ Copy `.env.example` to `.env.local` only when you want to add optional values su
 For public deployment, set `NEXT_PUBLIC_SITE_URL` to the real deployed domain so
 `sitemap.xml`, canonical URLs, and OpenGraph metadata use the public URL.
 
+## Self Hosting On This PC
+
+This app can be served from this Windows computer without Vercel:
+
+```powershell
+cd C:\#TUNNEL\PASSIVE-INCOME
+.\scripts\start-ethnic-house-server.cmd
+```
+
+See `docs/self-host-windows.md` for firewall, LAN, router port forwarding, and public URL notes.
+
 ## Verification
 
 ```bash
