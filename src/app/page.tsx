@@ -16,6 +16,9 @@ export default async function HomePage() {
           <h1 className="mt-5 text-6xl font-semibold leading-none text-ink-900 sm:text-8xl lg:text-9xl">
             ETHNIC HOUSE
           </h1>
+          <p className="mt-4 text-sm font-medium text-ink-700">
+            ETHNIC HOUSE SILLIM / 에스닉하우스 신림
+          </p>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-ink-700 sm:text-lg">
             English-friendly booking support for small tattoos, lettering, fine-line work, and
             travel-memory pieces at ETHNIC HOUSE in Sillim, Seoul.

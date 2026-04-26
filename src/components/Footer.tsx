@@ -5,8 +5,8 @@ export function Footer() {
         <div className="sm:col-span-2">
           <p className="text-xl font-semibold">ETHNIC HOUSE</p>
           <p className="mt-3 max-w-md leading-6 text-ink-100">
-            English-friendly tattoo booking support for travelers visiting Seoul. The first studio
-            test runs through ETHNIC HOUSE in Sillim.
+            ETHNIC HOUSE SILLIM, 에스닉하우스 신림. English-friendly tattoo booking support
+            for travelers visiting Seoul.
           </p>
         </div>
 

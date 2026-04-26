@@ -3,7 +3,14 @@ import "./globals.css";
 import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { getSiteUrl, instagramProfileUrl, siteDescription, siteName } from "@/lib/site";
+import { StructuredData } from "@/components/StructuredData";
+import {
+  getSiteUrl,
+  instagramProfileUrl,
+  siteAlternateNames,
+  siteDescription,
+  siteName
+} from "@/lib/site";
 
 const siteUrl = getSiteUrl();
 
@@ -17,7 +24,15 @@ export const metadata: Metadata = {
   applicationName: siteName,
   keywords: [
     "ETHNIC HOUSE",
+    "ETHNIC HOUSE SILLIM",
+    "ETHNIC_HOUSE_SILLIM",
+    "에스닉하우스",
+    "에스닉하우스 신림",
+    "신림 에스닉하우스",
+    "에스닉하우스 타투",
     "Seoul tattoo",
+    "서울 타투",
+    "신림 타투",
     "Sillim tattoo",
     "Korea tattoo booking",
     "English tattoo Seoul",
@@ -30,13 +45,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: `${siteName} | Seoul Tattoo Booking`,
+    title: `${siteName} SILLIM | 에스닉하우스 신림`,
     description: siteDescription,
     siteName
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteName} | Seoul Tattoo Booking`,
+    title: `${siteName} SILLIM | 에스닉하우스 신림`,
     description: siteDescription
   },
   robots: {
@@ -48,7 +63,8 @@ export const metadata: Metadata = {
     }
   },
   other: {
-    "instagram:profile": instagramProfileUrl
+    "instagram:profile": instagramProfileUrl,
+    "business:alternate_name": siteAlternateNames.join(", ")
   }
 };
 
@@ -61,6 +77,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Analytics />
+        <StructuredData />
         <Header />
         <main>{children}</main>
         <Footer />
