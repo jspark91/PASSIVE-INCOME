@@ -4,6 +4,7 @@ node_modules
 # next
 .next
 out
+.next-*.log
 
 # production
 build
@@ -30,3 +31,5 @@ pnpm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# local runtime tools
+.tools
