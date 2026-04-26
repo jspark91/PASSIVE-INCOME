@@ -1,0 +1,11 @@
+import { getStatusLabel } from "@/lib/status";
+import type { LeadStatus } from "@/types/domain";
+
+export function LeadStatusBadge({ status }: { status: LeadStatus }) {
+  return (
+    <span className="rounded-full bg-ink-100 px-3 py-1 text-xs font-medium text-ink-700">
+      {getStatusLabel(status)}
+    </span>
+  );
+}
+
