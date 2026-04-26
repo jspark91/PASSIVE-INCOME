@@ -91,6 +91,13 @@ npm run build
 
 ## Booking Flow
 
+Dedicated foreign ad landing pages:
+
+- `/tattoo-in-seoul`: Google search traffic from people looking for a tattoo in Seoul.
+- `/korea-trip-tattoo`: travelers planning a small tattoo before their Korea trip.
+
+See `docs/foreign-ads-launch-plan.md` for campaign URLs, keyword groups, and first-test metrics.
+
 The current `/booking` page does not write to a database. It creates a formatted booking message and links the visitor to:
 
 - Instagram DM: `https://ig.me/m/ETHNIC_HOUSE_SILLIM`
