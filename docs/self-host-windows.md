@@ -5,7 +5,7 @@ This project can run from this computer without Vercel.
 Current purchased Gabia domain:
 
 ```text
-ethichouseseoul.com
+ethnichouseseoul.com
 ```
 
 ## Start The Server

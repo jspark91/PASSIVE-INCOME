@@ -24,13 +24,13 @@ This project now includes brand SEO signals for:
 Current target public URL:
 
 ```text
-http://ethichouseseoul.com
+http://ethnichouseseoul.com
 ```
 
 Current sitemap target:
 
 ```text
-http://ethichouseseoul.com/sitemap.xml
+http://ethnichouseseoul.com/sitemap.xml
 ```
 
 Google decides when and where the page appears. The code can provide clear brand signals, but it

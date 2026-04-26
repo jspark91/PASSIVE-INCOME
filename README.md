@@ -49,7 +49,7 @@ See `docs/self-host-windows.md` for firewall, LAN, router port forwarding, and p
 The current purchased Gabia domain is:
 
 ```text
-ethichouseseoul.com
+ethnichouseseoul.com
 ```
 
 See `docs/gabia-domain-setup.md` for the exact DNS and ipTIME port forwarding records.

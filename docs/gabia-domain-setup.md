@@ -3,11 +3,8 @@
 Current purchased domain:
 
 ```text
-ethichouseseoul.com
+ethnichouseseoul.com
 ```
-
-Note the spelling: this is `ethichouse...`, not `ethnichouse...`.
-If that missing `n` was accidental, also buy `ethnichouseseoul.com` and redirect it to this site.
 
 ## Current Server
 
@@ -39,7 +36,7 @@ For `www`:
 ```text
 Type: CNAME
 Host: www
-Value: ethichouseseoul.com
+Value: ethnichouseseoul.com
 TTL: default
 ```
 
@@ -67,7 +64,7 @@ Internal port: 3000
 Then the public URL is:
 
 ```text
-http://ethichouseseoul.com
+http://ethnichouseseoul.com
 ```
 
 Alternative setup:
@@ -83,7 +80,7 @@ Internal port: 3000
 Then the public URL is:
 
 ```text
-http://ethichouseseoul.com:3000
+http://ethnichouseseoul.com:3000
 ```
 
 ## Start Server With Domain URL
@@ -92,14 +89,14 @@ If using external port `80`:
 
 ```powershell
 cd C:\#TUNNEL\PASSIVE-INCOME
-.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethichouseseoul.com"
+.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouseseoul.com"
 ```
 
 If using external port `3000`:
 
 ```powershell
 cd C:\#TUNNEL\PASSIVE-INCOME
-.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethichouseseoul.com:3000"
+.\scripts\start-ethnic-house-server.cmd -SiteUrl "http://ethnichouseseoul.com:3000"
 ```
 
 ## Test
@@ -107,24 +104,24 @@ cd C:\#TUNNEL\PASSIVE-INCOME
 Use mobile data, not the same Wi-Fi:
 
 ```text
-http://ethichouseseoul.com
-http://ethichouseseoul.com/robots.txt
-http://ethichouseseoul.com/sitemap.xml
+http://ethnichouseseoul.com
+http://ethnichouseseoul.com/robots.txt
+http://ethnichouseseoul.com/sitemap.xml
 ```
 
 ## Search Console
 
 After the domain is reachable from outside the local network:
 
-1. Add `http://ethichouseseoul.com` to Google Search Console.
+1. Add `http://ethnichouseseoul.com` to Google Search Console.
 2. Submit:
 
 ```text
-http://ethichouseseoul.com/sitemap.xml
+http://ethnichouseseoul.com/sitemap.xml
 ```
 
 3. Use URL Inspection and request indexing for:
 
 ```text
-http://ethichouseseoul.com
+http://ethnichouseseoul.com
 ```
