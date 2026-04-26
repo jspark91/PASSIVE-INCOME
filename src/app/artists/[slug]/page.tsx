@@ -7,9 +7,10 @@ import { formatKrw } from "@/lib/format";
 export default async function ArtistDetailPage({
   params
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const artist = await getArtistBySlug(params.slug);
+  const { slug } = await params;
+  const artist = await getArtistBySlug(slug);
 
   if (!artist) {
     notFound();

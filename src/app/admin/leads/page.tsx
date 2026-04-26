@@ -7,9 +7,10 @@ import { formatDate, formatKrw } from "@/lib/format";
 export default async function AdminLeadsPage({
   searchParams
 }: {
-  searchParams?: { token?: string | string[] };
+  searchParams?: Promise<{ token?: string | string[] }>;
 }) {
-  const { configured, allowed } = await getAdminAccess(searchParams);
+  const query = await searchParams;
+  const { configured, allowed } = await getAdminAccess(query);
   const leads = allowed ? await getBookingRequests() : [];
 
   return (

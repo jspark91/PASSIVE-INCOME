@@ -29,6 +29,9 @@ type BookingFormProps = {
   utm_medium?: string;
   utm_campaign?: string;
   preferred_artist_id?: string;
+  preferred_design_id?: string;
+  preferred_design_title?: string;
+  initial_style?: string;
 };
 
 export function BookingForm({
@@ -37,7 +40,10 @@ export function BookingForm({
   utm_source,
   utm_medium,
   utm_campaign,
-  preferred_artist_id
+  preferred_artist_id,
+  preferred_design_id,
+  preferred_design_title,
+  initial_style
 }: BookingFormProps) {
   const [state, formAction] = useFormState(createBookingRequest, initialState);
 
@@ -47,6 +53,13 @@ export function BookingForm({
       <input type="hidden" name="utm_source" value={utm_source ?? ""} />
       <input type="hidden" name="utm_medium" value={utm_medium ?? ""} />
       <input type="hidden" name="utm_campaign" value={utm_campaign ?? ""} />
+      <input type="hidden" name="preferred_design_id" value={preferred_design_id ?? ""} />
+
+      {preferred_design_title ? (
+        <div className="rounded-md bg-ink-50 p-4 text-sm text-ink-700">
+          Selected flash concept: <span className="font-semibold text-ink-900">{preferred_design_title}</span>
+        </div>
+      ) : null}
 
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium text-ink-900">
@@ -101,7 +114,12 @@ export function BookingForm({
         </label>
         <label className="grid gap-2 text-sm font-medium text-ink-900">
           Style
-          <select name="style" required className="rounded-md border border-ink-100 px-3 py-2">
+          <select
+            name="style"
+            required
+            defaultValue={initial_style ?? ""}
+            className="rounded-md border border-ink-100 px-3 py-2"
+          >
             <option value="">Choose style</option>
             <option value="fine-line">Fine-line</option>
             <option value="lettering">Lettering</option>

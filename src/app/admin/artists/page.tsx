@@ -6,9 +6,10 @@ import { getArtists } from "@/lib/data";
 export default async function AdminArtistsPage({
   searchParams
 }: {
-  searchParams?: { token?: string | string[] };
+  searchParams?: Promise<{ token?: string | string[] }>;
 }) {
-  const { configured, allowed } = await getAdminAccess(searchParams);
+  const query = await searchParams;
+  const { configured, allowed } = await getAdminAccess(query);
   const artists = allowed ? await getArtists() : [];
 
   return (

@@ -46,6 +46,10 @@ create table if not exists public.booking_requests (
   budget_krw integer,
   reference_image_url text,
   preferred_artist_id uuid references public.artists(id),
+  preferred_design_id uuid references public.flash_designs(id),
+  matched_artist_id uuid references public.artists(id),
+  quoted_price_krw integer,
+  lost_reason text,
   status text not null default 'new',
   source text,
   utm_source text,
@@ -95,6 +99,8 @@ create table if not exists public.partner_shops (
 create index if not exists booking_requests_status_idx on public.booking_requests(status);
 create index if not exists booking_requests_created_at_idx on public.booking_requests(created_at desc);
 create index if not exists booking_requests_utm_source_idx on public.booking_requests(utm_source);
+create index if not exists booking_requests_preferred_design_id_idx on public.booking_requests(preferred_design_id);
+create index if not exists booking_requests_matched_artist_id_idx on public.booking_requests(matched_artist_id);
 create index if not exists flash_designs_artist_id_idx on public.flash_designs(artist_id);
 
 alter table public.artists enable row level security;
@@ -118,4 +124,3 @@ drop policy if exists "Public can read public reviews" on public.reviews;
 create policy "Public can read public reviews"
   on public.reviews for select
   using (is_public = true);
-

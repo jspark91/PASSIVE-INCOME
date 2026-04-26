@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeadStatusBadge } from "@/components/LeadStatusBadge";
 import { getAdminAccess } from "@/lib/admin-session";
-import { getBookingRequest } from "@/lib/data";
+import { getArtists, getBookingRequest, getFlashDesigns, getLeadEvents } from "@/lib/data";
 import { formatDate, formatKrw } from "@/lib/format";
 import { getStatusLabel, leadStatuses } from "@/lib/status";
 import { updateLeadStatus } from "../actions";
@@ -11,10 +11,11 @@ export default async function LeadDetailPage({
   params,
   searchParams
 }: {
-  params: { id: string };
-  searchParams?: { token?: string | string[] };
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ token?: string | string[] }>;
 }) {
-  const { configured, allowed } = await getAdminAccess(searchParams);
+  const [{ id }, query] = await Promise.all([params, searchParams]);
+  const { configured, allowed } = await getAdminAccess(query);
 
   if (!allowed) {
     return (
@@ -26,11 +27,19 @@ export default async function LeadDetailPage({
     );
   }
 
-  const lead = await getBookingRequest(params.id);
+  const lead = await getBookingRequest(id);
 
   if (!lead) {
     notFound();
   }
+
+  const [artists, designs, events] = await Promise.all([
+    getArtists(),
+    getFlashDesigns(),
+    getLeadEvents(lead.id)
+  ]);
+  const preferredDesign = designs.find((design) => design.id === lead.preferred_design_id);
+  const preferredArtist = artists.find((artist) => artist.id === lead.preferred_artist_id);
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
@@ -89,6 +98,39 @@ export default async function LeadDetailPage({
               <dt className="text-sm font-semibold text-ink-900">Placement</dt>
               <dd className="mt-1 text-ink-700">{lead.placement ?? "-"}</dd>
             </div>
+            <div>
+              <dt className="text-sm font-semibold text-ink-900">Preferred artist</dt>
+              <dd className="mt-1 text-ink-700">{preferredArtist?.name ?? lead.preferred_artist_id ?? "-"}</dd>
+            </div>
+            <div>
+              <dt className="text-sm font-semibold text-ink-900">Preferred design</dt>
+              <dd className="mt-1 text-ink-700">{preferredDesign?.title ?? lead.preferred_design_id ?? "-"}</dd>
+            </div>
+            <div>
+              <dt className="text-sm font-semibold text-ink-900">Reference</dt>
+              <dd className="mt-1 text-ink-700">
+                {lead.reference_image_url ? (
+                  <a
+                    href={lead.reference_image_url}
+                    className="text-moss-700"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Open reference
+                  </a>
+                ) : (
+                  "-"
+                )}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-sm font-semibold text-ink-900">Quoted price</dt>
+              <dd className="mt-1 text-ink-700">{formatKrw(lead.quoted_price_krw)}</dd>
+            </div>
+            <div>
+              <dt className="text-sm font-semibold text-ink-900">Lost reason</dt>
+              <dd className="mt-1 text-ink-700">{lead.lost_reason ?? "-"}</dd>
+            </div>
           </dl>
           <div className="mt-6 rounded-lg bg-ink-50 p-4">
             <h2 className="font-semibold text-ink-900">Tracking</h2>
@@ -123,6 +165,50 @@ export default async function LeadDetailPage({
                 </select>
               </label>
               <label className="grid gap-2 text-sm font-medium text-ink-900">
+                Matched artist
+                <select
+                  name="matched_artist_id"
+                  defaultValue={lead.matched_artist_id ?? ""}
+                  className="rounded-md border border-ink-100 px-3 py-2"
+                >
+                  <option value="">Not matched yet</option>
+                  {artists.map((artist) => (
+                    <option key={artist.id} value={artist.id}>
+                      {artist.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="grid gap-2 text-sm font-medium text-ink-900">
+                Quoted price KRW
+                <input
+                  name="quoted_price_krw"
+                  type="number"
+                  min="0"
+                  step="10000"
+                  defaultValue={lead.quoted_price_krw ?? ""}
+                  className="rounded-md border border-ink-100 px-3 py-2"
+                />
+              </label>
+              <label className="grid gap-2 text-sm font-medium text-ink-900">
+                Lost reason
+                <select
+                  name="lost_reason"
+                  defaultValue={lead.lost_reason ?? ""}
+                  className="rounded-md border border-ink-100 px-3 py-2"
+                >
+                  <option value="">None</option>
+                  <option value="too_expensive">Too expensive</option>
+                  <option value="date_unavailable">Date unavailable</option>
+                  <option value="location_issue">Location issue</option>
+                  <option value="no_response">No response</option>
+                  <option value="artist_unavailable">Artist unavailable</option>
+                  <option value="changed_mind">Changed mind</option>
+                  <option value="legal_or_age_issue">Legal or age issue</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
+              <label className="grid gap-2 text-sm font-medium text-ink-900">
                 Note
                 <textarea
                   name="note"
@@ -138,6 +224,25 @@ export default async function LeadDetailPage({
           )}
         </aside>
       </div>
+
+      <section className="mt-8 rounded-lg border border-ink-100 bg-white p-6">
+        <h2 className="text-xl font-semibold text-ink-900">Lead timeline</h2>
+        {events.length ? (
+          <div className="mt-5 grid gap-4">
+            {events.map((event) => (
+              <article key={event.id} className="border-l-2 border-ink-100 pl-4">
+                <p className="text-sm font-semibold text-ink-900">{event.event_type}</p>
+                <p className="mt-1 text-sm text-ink-700">{event.note ?? "-"}</p>
+                <p className="mt-1 text-xs text-ink-700">
+                  {formatDate(event.created_at)} / {event.created_by ?? "system"}
+                </p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-4 text-sm text-ink-700">No events recorded yet.</p>
+        )}
+      </section>
     </section>
   );
 }

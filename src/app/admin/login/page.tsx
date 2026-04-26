@@ -14,12 +14,13 @@ function getErrorMessage(error?: string | string[]) {
   return null;
 }
 
-export default function AdminLoginPage({
+export default async function AdminLoginPage({
   searchParams
 }: {
-  searchParams?: { error?: string | string[] };
+  searchParams?: Promise<{ error?: string | string[] }>;
 }) {
-  const error = getErrorMessage(searchParams?.error);
+  const query = await searchParams;
+  const error = getErrorMessage(query?.error);
 
   return (
     <section className="mx-auto max-w-xl px-4 py-16 sm:px-6">
@@ -44,4 +45,3 @@ export default function AdminLoginPage({
     </section>
   );
 }
-

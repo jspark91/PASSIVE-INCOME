@@ -6,7 +6,10 @@ import { leadStatuses } from "@/lib/status";
 
 const statusSchema = z.object({
   status: z.enum(leadStatuses as [string, ...string[]]),
-  note: z.string().optional()
+  note: z.string().optional(),
+  matched_artist_id: z.string().optional().nullable(),
+  quoted_price_krw: z.coerce.number().int().positive().optional().nullable(),
+  lost_reason: z.string().optional().nullable()
 });
 
 function getToken(request: Request) {
@@ -50,7 +53,10 @@ export async function PATCH(
     .from("booking_requests")
     .update({
       status: parsed.data.status,
-      memo: parsed.data.note ?? null
+      memo: parsed.data.note ?? null,
+      matched_artist_id: parsed.data.matched_artist_id || null,
+      quoted_price_krw: parsed.data.quoted_price_krw ?? null,
+      lost_reason: parsed.data.lost_reason || null
     })
     .eq("id", id);
 

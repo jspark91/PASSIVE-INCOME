@@ -34,6 +34,7 @@ export async function createBookingRequest(
     budget_krw: textValue(formData, "budget_krw"),
     reference_image_url: textValue(formData, "reference_image_url"),
     preferred_artist_id: textValue(formData, "preferred_artist_id"),
+    preferred_design_id: textValue(formData, "preferred_design_id"),
     source: textValue(formData, "source"),
     utm_source: textValue(formData, "utm_source"),
     utm_medium: textValue(formData, "utm_medium"),

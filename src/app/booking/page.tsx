@@ -1,5 +1,5 @@
 import { BookingForm } from "./BookingForm";
-import { getArtists } from "@/lib/data";
+import { getArtists, getFlashDesigns } from "@/lib/data";
 
 function first(value?: string | string[]) {
   return Array.isArray(value) ? value[0] : value;
@@ -8,9 +8,13 @@ function first(value?: string | string[]) {
 export default async function BookingPage({
   searchParams
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const artists = await getArtists();
+  const query = await searchParams;
+  const [artists, designs] = await Promise.all([getArtists(), getFlashDesigns()]);
+  const selectedDesignId = first(query?.design);
+  const selectedDesign = designs.find((design) => design.id === selectedDesignId);
+  const selectedArtistId = first(query?.artist) ?? selectedDesign?.artist_id;
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
@@ -25,14 +29,16 @@ export default async function BookingPage({
       <div className="mt-8">
         <BookingForm
           artists={artists.map((artist) => ({ id: artist.id, name: artist.name }))}
-          source={first(searchParams?.source)}
-          utm_source={first(searchParams?.utm_source)}
-          utm_medium={first(searchParams?.utm_medium)}
-          utm_campaign={first(searchParams?.utm_campaign)}
-          preferred_artist_id={first(searchParams?.artist)}
+          source={first(query?.source)}
+          utm_source={first(query?.utm_source)}
+          utm_medium={first(query?.utm_medium)}
+          utm_campaign={first(query?.utm_campaign)}
+          preferred_artist_id={selectedArtistId}
+          preferred_design_id={selectedDesignId}
+          preferred_design_title={selectedDesign?.title}
+          initial_style={selectedDesign?.style ?? undefined}
         />
       </div>
     </section>
   );
 }
-

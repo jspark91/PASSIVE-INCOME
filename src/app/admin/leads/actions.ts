@@ -12,6 +12,9 @@ export async function updateLeadStatus(formData: FormData) {
   const leadId = String(formData.get("lead_id") ?? "");
   const status = String(formData.get("status") ?? "") as LeadStatus;
   const note = String(formData.get("note") ?? "");
+  const matchedArtistId = String(formData.get("matched_artist_id") ?? "");
+  const quotedPriceRaw = String(formData.get("quoted_price_krw") ?? "");
+  const lostReason = String(formData.get("lost_reason") ?? "");
 
   if (!isValidAdminToken(token)) {
     throw new Error("Invalid admin token.");
@@ -29,7 +32,13 @@ export async function updateLeadStatus(formData: FormData) {
 
   const { error: updateError } = await supabase
     .from("booking_requests")
-    .update({ status, memo: note || null })
+    .update({
+      status,
+      memo: note || null,
+      matched_artist_id: matchedArtistId || null,
+      quoted_price_krw: quotedPriceRaw ? Number(quotedPriceRaw) : null,
+      lost_reason: lostReason || null
+    })
     .eq("id", leadId);
 
   if (updateError) {

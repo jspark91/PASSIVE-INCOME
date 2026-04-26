@@ -6,9 +6,10 @@ import { getFlashDesigns } from "@/lib/data";
 export default async function AdminDesignsPage({
   searchParams
 }: {
-  searchParams?: { token?: string | string[] };
+  searchParams?: Promise<{ token?: string | string[] }>;
 }) {
-  const { configured, allowed } = await getAdminAccess(searchParams);
+  const query = await searchParams;
+  const { configured, allowed } = await getAdminAccess(query);
   const designs = allowed ? await getFlashDesigns() : [];
 
   return (

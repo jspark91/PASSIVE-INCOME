@@ -46,6 +46,7 @@ export async function insertBookingRequest(payload: BookingPayloadInput) {
       budget_krw: budgetValue(input.budget_krw),
       reference_image_url: input.reference_image_url || null,
       preferred_artist_id: input.preferred_artist_id || null,
+      preferred_design_id: input.preferred_design_id || null,
       source: input.source || null,
       utm_source: input.utm_source || null,
       utm_medium: input.utm_medium || null,
@@ -63,6 +64,13 @@ export async function insertBookingRequest(payload: BookingPayloadInput) {
       id: null
     };
   }
+
+  await supabase.from("lead_events").insert({
+    booking_request_id: data?.id,
+    event_type: "booking_created",
+    note: "Booking request submitted.",
+    created_by: "public_form"
+  });
 
   return {
     ok: true as const,

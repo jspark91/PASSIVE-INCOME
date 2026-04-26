@@ -1,6 +1,6 @@
 import { sampleArtists, sampleDesigns, sampleLeads } from "@/lib/sample-data";
 import { getAdminSupabase, getPublicSupabase } from "@/lib/supabase";
-import type { Artist, BookingRequest, FlashDesign } from "@/types/domain";
+import type { Artist, BookingRequest, FlashDesign, LeadEvent } from "@/types/domain";
 
 export async function getArtists(): Promise<Artist[]> {
   const supabase = getPublicSupabase();
@@ -91,3 +91,22 @@ export async function getBookingRequest(id: string): Promise<BookingRequest | nu
   return data as BookingRequest;
 }
 
+export async function getLeadEvents(bookingRequestId: string): Promise<LeadEvent[]> {
+  const supabase = getAdminSupabase();
+
+  if (!supabase) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("lead_events")
+    .select("*")
+    .eq("booking_request_id", bookingRequestId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return [];
+  }
+
+  return data as LeadEvent[];
+}

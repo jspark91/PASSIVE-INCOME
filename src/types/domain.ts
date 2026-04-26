@@ -54,6 +54,10 @@ export type BookingRequest = {
   budget_krw?: number | null;
   reference_image_url?: string | null;
   preferred_artist_id?: string | null;
+  preferred_design_id?: string | null;
+  matched_artist_id?: string | null;
+  quoted_price_krw?: number | null;
+  lost_reason?: string | null;
   status: LeadStatus;
   source?: string | null;
   utm_source?: string | null;
@@ -71,4 +75,3 @@ export type LeadEvent = {
   created_by?: string | null;
   created_at: string;
 };
-

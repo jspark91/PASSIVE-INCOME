@@ -5,9 +5,10 @@ import { logoutAdmin } from "./login/actions";
 export default async function AdminPage({
   searchParams
 }: {
-  searchParams?: { token?: string | string[] };
+  searchParams?: Promise<{ token?: string | string[] }>;
 }) {
-  const { configured, allowed } = await getAdminAccess(searchParams);
+  const query = await searchParams;
+  const { configured, allowed } = await getAdminAccess(query);
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">

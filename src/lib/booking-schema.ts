@@ -17,6 +17,7 @@ export const bookingPayloadSchema = z.object({
   budget_krw: z.coerce.number().int().positive().optional().or(z.literal("")),
   reference_image_url: z.string().url().optional().or(z.literal("")),
   preferred_artist_id: z.string().optional(),
+  preferred_design_id: z.string().optional(),
   source: z.string().optional(),
   utm_source: z.string().optional(),
   utm_medium: z.string().optional(),
