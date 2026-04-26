@@ -1,6 +1,9 @@
 import { BookingForm } from "./BookingForm";
 import { getArtists, getFlashDesigns } from "@/lib/data";
 
+const instagramDmUrl = "https://ig.me/m/ETHNIC_HOUSE_SILLIM";
+const instagramProfileUrl = "https://www.instagram.com/ETHNIC_HOUSE_SILLIM/";
+
 function first(value?: string | string[]) {
   return Array.isArray(value) ? value[0] : value;
 }
@@ -27,6 +30,24 @@ export default async function BookingPage({
         Fill out the request details, create a DM message, then send it to ETHNIC HOUSE on
         Instagram. This first test does not require Supabase or database setup.
       </p>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+        <a
+          href={instagramDmUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center justify-center rounded-md bg-ink-900 px-5 py-3 text-sm font-semibold text-white"
+        >
+          Open Instagram DM now
+        </a>
+        <a
+          href={instagramProfileUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center justify-center rounded-md border border-ink-200 px-5 py-3 text-sm font-semibold text-ink-900"
+        >
+          View ETHNIC HOUSE Instagram
+        </a>
+      </div>
       <div className="mt-8">
         <BookingForm
           artists={artists.map((artist) => ({ id: artist.id, name: artist.name }))}

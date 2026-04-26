@@ -1,0 +1,34 @@
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    container_name: ethnic-house-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_SITE_URL: https://ethnichouseseoul.com
+      NEXT_PUBLIC_KAKAO_CHANNEL_URL: ${NEXT_PUBLIC_KAKAO_CHANNEL_URL:-}
+      NEXT_PUBLIC_GA_ID: ${NEXT_PUBLIC_GA_ID:-}
+      NEXT_PUBLIC_META_PIXEL_ID: ${NEXT_PUBLIC_META_PIXEL_ID:-}
+    expose:
+      - "3000"
+
+  caddy:
+    image: caddy:2.11.2-alpine
+    container_name: ethnic-house-caddy
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

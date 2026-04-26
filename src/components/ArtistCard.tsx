@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { formatKrw } from "@/lib/format";
+import { formatUsdGuideFromKrw } from "@/lib/format";
 import type { Artist } from "@/types/domain";
 
 export function ArtistCard({ artist }: { artist: Artist }) {
@@ -16,7 +16,7 @@ export function ArtistCard({ artist }: { artist: Artist }) {
         <h3 className="mt-3 text-2xl font-semibold text-ink-900">{artist.name}</h3>
         <p className="mt-3 text-sm leading-6 text-ink-700">{artist.bio_en}</p>
         <p className="mt-4 text-sm font-medium text-ink-900">
-          From {formatKrw(artist.starting_price_krw)}
+          From {formatUsdGuideFromKrw(artist.starting_price_krw)}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {artist.styles.map((style) => (

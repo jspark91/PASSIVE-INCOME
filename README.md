@@ -63,6 +63,14 @@ cd C:\#TUNNEL\PASSIVE-INCOME
 
 See `docs/https-caddy.md` for the `80/443` router and firewall requirements.
 
+For 24/7 hosting on a Synology NAS, use the Docker Compose setup:
+
+```text
+deploy/synology/docker-compose.yml
+```
+
+See `docs/synology-deployment.md`.
+
 For a stable public home-server URL, use DuckDNS:
 
 ```powershell

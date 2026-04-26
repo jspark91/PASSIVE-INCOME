@@ -10,6 +10,21 @@ export function formatKrw(value?: number | null) {
   }).format(value);
 }
 
+export function formatUsdGuideFromKrw(value?: number | null) {
+  if (!value) {
+    return "Quote required";
+  }
+
+  const guideRate = 1400;
+  const roundedUsd = Math.ceil(value / guideRate / 5) * 5;
+
+  return `approx. ${new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0
+  }).format(roundedUsd)}`;
+}
+
 export function formatDate(value?: string | null) {
   if (!value) {
     return "Not set";
@@ -21,4 +36,3 @@ export function formatDate(value?: string | null) {
     day: "numeric"
   }).format(new Date(value));
 }
-

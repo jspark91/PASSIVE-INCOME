@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DesignCard } from "@/components/DesignCard";
 import { getArtistBySlug, getDesignsForArtist } from "@/lib/data";
-import { formatKrw } from "@/lib/format";
+import { formatUsdGuideFromKrw } from "@/lib/format";
 
 export default async function ArtistDetailPage({
   params
@@ -38,7 +38,7 @@ export default async function ArtistDetailPage({
         <dl className="mx-auto mt-8 grid max-w-3xl gap-4 text-sm text-ink-700 sm:grid-cols-3">
           <div>
             <dt className="font-semibold text-ink-900">Starting price</dt>
-            <dd className="mt-1">{formatKrw(artist.starting_price_krw)}</dd>
+            <dd className="mt-1">{formatUsdGuideFromKrw(artist.starting_price_krw)}</dd>
           </div>
           <div>
             <dt className="font-semibold text-ink-900">Location</dt>

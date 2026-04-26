@@ -52,7 +52,7 @@ function buildDmMessage(
     `Preferred artist: ${preferredArtistId ? artistName(artists, preferredArtistId) : "No preference"}`,
     `Size: ${formText(formData, "size_cm") || "-"}`,
     `Placement: ${formText(formData, "placement") || "-"}`,
-    `Budget KRW: ${formText(formData, "budget_krw") || "-"}`,
+    `Budget USD: ${formText(formData, "budget_usd") ? `$${formText(formData, "budget_usd")}` : "-"}`,
     `Reference URL: ${formText(formData, "reference_image_url") || "-"}`,
     "",
     `Source: ${formText(formData, "source") || "-"}`,
@@ -82,15 +82,24 @@ export function BookingForm({
     const form = event.currentTarget;
     const formData = new FormData(form);
     const message = buildDmMessage(formData, artists, preferred_design_title);
+    const dmWindow = window.open(INSTAGRAM_DM_URL, "_blank", "noopener,noreferrer");
 
     setDmMessage(message);
     setCopyState("");
 
     try {
       await navigator.clipboard.writeText(message);
-      setCopyState("Message copied. Open Instagram DM and paste it.");
+      setCopyState(
+        dmWindow
+          ? "Message copied. Instagram DM opened; paste the message there."
+          : "Message copied. If Instagram DM did not open, use the button below."
+      );
     } catch {
-      setCopyState("Copy the message below, then paste it into Instagram DM.");
+      setCopyState(
+        dmWindow
+          ? "Instagram DM opened. Copy the message below, then paste it there."
+          : "Copy the message below, then paste it into Instagram DM."
+      );
     }
   }
 
@@ -217,8 +226,15 @@ export function BookingForm({
             <input name="placement" placeholder="Example: inner arm" className="rounded-md border border-ink-100 px-3 py-2" />
           </label>
           <label className="grid gap-2 text-sm font-medium text-ink-900">
-            Budget KRW
-            <input name="budget_krw" type="number" min="0" step="10000" className="rounded-md border border-ink-100 px-3 py-2" />
+            Budget USD
+            <input
+              name="budget_usd"
+              type="number"
+              min="0"
+              step="10"
+              placeholder="Example: 100"
+              className="rounded-md border border-ink-100 px-3 py-2"
+            />
           </label>
         </div>
 
@@ -240,7 +256,7 @@ export function BookingForm({
         </label>
 
         <button type="submit" className="rounded-md bg-ink-900 px-5 py-3 text-sm font-semibold text-white">
-          Create DM message
+          Copy request and open Instagram DM
         </button>
       </form>
 
@@ -248,8 +264,8 @@ export function BookingForm({
         <section className="rounded-lg border border-ink-100 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-semibold text-ink-900">Send this request by DM</h2>
           <p className="mt-2 text-sm leading-6 text-ink-700">
-            Instagram does not reliably support pre-filled DM text, so copy the message and paste it
-            into ETHNIC HOUSE DM.
+            Instagram does not reliably support pre-filled DM text, so this page copies the request
+            first and opens ETHNIC HOUSE DM for you.
           </p>
           <textarea
             readOnly

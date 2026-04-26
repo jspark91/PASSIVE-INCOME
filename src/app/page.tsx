@@ -149,15 +149,15 @@ export default async function HomePage() {
             <dl className="mt-4 space-y-3 text-sm">
               <div className="flex justify-between gap-4">
                 <dt>Small lettering</dt>
-                <dd>from KRW 80,000</dd>
+                <dd>from $60</dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt>Mini tattoo</dt>
-                <dd>from KRW 100,000</dd>
+                <dd>from $75</dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt>Fine-line tattoo</dt>
-                <dd>from KRW 120,000</dd>
+                <dd>from $90</dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt>Custom design</dt>
