@@ -7,7 +7,6 @@ Synology Container Manager supports Docker containers and Compose-style projects
 ```text
 Dockerfile
 deploy/synology/docker-compose.yml
-deploy/synology/Caddyfile
 ```
 
 The runtime shape is:
@@ -15,9 +14,8 @@ The runtime shape is:
 ```text
 Internet
 -> Router TCP 80/443
--> Synology NAS TCP 80/443
--> Caddy container
--> Next.js app container on port 3000
+-> Synology NAS built-in reverse proxy / certificate
+-> Next.js app container on NAS port 3000
 ```
 
 ## Requirements
@@ -83,7 +81,51 @@ ethnic-house
 6. Use the existing `docker-compose.yml`.
 7. Build and start the project.
 
-## 4. Router Port Forwarding
+After the project starts, confirm this URL works from the local network:
+
+```text
+http://NAS_IP:3000/api/health
+```
+
+Example:
+
+```text
+http://192.168.0.10:3000/api/health
+```
+
+## 4. Synology Reverse Proxy
+
+Use Synology's built-in reverse proxy instead of binding a Caddy container to `80/443`. On DSM:
+
+1. Open `Control Panel`.
+2. Open `Login Portal`.
+3. Open `Advanced`.
+4. Open `Reverse Proxy`.
+5. Create a rule:
+
+```text
+Description: ethnic-house
+Source protocol: HTTPS
+Source hostname: ethnichouseseoul.com
+Source port: 443
+Destination protocol: HTTP
+Destination hostname: 127.0.0.1
+Destination port: 3000
+```
+
+Optional HTTP rule:
+
+```text
+Description: ethnic-house-http
+Source protocol: HTTP
+Source hostname: ethnichouseseoul.com
+Source port: 80
+Destination protocol: HTTP
+Destination hostname: 127.0.0.1
+Destination port: 3000
+```
+
+## 5. Router Port Forwarding
 
 Forward to the NAS IP, not the Windows PC.
 
@@ -101,7 +143,24 @@ External TCP 443 -> 192.168.0.10:443
 
 Do not forward to `192.168.0.2` after moving to NAS unless that is the NAS IP.
 
-## 5. DNS
+## 6. Certificate
+
+In DSM:
+
+1. Open `Control Panel`.
+2. Open `Security`.
+3. Open `Certificate`.
+4. Add a Let's Encrypt certificate for:
+
+```text
+ethnichouseseoul.com
+```
+
+5. Assign that certificate to the reverse proxy service for `ethnichouseseoul.com`.
+
+Let's Encrypt validation needs the domain DNS to point to the current public IP and router port `80` to reach the NAS.
+
+## 7. DNS
 
 Gabia root domain:
 
@@ -113,7 +172,7 @@ Value: 211.177.105.220
 
 If the public IP changes often, use DDNS or a Cloudflare Tunnel-style setup.
 
-## 6. Test
+## 8. Test
 
 From mobile data:
 
@@ -125,6 +184,6 @@ https://ethnichouseseoul.com/sitemap.xml
 
 ## Notes
 
-- Caddy automatically issues and renews the HTTPS certificate.
-- If Synology DSM or Web Station already uses ports `80/443`, either free those ports or use Synology's built-in reverse proxy and certificate tools instead of the Caddy service.
+- This deployment intentionally does not start a Caddy container because Synology often reserves ports `80/443` for its built-in web service and reverse proxy.
 - Keep only one device receiving router ports `80/443` at a time: Windows PC or NAS, not both.
+- If NAS port `3000` is already used, change `deploy/synology/docker-compose.yml` from `3000:3000` to another host port such as `3001:3000`, then point the reverse proxy destination to that host port.
