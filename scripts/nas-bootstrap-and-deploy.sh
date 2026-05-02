@@ -99,14 +99,24 @@ prepare_archive_checkout() {
 
   latest_sha="$(remote_sha)"
   sha_file="$APP_DIR/.ethnic-house-source-sha"
+  deployed_sha_file="$APP_DIR/.ethnic-house-deployed-sha"
   current_sha=""
+  deployed_sha=""
   if [ -f "$sha_file" ]; then
     current_sha="$(cat "$sha_file")"
   fi
+  if [ -f "$deployed_sha_file" ]; then
+    deployed_sha="$(cat "$deployed_sha_file")"
+  fi
 
-  if [ "$current_sha" = "$latest_sha" ] && health_ok; then
+  if [ "$current_sha" = "$latest_sha" ] && [ "$deployed_sha" = "$latest_sha" ] && health_ok; then
     log "no GitHub changes and app is healthy; skipping archive deploy"
     exit 0
+  fi
+
+  if [ "$current_sha" = "$latest_sha" ]; then
+    log "source is current, but deploy marker is missing or health failed; rebuilding"
+    return
   fi
 
   archive="/tmp/ethnic-house-$latest_sha.tar.gz"
@@ -154,6 +164,12 @@ run_deploy() {
 
   log "running deploy"
   APP_DIR="$APP_DIR" BRANCH="$BRANCH" HEALTH_URL="$HEALTH_URL" SKIP_GIT_SYNC="${SKIP_GIT_SYNC:-0}" /bin/sh "$APP_DIR/scripts/nas-deploy.sh"
+
+  if [ -f "$APP_DIR/.ethnic-house-source-sha" ]; then
+    cp "$APP_DIR/.ethnic-house-source-sha" "$APP_DIR/.ethnic-house-deployed-sha"
+  elif command -v git >/dev/null 2>&1 && [ -d "$APP_DIR/.git" ]; then
+    git -C "$APP_DIR" rev-parse HEAD > "$APP_DIR/.ethnic-house-deployed-sha"
+  fi
 }
 
 if command -v git >/dev/null 2>&1; then
