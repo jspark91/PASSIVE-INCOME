@@ -80,6 +80,11 @@ if [ "$old_rev" = "$new_rev" ]; then
   log "no git changes, but health check failed; rebuilding container"
 fi
 
+if docker ps -a --format '{{.Names}}' | grep -qx 'ethnic-house-app'; then
+  log "removing existing ethnic-house-app container before recreate"
+  docker rm -f ethnic-house-app >/dev/null
+fi
+
 log "building and starting container"
 $COMPOSE up -d --build --remove-orphans
 
