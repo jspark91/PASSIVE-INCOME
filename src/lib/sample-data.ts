@@ -61,31 +61,9 @@ const yoonseulImageBase = "/images/artists/yoonseul";
 
 export const sampleDesigns: FlashDesign[] = [
   {
-    id: "design-yoonseul-star",
-    artist_id: "artist-yoonseul",
-    title: "Halftone star wrap",
-    style: "blackwork",
-    size_hint: "custom sizing",
-    price_from_krw: null,
-    duration_minutes: null,
-    image_url: `${yoonseulImageBase}/yoonseul-01-star.jpg`,
-    is_available: true
-  },
-  {
-    id: "design-yoonseul-moon-flow",
-    artist_id: "artist-yoonseul",
-    title: "Moon flow brushwork",
-    style: "abstract brushwork",
-    size_hint: "upper arm",
-    price_from_krw: null,
-    duration_minutes: null,
-    image_url: `${yoonseulImageBase}/yoonseul-02-moon-flow.jpg`,
-    is_available: true
-  },
-  {
     id: "design-yoonseul-moon-whale",
     artist_id: "artist-yoonseul",
-    title: "Moon and whale",
+    title: "Moon and whale brushwork",
     style: "abstract brushwork",
     size_hint: "shoulder and upper back",
     price_from_krw: null,
@@ -96,7 +74,7 @@ export const sampleDesigns: FlashDesign[] = [
   {
     id: "design-yoonseul-pouring-moon",
     artist_id: "artist-yoonseul",
-    title: "Pouring moon",
+    title: "Pouring moon blackwork",
     style: "moon",
     size_hint: "upper arm",
     price_from_krw: null,
@@ -105,14 +83,58 @@ export const sampleDesigns: FlashDesign[] = [
     is_available: true
   },
   {
+    id: "design-yoonseul-moon-flow",
+    artist_id: "artist-yoonseul",
+    title: "Moon flow tattoo",
+    style: "abstract brushwork",
+    size_hint: "upper arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-02-moon-flow.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-iris-flower",
+    artist_id: "artist-yoonseul",
+    title: "Iris flower brushwork",
+    style: "fine-line",
+    size_hint: "forearm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-08-iris-flower.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-butterflies",
+    artist_id: "artist-yoonseul",
+    title: "Butterfly trio linework",
+    style: "butterfly",
+    size_hint: "upper arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-07-butterflies.jpg`,
+    is_available: true
+  },
+  {
     id: "design-yoonseul-moth-flow",
     artist_id: "artist-yoonseul",
-    title: "Moth flow linework",
+    title: "Moth flow tattoo",
     style: "fine-line",
     size_hint: "upper arm",
     price_from_krw: null,
     duration_minutes: null,
     image_url: `${yoonseulImageBase}/yoonseul-05-moth-flow.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-star",
+    artist_id: "artist-yoonseul",
+    title: "Halftone star wrap",
+    style: "blackwork",
+    size_hint: "upper arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-01-star.jpg`,
     is_available: true
   },
   {
@@ -124,28 +146,6 @@ export const sampleDesigns: FlashDesign[] = [
     price_from_krw: null,
     duration_minutes: null,
     image_url: `${yoonseulImageBase}/yoonseul-06-owl-realism.jpg`,
-    is_available: true
-  },
-  {
-    id: "design-yoonseul-butterflies",
-    artist_id: "artist-yoonseul",
-    title: "Butterfly linework",
-    style: "butterfly",
-    size_hint: "upper arm",
-    price_from_krw: null,
-    duration_minutes: null,
-    image_url: `${yoonseulImageBase}/yoonseul-07-butterflies.jpg`,
-    is_available: true
-  },
-  {
-    id: "design-yoonseul-iris-flower",
-    artist_id: "artist-yoonseul",
-    title: "Iris flower",
-    style: "fine-line",
-    size_hint: "forearm",
-    price_from_krw: null,
-    duration_minutes: null,
-    image_url: `${yoonseulImageBase}/yoonseul-08-iris-flower.jpg`,
     is_available: true
   },
   {

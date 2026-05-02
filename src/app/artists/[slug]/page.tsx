@@ -59,7 +59,7 @@ export default async function ArtistDetailPage({
 
       <div className="bg-ink-900">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {designs.map((design) => (
               <DesignCard key={design.id} design={design} />
             ))}

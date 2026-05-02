@@ -57,7 +57,7 @@ export default async function HomePage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={design.image_url}
-                    alt=""
+                    alt={design.title}
                     className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
                 ) : (

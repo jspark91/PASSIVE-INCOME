@@ -6,10 +6,10 @@ import type { FlashDesign } from "@/types/domain";
 export function DesignCard({ design }: { design: FlashDesign }) {
   return (
     <article className="overflow-hidden rounded-md border border-ink-100 bg-white">
-      <div className="relative flex aspect-[4/3] items-center justify-center bg-ink-900 text-center text-sm text-ink-100">
+      <div className="relative flex aspect-[3/4] items-center justify-center bg-ink-900 text-center text-sm text-ink-100">
         {design.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={design.image_url} alt="" className="h-full w-full object-cover" />
+          <img src={design.image_url} alt={design.title} className="h-full w-full object-contain" />
         ) : (
           <>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(235,224,214,0.16),transparent_32%),linear-gradient(145deg,#3a2b22,#17110e)]" />
