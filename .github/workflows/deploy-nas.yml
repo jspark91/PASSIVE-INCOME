@@ -29,9 +29,12 @@ jobs:
           set -euo pipefail
 
           if [ -z "${NAS_SSH_HOST}" ] || [ -z "${NAS_SSH_USER}" ] || [ -z "${NAS_SSH_PRIVATE_KEY}" ]; then
-            echo "NAS_SSH_HOST, NAS_SSH_USER, and NAS_SSH_PRIVATE_KEY secrets are required." >&2
-            exit 1
+            echo "NAS SSH secrets are not configured; skipping GitHub Actions SSH deploy."
+            echo "NAS_DEPLOY_ENABLED=false" >> "$GITHUB_ENV"
+            exit 0
           fi
+
+          echo "NAS_DEPLOY_ENABLED=true" >> "$GITHUB_ENV"
 
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
@@ -47,6 +50,7 @@ jobs:
           chmod 600 ~/.ssh/known_hosts
 
       - name: Run NAS deploy script
+        if: env.NAS_DEPLOY_ENABLED == 'true'
         shell: bash
         env:
           NAS_SSH_HOST: ${{ secrets.NAS_SSH_HOST }}

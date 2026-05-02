@@ -1,6 +1,10 @@
 # GitHub Actions NAS Deploy
 
-Use this when you want every push to `main` to deploy to the Synology NAS immediately.
+This is a secondary deployment option. The current recommended path is the NAS
+scheduled pull task in [`docs/nas-auto-deploy.md`](nas-auto-deploy.md).
+
+Use GitHub Actions SSH deploy only when the NAS accepts public key SSH from
+GitHub Actions and the required repository secrets are configured.
 
 ```text
 git push origin main
@@ -19,6 +23,10 @@ The workflow file is:
 ## Requirement
 
 GitHub Actions must be able to reach the NAS through SSH.
+
+If the required SSH secrets are missing, the workflow intentionally skips deploy
+instead of failing. This keeps the scheduled pull setup clean while the SSH
+route is not active.
 
 Recommended access options:
 
