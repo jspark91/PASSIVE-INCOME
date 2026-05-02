@@ -100,5 +100,6 @@ Notes:
   - Do not edit files directly in /volume1/docker/ethnic-house.
   - The first run backs up any old manual upload folder to:
       /volume1/docker/ethnic-house-manual-YYYYMMDD-HHMMSS
-  - Docker/Container Manager and git must be installed on the NAS.
+  - Docker/Container Manager must be installed on the NAS.
+  - Git is optional. If Git is missing, the task downloads the latest GitHub archive instead.
   - Keep Synology reverse proxy pointed to 127.0.0.1:3000.

@@ -71,8 +71,9 @@ exit "$STATUS"
 The bootstrap script will:
 
 - convert an old manual upload folder into a timestamped backup;
-- clone `jspark91/PASSIVE-INCOME` into `/volume1/docker/ethnic-house`;
-- pull the latest `main` branch;
+- clone `jspark91/PASSIVE-INCOME` into `/volume1/docker/ethnic-house` when Git is available;
+- download the latest GitHub archive when Git is not available;
+- pull or replace the source from the latest `main` branch;
 - run `scripts/nas-deploy.sh`;
 - rebuild the Docker container only when needed or when health fails.
 
@@ -122,3 +123,4 @@ The NAS updates on the next scheduled run.
 - Do not edit `/volume1/docker/ethnic-house` directly.
 - Keep Synology reverse proxy pointed to `127.0.0.1:3000`.
 - Keep only one device receiving router ports `80/443`.
+- Git is optional. Without Git, the NAS uses the GitHub archive fallback.

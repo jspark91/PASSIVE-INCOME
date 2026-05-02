@@ -5,6 +5,7 @@ APP_DIR="${APP_DIR:-/volume1/docker/ethnic-house}"
 BRANCH="${BRANCH:-main}"
 REMOTE="${REMOTE:-origin}"
 HEALTH_URL="${HEALTH_URL:-http://127.0.0.1:3000/api/health}"
+SKIP_GIT_SYNC="${SKIP_GIT_SYNC:-0}"
 
 log() {
   printf '%s %s\n' "[ethnic-house-deploy]" "$1"
@@ -15,8 +16,11 @@ fail() {
   exit 1
 }
 
-command -v git >/dev/null 2>&1 || fail "git is not installed on this NAS user path."
 command -v docker >/dev/null 2>&1 || fail "docker is not installed on this NAS user path."
+
+if [ "$SKIP_GIT_SYNC" != "1" ]; then
+  command -v git >/dev/null 2>&1 || fail "git is not installed on this NAS user path."
+fi
 
 health_ok() {
   if command -v curl >/dev/null 2>&1; then
@@ -36,22 +40,28 @@ if [ ! -d "$APP_DIR" ]; then
   fail "$APP_DIR does not exist. Clone the repository there before enabling the scheduled task."
 fi
 
-if [ ! -d "$APP_DIR/.git" ]; then
-  fail "$APP_DIR is not a git checkout. Replace the uploaded zip copy with a git clone."
-fi
-
 cd "$APP_DIR"
 
-log "syncing $REMOTE/$BRANCH in $APP_DIR"
-old_rev="$(git rev-parse HEAD)"
-current_branch="$(git rev-parse --abbrev-ref HEAD)"
-if [ "$current_branch" != "$BRANCH" ]; then
-  git checkout "$BRANCH"
-fi
+if [ "$SKIP_GIT_SYNC" = "1" ]; then
+  log "git sync skipped; using source already present in $APP_DIR"
+  old_rev="archive"
+  new_rev="archive-deploy"
+else
+  if [ ! -d "$APP_DIR/.git" ]; then
+    fail "$APP_DIR is not a git checkout. Replace the uploaded zip copy with a git clone."
+  fi
 
-git fetch "$REMOTE" "$BRANCH"
-git pull --ff-only "$REMOTE" "$BRANCH"
-new_rev="$(git rev-parse HEAD)"
+  log "syncing $REMOTE/$BRANCH in $APP_DIR"
+  old_rev="$(git rev-parse HEAD)"
+  current_branch="$(git rev-parse --abbrev-ref HEAD)"
+  if [ "$current_branch" != "$BRANCH" ]; then
+    git checkout "$BRANCH"
+  fi
+
+  git fetch "$REMOTE" "$BRANCH"
+  git pull --ff-only "$REMOTE" "$BRANCH"
+  new_rev="$(git rev-parse HEAD)"
+fi
 
 if docker compose version >/dev/null 2>&1; then
   COMPOSE="docker compose"
