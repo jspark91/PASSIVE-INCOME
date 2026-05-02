@@ -33,24 +33,39 @@ Script:
 
 ```sh
 set -eu
+exec 2>&1
+
 LOG_DIR="/volume1/docker"
 LOG_FILE="$LOG_DIR/ethnic-house-auto-deploy.log"
 BOOTSTRAP_URL="https://raw.githubusercontent.com/jspark91/PASSIVE-INCOME/main/scripts/nas-bootstrap-and-deploy.sh"
 BOOTSTRAP_FILE="/tmp/ethnic-house-bootstrap-and-deploy.sh"
 
+echo "[task] start $(date)"
 mkdir -p "$LOG_DIR"
 
 if command -v curl >/dev/null 2>&1; then
-  curl -fsSL "$BOOTSTRAP_URL" -o "$BOOTSTRAP_FILE"
+  echo "[task] downloading bootstrap with curl"
+  curl -fL "$BOOTSTRAP_URL" -o "$BOOTSTRAP_FILE"
 else
-  wget -q -O "$BOOTSTRAP_FILE" "$BOOTSTRAP_URL"
+  echo "[task] downloading bootstrap with wget"
+  wget -O "$BOOTSTRAP_FILE" "$BOOTSTRAP_URL"
 fi
 
+ls -l "$BOOTSTRAP_FILE"
+echo "[task] running bootstrap; log file: $LOG_FILE"
+
+set +e
 APP_DIR="/volume1/docker/ethnic-house" \
 BRANCH="main" \
 REPO_URL="https://github.com/jspark91/PASSIVE-INCOME.git" \
 HEALTH_URL="http://127.0.0.1:3000/api/health" \
-/bin/sh "$BOOTSTRAP_FILE" >> "$LOG_FILE" 2>&1
+/bin/sh "$BOOTSTRAP_FILE" > "$LOG_FILE" 2>&1
+STATUS=$?
+set -e
+
+cat "$LOG_FILE" || true
+echo "[task] bootstrap exit=$STATUS"
+exit "$STATUS"
 ```
 
 The bootstrap script will:
