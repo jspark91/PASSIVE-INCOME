@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CalendarDays, Instagram, MapPin, ShieldCheck } from "lucide-react";
 import type { Artist, FlashDesign } from "@/types/domain";
-import { formatUsdGuideFromKrw } from "@/lib/format";
+import { formatUsdStartingPrice } from "@/lib/format";
 import { instagramDmUrl, instagramProfileUrl } from "@/lib/site";
 
 type AdLandingPageProps = {
@@ -208,7 +208,7 @@ export function AdLandingPage({
                 <h3 className="mt-3 text-2xl font-semibold text-ink-900">{artist.name}</h3>
                 <p className="mt-3 text-sm leading-6 text-ink-700">{artist.bio_en}</p>
                 <p className="mt-4 text-sm font-semibold text-ink-900">
-                  From {formatUsdGuideFromKrw(artist.starting_price_krw)}
+                  {formatUsdStartingPrice(artist.starting_price_krw)}
                 </p>
               </article>
             ))}

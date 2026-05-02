@@ -1,0 +1,68 @@
+name: Deploy to Synology NAS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-nas
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Configure SSH
+        shell: bash
+        env:
+          NAS_SSH_HOST: ${{ secrets.NAS_SSH_HOST }}
+          NAS_SSH_PORT: ${{ secrets.NAS_SSH_PORT }}
+          NAS_SSH_USER: ${{ secrets.NAS_SSH_USER }}
+          NAS_SSH_PRIVATE_KEY: ${{ secrets.NAS_SSH_PRIVATE_KEY }}
+          NAS_SSH_KNOWN_HOSTS: ${{ secrets.NAS_SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${NAS_SSH_HOST}" ] || [ -z "${NAS_SSH_USER}" ] || [ -z "${NAS_SSH_PRIVATE_KEY}" ]; then
+            echo "NAS_SSH_HOST, NAS_SSH_USER, and NAS_SSH_PRIVATE_KEY secrets are required." >&2
+            exit 1
+          fi
+
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${NAS_SSH_PRIVATE_KEY}" > ~/.ssh/nas_deploy_key
+          chmod 600 ~/.ssh/nas_deploy_key
+
+          port="${NAS_SSH_PORT:-22}"
+          if [ -n "${NAS_SSH_KNOWN_HOSTS}" ]; then
+            printf '%s\n' "${NAS_SSH_KNOWN_HOSTS}" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -p "${port}" "${NAS_SSH_HOST}" > ~/.ssh/known_hosts
+          fi
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Run NAS deploy script
+        shell: bash
+        env:
+          NAS_SSH_HOST: ${{ secrets.NAS_SSH_HOST }}
+          NAS_SSH_PORT: ${{ secrets.NAS_SSH_PORT }}
+          NAS_SSH_USER: ${{ secrets.NAS_SSH_USER }}
+          NAS_APP_DIR: ${{ secrets.NAS_APP_DIR }}
+          NAS_DEPLOY_BRANCH: ${{ secrets.NAS_DEPLOY_BRANCH }}
+        run: |
+          set -euo pipefail
+
+          port="${NAS_SSH_PORT:-22}"
+          app_dir="${NAS_APP_DIR:-/volume1/docker/ethnic-house}"
+          branch="${NAS_DEPLOY_BRANCH:-main}"
+
+          ssh \
+            -i ~/.ssh/nas_deploy_key \
+            -p "${port}" \
+            "${NAS_SSH_USER}@${NAS_SSH_HOST}" \
+            "APP_DIR='${app_dir}' BRANCH='${branch}' /bin/sh '${app_dir}/scripts/nas-deploy.sh'"

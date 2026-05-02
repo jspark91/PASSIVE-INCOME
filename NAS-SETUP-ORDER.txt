@@ -1,0 +1,113 @@
+ETHNIC HOUSE NAS deployment order
+
+Use this simplified package. Do not look for a deploy folder.
+
+1. Upload and extract
+
+- In Synology File Station, create this folder:
+  /volume1/docker/ethnic-house
+- Upload the zip file into that folder.
+- Extract the zip in that same folder.
+- After extraction, these files must be directly inside /volume1/docker/ethnic-house:
+  /volume1/docker/ethnic-house/Dockerfile
+  /volume1/docker/ethnic-house/docker-compose.yml
+  /volume1/docker/ethnic-house/package.json
+  /volume1/docker/ethnic-house/src
+  /volume1/docker/ethnic-house/src/app/page.tsx
+  /volume1/docker/ethnic-house/src/app/layout.tsx
+
+If docker-compose.yml is inside another nested folder, move the contents up one level.
+If the build says it cannot find an app or pages directory, the extracted files are wrong. Check that File Station shows a real src folder, then an app folder inside it. It should not show filenames containing backslash characters such as src\app\page.tsx.
+
+2. Remove old wrong containers
+
+- Open Container Manager.
+- Stop the old ethnic project.
+- Delete any container named ethnic-house-caddy.
+- The NAS setup must not run a Caddy container.
+
+3. Create Container Manager project
+
+- Open Container Manager.
+- Go to Project.
+- Create a project.
+- Project name:
+  ethnic-house
+- Path:
+  /volume1/docker/ethnic-house
+- Use the existing docker-compose.yml.
+- Build and start.
+
+Only this container should be running:
+  ethnic-house-app
+
+4. Test inside the local network
+
+Open this URL from a device on the same network as the NAS:
+  http://NAS_IP:3000/api/health
+
+Example:
+  http://192.168.0.10:3000/api/health
+
+If this does not respond, fix Container Manager before touching the router.
+
+5. Set Synology reverse proxy
+
+DSM path:
+  Control Panel -> Login Portal -> Advanced -> Reverse Proxy
+
+HTTPS rule:
+  Source protocol: HTTPS
+  Source hostname: ethnichouseseoul.com
+  Source port: 443
+  Destination protocol: HTTP
+  Destination hostname: 127.0.0.1
+  Destination port: 3000
+
+Optional HTTP rule:
+  Source protocol: HTTP
+  Source hostname: ethnichouseseoul.com
+  Source port: 80
+  Destination protocol: HTTP
+  Destination hostname: 127.0.0.1
+  Destination port: 3000
+
+6. Certificate
+
+DSM path:
+  Control Panel -> Security -> Certificate
+
+- Add a Let's Encrypt certificate for:
+  ethnichouseseoul.com
+- Assign it to the reverse proxy rule for ethnichouseseoul.com.
+
+7. Router when you cannot reserve the NAS IP
+
+Because the router is external and you cannot make a DHCP reservation there:
+
+- Do not rely on a changing DHCP address.
+- Set a manual/static LAN IP on the NAS itself in DSM.
+- Use an unused address in the same subnet, for example:
+  IP address: 192.168.0.10
+  Subnet mask: 255.255.255.0
+  Gateway: 192.168.0.1
+  DNS: 1.1.1.1 and 8.8.8.8
+
+Use the real gateway/subnet shown in DSM if different.
+
+Then ask whoever controls the external router to forward:
+  TCP 80  -> NAS_IP:80
+  TCP 443 -> NAS_IP:443
+
+Example:
+  TCP 80  -> 192.168.0.10:80
+  TCP 443 -> 192.168.0.10:443
+
+The router must not forward these ports to the notebook IP.
+
+8. Final public test
+
+Use mobile data, not the same Wi-Fi:
+  https://ethnichouseseoul.com
+  https://ethnichouseseoul.com/api/health
+  https://ethnichouseseoul.com/sitemap.xml

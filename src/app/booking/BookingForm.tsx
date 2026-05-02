@@ -195,6 +195,10 @@ export function BookingForm({
               <option value="lettering">Lettering</option>
               <option value="small tattoo">Small tattoo</option>
               <option value="blackwork">Blackwork</option>
+              <option value="abstract brushwork">Abstract brushwork</option>
+              <option value="moon">Moon</option>
+              <option value="butterfly">Butterfly</option>
+              <option value="realism">Realism</option>
               <option value="korean-inspired">Korean-inspired</option>
               <option value="custom">Custom</option>
             </select>

@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: ../..
+      context: .
       dockerfile: Dockerfile
     container_name: ethnic-house-app
     restart: unless-stopped

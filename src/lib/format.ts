@@ -25,6 +25,11 @@ export function formatUsdGuideFromKrw(value?: number | null) {
   }).format(roundedUsd)}`;
 }
 
+export function formatUsdStartingPrice(value?: number | null) {
+  const guide = formatUsdGuideFromKrw(value);
+  return value ? `From ${guide}` : guide;
+}
+
 export function formatDate(value?: string | null) {
   if (!value) {
     return "Not set";

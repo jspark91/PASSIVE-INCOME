@@ -2,6 +2,20 @@ import type { Artist, BookingRequest, FlashDesign } from "@/types/domain";
 
 export const sampleArtists: Artist[] = [
   {
+    id: "artist-yoonseul",
+    name: "YOONSEUL",
+    slug: "yoonseul",
+    instagram: "https://www.instagram.com/yoonseultattoo/",
+    bio_en:
+      "Abstract brushwork, moon motifs, butterfly linework, blackwork, and realism tattoos with expressive movement.",
+    bio_ko: null,
+    styles: ["abstract brushwork", "moon", "butterfly", "fine-line", "blackwork", "realism"],
+    starting_price_krw: null,
+    languages: ["English booking support", "Korean"],
+    location: "Sillim, Seoul",
+    is_active: true
+  },
+  {
     id: "artist-mina",
     name: "Mina",
     slug: "mina",
@@ -43,7 +57,97 @@ export const sampleArtists: Artist[] = [
   }
 ];
 
+const yoonseulImageBase = "/images/artists/yoonseul";
+
 export const sampleDesigns: FlashDesign[] = [
+  {
+    id: "design-yoonseul-star",
+    artist_id: "artist-yoonseul",
+    title: "Halftone star wrap",
+    style: "blackwork",
+    size_hint: "custom sizing",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-01-star.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-moon-flow",
+    artist_id: "artist-yoonseul",
+    title: "Moon flow brushwork",
+    style: "abstract brushwork",
+    size_hint: "upper arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-02-moon-flow.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-moon-whale",
+    artist_id: "artist-yoonseul",
+    title: "Moon and whale",
+    style: "abstract brushwork",
+    size_hint: "shoulder and upper back",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-03-moon-whale.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-pouring-moon",
+    artist_id: "artist-yoonseul",
+    title: "Pouring moon",
+    style: "moon",
+    size_hint: "upper arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-04-pouring-moon.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-moth-flow",
+    artist_id: "artist-yoonseul",
+    title: "Moth flow linework",
+    style: "fine-line",
+    size_hint: "upper arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-05-moth-flow.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-owl-realism",
+    artist_id: "artist-yoonseul",
+    title: "Owl realism",
+    style: "realism",
+    size_hint: "lower leg",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-06-owl-realism.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-butterflies",
+    artist_id: "artist-yoonseul",
+    title: "Butterfly linework",
+    style: "butterfly",
+    size_hint: "upper arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-07-butterflies.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-yoonseul-iris-flower",
+    artist_id: "artist-yoonseul",
+    title: "Iris flower",
+    style: "fine-line",
+    size_hint: "forearm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${yoonseulImageBase}/yoonseul-08-iris-flower.jpg`,
+    is_available: true
+  },
   {
     id: "design-hangul-memory",
     artist_id: "artist-mina",

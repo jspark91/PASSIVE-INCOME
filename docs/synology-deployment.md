@@ -6,6 +6,7 @@ Synology Container Manager supports Docker containers and Compose-style projects
 
 ```text
 Dockerfile
+docker-compose.yml
 deploy/synology/docker-compose.yml
 ```
 
@@ -17,6 +18,20 @@ Internet
 -> Synology NAS built-in reverse proxy / certificate
 -> Next.js app container on NAS port 3000
 ```
+
+Do not run a Caddy container on Synology for this deployment. DSM commonly owns `80/443` already, and a Caddy container that publishes those ports will fail with an error similar to:
+
+```text
+driver failed programming external connectivity
+```
+
+The only required container is `ethnic-house-app`.
+
+After the first manual NAS deployment works, switch to the GitHub Actions SSH deploy flow in
+[`docs/github-actions-nas-deploy.md`](github-actions-nas-deploy.md). If GitHub cannot reach
+the NAS through SSH, use the scheduled Git pull flow in
+[`docs/nas-auto-deploy.md`](nas-auto-deploy.md). Either option removes the need to upload a
+zip file for every homepage or portfolio update.
 
 ## Requirements
 
@@ -65,21 +80,22 @@ In DSM:
 
 1. Open `Container Manager`.
 2. Go to `Project`.
-3. Create a new project.
-4. Project name:
+3. If an older project already contains `ethnic-house-caddy`, stop and delete that project first.
+4. Create a new project.
+5. Project name:
 
 ```text
 ethnic-house
 ```
 
-5. Path:
+6. Path:
 
 ```text
-/volume1/docker/ethnic-house/deploy/synology
+/volume1/docker/ethnic-house
 ```
 
-6. Use the existing `docker-compose.yml`.
-7. Build and start the project.
+7. Use the existing `docker-compose.yml`.
+8. Build and start the project.
 
 After the project starts, confirm this URL works from the local network:
 
@@ -92,6 +108,8 @@ Example:
 ```text
 http://192.168.0.10:3000/api/health
 ```
+
+The project should show `ethnic-house-app` running. It should not show `ethnic-house-caddy`.
 
 ## 4. Synology Reverse Proxy
 

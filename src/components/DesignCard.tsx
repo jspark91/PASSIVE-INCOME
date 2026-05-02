@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Clock } from "lucide-react";
-import { formatUsdGuideFromKrw } from "@/lib/format";
+import { formatUsdStartingPrice } from "@/lib/format";
 import type { FlashDesign } from "@/types/domain";
 
 export function DesignCard({ design }: { design: FlashDesign }) {
@@ -25,7 +25,7 @@ export function DesignCard({ design }: { design: FlashDesign }) {
           {design.style ?? "custom"} / {design.size_hint ?? "size TBD"}
         </p>
         <p className="mt-3 text-sm font-medium text-ink-900">
-          From {formatUsdGuideFromKrw(design.price_from_krw)}
+          {formatUsdStartingPrice(design.price_from_krw)}
         </p>
         {design.duration_minutes ? (
           <p className="mt-2 flex items-center gap-2 text-xs text-ink-700">
