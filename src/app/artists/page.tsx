@@ -10,11 +10,10 @@ export default async function ArtistsPage() {
         ETHNIC HOUSE artists
       </p>
       <h1 className="mt-4 max-w-[22rem] text-4xl font-semibold leading-tight text-ink-900 sm:max-w-4xl sm:text-7xl">
-        Selected artists for custom Seoul appointments.
+        Selected Artists
       </h1>
       <p className="mt-6 max-w-[22rem] leading-7 text-ink-700 sm:max-w-2xl">
-        Browse real ETHNIC HOUSE portfolio work by artist. Availability, quote, and deposit
-        instructions are confirmed manually before the appointment is held.
+        View work, choose a style, and book the artist.
       </p>
       <div className="mt-10 grid min-w-0 gap-6 md:grid-cols-4">
         {artists.map((artist) => (

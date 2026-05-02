@@ -25,10 +25,11 @@ export default async function BookingPage({
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-moss-700">
         Booking request
       </p>
-      <h1 className="mt-3 text-4xl font-semibold text-ink-900">Book a tattoo in Seoul</h1>
-      <p className="mt-4 max-w-3xl leading-7 text-ink-700">
-        Fill out the request details, create a DM message, then send it to ETHNIC HOUSE on
-        Instagram. This first test does not require Supabase or database setup.
+      <h1 className="mt-3 text-3xl font-semibold leading-tight text-ink-900 sm:text-4xl">
+        Book a tattoo in Seoul
+      </h1>
+      <p className="mt-4 max-w-[20rem] break-words leading-7 text-ink-700 sm:max-w-3xl">
+        Send your idea and travel dates. We will reply with artist availability and price.
       </p>
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <a

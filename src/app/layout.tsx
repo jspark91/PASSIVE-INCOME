@@ -29,20 +29,16 @@ export const metadata: Metadata = {
   applicationName: siteName,
   keywords: [
     "ETHNIC HOUSE",
+    "ETHNIC HOUSE SEOUL",
     "ETHNIC HOUSE SILLIM",
     "ETHNIC_HOUSE_SILLIM",
-    "에스닉하우스",
-    "에스닉하우스 신림",
-    "신림 에스닉하우스",
-    "에스닉하우스 타투",
     "Seoul tattoo",
-    "서울 타투",
-    "신림 타투",
     "Sillim tattoo",
     "Korea tattoo booking",
     "English tattoo Seoul",
     "fine line tattoo Seoul",
-    "lettering tattoo Seoul"
+    "lettering tattoo Seoul",
+    "blackwork tattoo Seoul"
   ],
   alternates: {
     canonical: "/"
@@ -50,13 +46,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: `${siteName} SILLIM | 에스닉하우스 신림`,
+    title: `${siteName} SEOUL | Seoul Tattoo Booking`,
     description: siteDescription,
     siteName
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteName} SILLIM | 에스닉하우스 신림`,
+    title: `${siteName} SEOUL | Seoul Tattoo Booking`,
     description: siteDescription
   },
   robots: {

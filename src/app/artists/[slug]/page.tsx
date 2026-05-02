@@ -24,7 +24,7 @@ export default async function ArtistDetailPage({
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
           ETHNIC HOUSE artist
         </p>
-        <h1 className="mt-4 text-6xl font-semibold leading-none text-ink-900 sm:text-8xl">
+        <h1 className="mx-auto mt-4 max-w-full break-words px-2 text-5xl font-semibold leading-none text-ink-900 sm:text-8xl">
           {artist.name}
         </h1>
         <p className="mx-auto mt-6 max-w-[20rem] break-words px-2 leading-7 text-ink-700 sm:max-w-2xl">

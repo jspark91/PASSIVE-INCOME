@@ -1,7 +1,7 @@
 const faqs = [
   {
     q: "Do you support English?",
-    a: "Yes. V1 provides English booking support and English aftercare information."
+    a: "Yes. We provide English booking support and English aftercare information."
   },
   {
     q: "Can I book while traveling in Korea?",
@@ -9,19 +9,19 @@ const faqs = [
   },
   {
     q: "Where is the first studio?",
-    a: "Bookings start at ETHNIC HOUSE in Sillim, Seoul. More partner studios can be added after demand is validated."
+    a: "Bookings are currently handled at ETHNIC HOUSE in Sillim, Seoul."
   },
   {
     q: "Is a deposit required?",
-    a: "Some bookings may require a deposit to secure the appointment. V1 handles deposit instructions manually."
+    a: "Some bookings may require a deposit to secure the appointment. Instructions are shared before confirmation."
   },
   {
     q: "Can I get a same-day tattoo?",
     a: "Same-day booking depends on artist availability and design complexity."
   },
   {
-    q: "Who is responsible for the tattoo procedure?",
-    a: "The individual artist or partner studio handles the actual procedure, hygiene, consent, and service delivery."
+    q: "What should I bring?",
+    a: "Bring your passport or ID. Tattoos are available for clients 18 and older only."
   }
 ];
 

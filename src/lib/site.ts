@@ -1,12 +1,7 @@
 export const siteName = "ETHNIC HOUSE";
-export const siteAlternateNames = [
-  "에스닉하우스",
-  "에스닉하우스 신림",
-  "ETHNIC HOUSE SILLIM",
-  "ETHNIC_HOUSE_SILLIM"
-];
+export const siteAlternateNames = ["ETHNIC HOUSE SEOUL", "ETHNIC HOUSE SILLIM", "ETHNIC_HOUSE_SILLIM"];
 export const siteDescription =
-  "ETHNIC HOUSE SILLIM, 에스닉하우스 신림. English-friendly tattoo booking at ETHNIC HOUSE in Sillim, Seoul.";
+  "ETHNIC HOUSE SEOUL. English-friendly tattoo booking for travelers in Sillim, Seoul.";
 export const instagramProfileUrl = "https://www.instagram.com/ETHNIC_HOUSE_SILLIM/";
 export const instagramDmUrl = "https://ig.me/m/ETHNIC_HOUSE_SILLIM";
 
