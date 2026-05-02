@@ -5,7 +5,7 @@ import type { FlashDesign } from "@/types/domain";
 
 export function DesignCard({ design }: { design: FlashDesign }) {
   return (
-    <article className="overflow-hidden rounded-md border border-ink-100 bg-white">
+    <article className="min-w-0 w-full max-w-[calc(100vw-2rem)] overflow-hidden rounded-md border border-ink-100 bg-white sm:max-w-none">
       <div className="relative flex aspect-[3/4] items-center justify-center bg-ink-900 text-center text-sm text-ink-100">
         {design.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -19,9 +19,9 @@ export function DesignCard({ design }: { design: FlashDesign }) {
           </>
         )}
       </div>
-      <div className="p-5">
-        <h3 className="font-semibold text-ink-900">{design.title}</h3>
-        <p className="mt-1 text-sm text-ink-700">
+      <div className="min-w-0 p-5">
+        <h3 className="break-words font-semibold text-ink-900">{design.title}</h3>
+        <p className="mt-1 break-words text-sm text-ink-700">
           {design.style ?? "custom"} / {design.size_hint ?? "size TBD"}
         </p>
         <p className="mt-3 text-sm font-medium text-ink-900">
@@ -35,7 +35,7 @@ export function DesignCard({ design }: { design: FlashDesign }) {
         ) : null}
         <Link
           href={`/booking?design=${encodeURIComponent(design.id)}`}
-          className="mt-4 inline-flex rounded-md bg-ink-900 px-4 py-2 text-sm font-semibold text-white"
+          className="mt-4 inline-flex max-w-full rounded-md bg-ink-900 px-4 py-2 text-sm font-semibold text-white"
         >
           Request this style
         </Link>

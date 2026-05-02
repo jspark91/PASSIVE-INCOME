@@ -19,7 +19,7 @@ export default async function ArtistDetailPage({
   const designs = await getDesignsForArtist(artist.id);
 
   return (
-    <section>
+    <section className="overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 py-14 text-center sm:px-6 lg:py-20">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
           ETHNIC HOUSE artist
@@ -27,15 +27,20 @@ export default async function ArtistDetailPage({
         <h1 className="mt-4 text-6xl font-semibold leading-none text-ink-900 sm:text-8xl">
           {artist.name}
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl leading-7 text-ink-700">{artist.bio_en}</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <p className="mx-auto mt-6 max-w-[20rem] break-words px-2 leading-7 text-ink-700 sm:max-w-2xl">
+          {artist.bio_en}
+        </p>
+        <div className="mx-auto mt-6 flex max-w-xs flex-wrap justify-center gap-2 sm:max-w-2xl">
           {artist.styles.map((style) => (
-            <span key={style} className="rounded-full bg-ink-50 px-3 py-1 text-xs text-ink-700">
+            <span
+              key={style}
+              className="max-w-full rounded-full bg-ink-50 px-3 py-1 text-xs text-ink-700"
+            >
               {style}
             </span>
           ))}
         </div>
-        <dl className="mx-auto mt-8 grid max-w-3xl gap-4 text-sm text-ink-700 sm:grid-cols-3">
+        <dl className="mx-auto mt-8 grid max-w-xs gap-4 text-sm text-ink-700 sm:max-w-3xl sm:grid-cols-3">
           <div>
             <dt className="font-semibold text-ink-900">Starting price</dt>
             <dd className="mt-1">{formatUsdGuideFromKrw(artist.starting_price_krw)}</dd>
@@ -57,9 +62,9 @@ export default async function ArtistDetailPage({
         </Link>
       </div>
 
-      <div className="bg-ink-900">
+      <div className="overflow-hidden bg-ink-900">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {designs.map((design) => (
               <DesignCard key={design.id} design={design} />
             ))}

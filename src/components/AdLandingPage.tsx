@@ -41,7 +41,7 @@ export function AdLandingPage({
   designs
 }: AdLandingPageProps) {
   const featuredDesigns = designs.slice(0, 6);
-  const featuredArtists = artists.slice(0, 3);
+  const featuredArtists = artists.slice(0, 4);
 
   return (
     <>
@@ -199,7 +199,7 @@ export function AdLandingPage({
               View Instagram
             </a>
           </div>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
+          <div className="mt-8 grid gap-5 md:grid-cols-4">
             {featuredArtists.map((artist) => (
               <article key={artist.id} className="border border-ink-100 bg-white p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-moss-700">

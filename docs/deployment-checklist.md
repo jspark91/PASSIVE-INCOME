@@ -46,7 +46,7 @@ Check:
 ```text
 /
 /booking
-/booking?design=design-seoul-line&utm_source=instagram&utm_medium=paid_social
+/booking?design=design-yoonseul-moon-whale&utm_source=instagram&utm_medium=paid_social
 /artists
 /api/health
 /robots.txt

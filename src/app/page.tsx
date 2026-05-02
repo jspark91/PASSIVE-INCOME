@@ -8,20 +8,20 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="bg-white">
+      <section className="overflow-hidden bg-white">
         <div className="mx-auto max-w-7xl px-4 py-14 text-center sm:px-6 lg:py-20">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
             Seoul private tattoo studio
           </p>
-          <h1 className="mt-5 text-6xl font-semibold leading-none text-ink-900 sm:text-8xl lg:text-9xl">
+          <h1 className="mt-5 break-words text-5xl font-semibold leading-none text-ink-900 sm:text-8xl lg:text-9xl">
             ETHNIC HOUSE
           </h1>
           <p className="mt-4 text-sm font-medium text-ink-700">
-            ETHNIC HOUSE SILLIM / 에스닉하우스 신림
+            ETHNIC HOUSE SILLIM / Seoul tattoo studio
           </p>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-ink-700 sm:text-lg">
-            English-friendly booking support for small tattoos, lettering, fine-line work, and
-            travel-memory pieces at ETHNIC HOUSE in Sillim, Seoul.
+          <p className="mx-auto mt-6 max-w-[22rem] break-words text-base leading-8 text-ink-700 sm:max-w-2xl sm:text-lg">
+            English-friendly booking support for fine-line, blackwork, realism, oriental
+            brushwork, and large-scale custom pieces at ETHNIC HOUSE in Sillim, Seoul.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
@@ -43,13 +43,13 @@ export default async function HomePage() {
 
       <section className="bg-ink-900 text-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {designs.slice(0, 8).map((design, index) => (
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {designs.slice(0, 12).map((design, index) => (
               <Link
                 key={design.id}
                 href={`/booking?design=${encodeURIComponent(design.id)}`}
                 className={[
-                  "group relative flex min-h-72 overflow-hidden rounded-md bg-ink-900",
+                  "group relative flex min-h-72 w-full max-w-[calc(100vw-2rem)] overflow-hidden rounded-md bg-ink-900 sm:max-w-none",
                   index === 0 || index === 5 ? "lg:row-span-2 lg:min-h-[36rem]" : ""
                 ].join(" ")}
               >
@@ -125,8 +125,8 @@ export default async function HomePage() {
             All artists
           </Link>
         </div>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {artists.slice(0, 3).map((artist) => (
+        <div className="mt-8 grid gap-5 md:grid-cols-4">
+          {artists.slice(0, 4).map((artist) => (
             <ArtistCard key={artist.id} artist={artist} />
           ))}
         </div>
@@ -138,7 +138,9 @@ export default async function HomePage() {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
               Booking guide
             </p>
-            <h2 className="mt-3 text-3xl font-semibold text-ink-900">Price and policy are shared before confirmation.</h2>
+            <h2 className="mt-3 text-3xl font-semibold text-ink-900">
+              Price and policy are shared before confirmation.
+            </h2>
             <p className="mt-4 max-w-2xl leading-7 text-ink-700">
               Premium studios reduce poor-fit inquiries by making the minimum price, deposit,
               reference requirements, and cancellation policy clear before an appointment is held.
