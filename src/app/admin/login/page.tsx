@@ -17,16 +17,18 @@ function getErrorMessage(error?: string | string[]) {
 export default async function AdminLoginPage({
   searchParams
 }: {
-  searchParams?: Promise<{ error?: string | string[] }>;
+  searchParams?: Promise<{ error?: string | string[]; next?: string | string[] }>;
 }) {
   const query = await searchParams;
   const error = getErrorMessage(query?.error);
+  const nextPath = getSafeNextPath(query?.next);
 
   return (
     <section className="mx-auto max-w-xl px-4 py-16 sm:px-6">
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-moss-700">Admin</p>
       <h1 className="mt-3 text-4xl font-semibold text-ink-900">Admin login</h1>
       <form action={loginAdmin} className="mt-8 grid gap-4 rounded-lg border border-ink-100 bg-white p-6 shadow-sm">
+        <input type="hidden" name="next" value={nextPath} />
         <label className="grid gap-2 text-sm font-medium text-ink-900">
           Access token
           <input
@@ -44,4 +46,18 @@ export default async function AdminLoginPage({
       </form>
     </section>
   );
+}
+
+function getSafeNextPath(value?: string | string[]) {
+  const nextPath = Array.isArray(value) ? value[0] : value;
+
+  if (!nextPath || !nextPath.startsWith("/") || nextPath.startsWith("//")) {
+    return "/admin";
+  }
+
+  if (!nextPath.startsWith("/admin")) {
+    return "/admin";
+  }
+
+  return nextPath;
 }

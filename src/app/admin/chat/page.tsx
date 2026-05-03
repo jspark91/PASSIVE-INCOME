@@ -5,10 +5,16 @@ import { AdminChatClient } from "./AdminChatClient";
 export default async function AdminChatPage({
   searchParams
 }: {
-  searchParams?: Promise<{ token?: string | string[] }>;
+  searchParams?: Promise<{ token?: string | string[]; sessionId?: string | string[] }>;
 }) {
   const query = await searchParams;
   const { configured, allowed } = await getAdminAccess(query);
+  const initialSessionId = Array.isArray(query?.sessionId)
+    ? query?.sessionId[0]
+    : query?.sessionId ?? null;
+  const loginHref = initialSessionId
+    ? `/admin/login?next=${encodeURIComponent(`/admin/chat?sessionId=${initialSessionId}`)}`
+    : "/admin/login";
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -36,12 +42,12 @@ export default async function AdminChatPage({
       {!configured ? null : !allowed ? (
         <div className="mt-8 rounded-lg border border-red-200 bg-red-50 p-5 text-red-800">
           Login is required.{" "}
-          <Link href="/admin/login" className="font-semibold underline">
+          <Link href={loginHref} className="font-semibold underline">
             Open admin login
           </Link>
         </div>
       ) : (
-        <AdminChatClient />
+        <AdminChatClient initialSessionId={initialSessionId} />
       )}
     </section>
   );

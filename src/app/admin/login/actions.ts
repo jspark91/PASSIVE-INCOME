@@ -7,13 +7,14 @@ import { ADMIN_COOKIE_NAME } from "@/lib/admin-session";
 
 export async function loginAdmin(formData: FormData) {
   const token = String(formData.get("token") ?? "");
+  const nextPath = getSafeAdminRedirect(formData.get("next"));
 
   if (!isAdminTokenConfigured()) {
-    redirect("/admin/login?error=not_configured");
+    redirect(getLoginErrorPath("not_configured", nextPath));
   }
 
   if (!isValidAdminToken(token)) {
-    redirect("/admin/login?error=invalid");
+    redirect(getLoginErrorPath("invalid", nextPath));
   }
 
   const cookieStore = await cookies();
@@ -25,7 +26,7 @@ export async function loginAdmin(formData: FormData) {
     maxAge: 60 * 60 * 24 * 7
   });
 
-  redirect("/admin");
+  redirect(nextPath);
 }
 
 export async function logoutAdmin() {
@@ -35,4 +36,28 @@ export async function logoutAdmin() {
     maxAge: 0
   });
   redirect("/admin/login");
+}
+
+function getSafeAdminRedirect(value: FormDataEntryValue | null) {
+  const nextPath = String(value ?? "");
+
+  if (!nextPath || !nextPath.startsWith("/") || nextPath.startsWith("//")) {
+    return "/admin";
+  }
+
+  if (!nextPath.startsWith("/admin")) {
+    return "/admin";
+  }
+
+  return nextPath;
+}
+
+function getLoginErrorPath(error: string, nextPath: string) {
+  const params = new URLSearchParams({ error });
+
+  if (nextPath !== "/admin") {
+    params.set("next", nextPath);
+  }
+
+  return `/admin/login?${params.toString()}`;
 }

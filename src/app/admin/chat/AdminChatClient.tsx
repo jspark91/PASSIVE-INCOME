@@ -25,9 +25,13 @@ function formatChatTime(value: string) {
   }).format(new Date(value));
 }
 
-export function AdminChatClient() {
+type AdminChatClientProps = {
+  initialSessionId?: string | null;
+};
+
+export function AdminChatClient({ initialSessionId = null }: AdminChatClientProps) {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(initialSessionId);
   const [reply, setReply] = useState("");
   const [statusText, setStatusText] = useState("");
   const selectedSession = useMemo(
@@ -56,7 +60,17 @@ export function AdminChatClient() {
         }
 
         setSessions(data.sessions);
-        setSelectedSessionId((current) => current ?? data.sessions?.[0]?.id ?? null);
+        setSelectedSessionId((current) => {
+          if (current && data.sessions?.some((session) => session.id === current)) {
+            return current;
+          }
+
+          if (initialSessionId && data.sessions?.some((session) => session.id === initialSessionId)) {
+            return initialSessionId;
+          }
+
+          return data.sessions?.[0]?.id ?? null;
+        });
         setStatusText("");
       } catch {
         if (active) {
@@ -73,7 +87,7 @@ export function AdminChatClient() {
       window.clearTimeout(initialTimer);
       window.clearInterval(timer);
     };
-  }, []);
+  }, [initialSessionId]);
 
   async function sendReply(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

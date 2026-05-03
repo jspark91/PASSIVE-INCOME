@@ -83,6 +83,29 @@ ADMIN_ACCESS_TOKEN=your-private-admin-password
 Then log in at `/admin/login` and keep `/admin/chat` open on your computer while
 you want to answer website consultations.
 
+For mobile/desktop alerts when a visitor sends a website chat message, set:
+
+```text
+TELEGRAM_BOT_TOKEN=your-telegram-bot-token
+TELEGRAM_CHAT_ID=your-telegram-chat-id
+```
+
+Telegram alerts include a direct `/admin/chat?sessionId=...` link. Open that
+link on your phone or another computer, log in once with `ADMIN_ACCESS_TOKEN`,
+and answer from the browser.
+
+KakaoTalk personal-message alerts cannot be sent by a normal website account
+without an approved Kakao messaging provider or webhook bridge. If you connect a
+Kakao Work, AlimTalk, Make, Zapier, or similar webhook, set:
+
+```text
+KAKAO_ALERT_WEBHOOK_URL=https://your-kakao-alert-webhook
+KAKAO_ALERT_WEBHOOK_TOKEN=optional-shared-secret
+```
+
+The app posts a JSON payload with `text`, `sessionId`, `adminUrl`,
+`visitorName`, `visitorContact`, and `message`.
+
 ## 3. Create Container Manager Project
 
 In DSM:

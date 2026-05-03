@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { appendVisitorChatMessage, getChatSession } from "@/lib/chat-store";
+import { sendNewVisitorChatNotification } from "@/lib/chat-notifications";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -48,6 +49,7 @@ export async function POST(request: Request) {
   }
 
   const session = await appendVisitorChatMessage(parsed.data);
+  await sendNewVisitorChatNotification(session);
 
   return NextResponse.json({ ok: true, session }, { status: 201 });
 }

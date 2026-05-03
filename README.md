@@ -104,6 +104,15 @@ The current `/booking` page does not write to a database. It creates a formatted
 - Instagram profile: `https://www.instagram.com/ETHNIC_HOUSE_SILLIM/`
 - Optional Kakao channel URL through `NEXT_PUBLIC_KAKAO_CHANNEL_URL`
 
+Website chat:
+
+- Visitors can use the floating chat widget on public pages.
+- Admins answer at `/admin/chat` after logging in at `/admin/login`.
+- Set `ADMIN_ACCESS_TOKEN` before exposing admin pages in production.
+- Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` to receive new-chat alerts in Telegram.
+- Set `KAKAO_ALERT_WEBHOOK_URL` and optional `KAKAO_ALERT_WEBHOOK_TOKEN` only after a Kakao-compatible webhook bridge is available.
+- Chat history is stored under `CHAT_DATA_DIR`; Docker deployments mount this to `/data/chat`.
+
 ## Optional Backend And Deployment
 
 The backend runs through Next.js server actions and route handlers. Supabase stores artists, flash designs, booking requests, lead events, reviews, and future partner shops.
@@ -130,6 +139,10 @@ NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY
 ADMIN_ACCESS_TOKEN
+TELEGRAM_BOT_TOKEN
+TELEGRAM_CHAT_ID
+KAKAO_ALERT_WEBHOOK_URL
+KAKAO_ALERT_WEBHOOK_TOKEN
 NEXT_PUBLIC_GA_ID
 NEXT_PUBLIC_META_PIXEL_ID
 ```
