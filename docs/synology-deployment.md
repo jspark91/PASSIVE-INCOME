@@ -74,6 +74,15 @@ deploy/synology/.env
 
 Leave values blank unless needed.
 
+For the admin live chat inbox, set:
+
+```text
+ADMIN_ACCESS_TOKEN=your-private-admin-password
+```
+
+Then log in at `/admin/login` and keep `/admin/chat` open on your computer while
+you want to answer website consultations.
+
 ## 3. Create Container Manager Project
 
 In DSM:
