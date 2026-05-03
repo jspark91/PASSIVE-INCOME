@@ -5,6 +5,7 @@ export const siteDescription =
 export const instagramProfileUrl = "https://www.instagram.com/ETHNIC_HOUSE_SILLIM/";
 export const instagramDmUrl = "https://ig.me/m/ETHNIC_HOUSE_SILLIM";
 export const whatsappContactUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() || "/booking";
+export const lineContactUrl = process.env.NEXT_PUBLIC_LINE_URL?.trim() || "/booking";
 
 const telegramBotUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME?.trim();
 

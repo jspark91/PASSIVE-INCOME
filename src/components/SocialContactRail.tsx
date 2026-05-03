@@ -1,5 +1,5 @@
 import { Instagram } from "lucide-react";
-import { instagramDmUrl, telegramContactUrl, whatsappContactUrl } from "@/lib/site";
+import { instagramDmUrl, lineContactUrl, telegramContactUrl, whatsappContactUrl } from "@/lib/site";
 
 function WhatsAppLogo({ className = "h-8 w-8" }: { className?: string }) {
   return (
@@ -23,9 +23,25 @@ function TelegramLogo({ className = "h-8 w-8" }: { className?: string }) {
   );
 }
 
+function LineLogo({ className = "h-8 w-8" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" className={className}>
+      <path
+        fill="currentColor"
+        d="M16 4C9.1 4 3.5 8.42 3.5 13.88c0 4.9 4.43 9 10.41 9.78.41.09.96.27 1.1.62.13.32.09.82.04 1.15l-.18 1.09c-.06.32-.26 1.27 1.08.69 1.34-.57 7.24-4.26 9.88-7.3a8.5 8.5 0 0 0 2.67-6.03C28.5 8.42 22.9 4 16 4Z"
+      />
+      <path
+        fill="white"
+        d="M9.7 10.7h1.25v4.9h2.55v1.16H9.7V10.7Zm4.5 0h1.25v6.06H14.2V10.7Zm2.18 0h1.18l2.42 3.69V10.7h1.22v6.06h-1.16l-2.44-3.73v3.73h-1.22V10.7Zm5.74 0h3.95v1.13h-2.7v1.25h2.46v1.1h-2.46v1.45h2.78v1.13h-4.03V10.7Z"
+      />
+    </svg>
+  );
+}
+
 const socialLinks = [
   { label: "Instagram", href: instagramDmUrl, Icon: Instagram },
   { label: "WhatsApp", href: whatsappContactUrl, Icon: WhatsAppLogo },
+  { label: "LINE", href: lineContactUrl, Icon: LineLogo },
   { label: "Telegram", href: telegramContactUrl, Icon: TelegramLogo }
 ];
 
