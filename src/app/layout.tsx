@@ -14,6 +14,7 @@ import {
 } from "@/lib/site";
 
 const siteUrl = getSiteUrl();
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -66,7 +67,8 @@ export const metadata: Metadata = {
   },
   other: {
     "instagram:profile": instagramProfileUrl,
-    "business:alternate_name": siteAlternateNames.join(", ")
+    "business:alternate_name": siteAlternateNames.join(", "),
+    ...(googleSiteVerification ? { "google-site-verification": googleSiteVerification } : {})
   }
 };
 

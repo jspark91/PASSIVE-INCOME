@@ -21,6 +21,21 @@ This project now includes brand SEO signals for:
 5. Submit `/sitemap.xml`.
 6. Use URL Inspection for the homepage and request indexing.
 
+If using Google's HTML tag verification method, copy only the `content` value from:
+
+```html
+<meta name="google-site-verification" content="COPY_THIS_VALUE" />
+```
+
+Then set:
+
+```text
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=COPY_THIS_VALUE
+```
+
+Redeploy, open the homepage source, and confirm the `google-site-verification` meta tag is present
+before pressing Verify in Search Console.
+
 Current target public URL:
 
 ```text
