@@ -106,6 +106,21 @@ KAKAO_ALERT_WEBHOOK_TOKEN=optional-shared-secret
 The app posts a JSON payload with `text`, `sessionId`, `adminUrl`,
 `visitorName`, `visitorContact`, and `message`.
 
+To apply Telegram values from DSM Task Scheduler without committing secrets to
+GitHub, run:
+
+```sh
+set -eu
+export TELEGRAM_BOT_TOKEN='your-telegram-bot-token'
+export TELEGRAM_CHAT_ID='your-telegram-chat-id'
+
+curl -fsSL \
+  https://raw.githubusercontent.com/jspark91/PASSIVE-INCOME/main/scripts/nas-configure-chat-alerts.sh \
+  -o /tmp/ethnic-house-configure-chat-alerts.sh
+
+/bin/sh /tmp/ethnic-house-configure-chat-alerts.sh
+```
+
 ## 3. Create Container Manager Project
 
 In DSM:
