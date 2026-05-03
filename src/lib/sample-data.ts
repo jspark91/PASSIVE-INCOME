@@ -56,6 +56,34 @@ export const sampleArtists: Artist[] = [
     languages: ["English booking support", "Korean"],
     location: "Sillim, Seoul",
     is_active: true
+  },
+  {
+    id: "artist-hada",
+    name: "HADA",
+    slug: "hada",
+    instagram: null,
+    bio_en:
+      "Large-scale irezumi and Japanese traditional tattoo artist for backpieces, chest panels, sleeves, dragons, samurai, masks, flowers, and color work.",
+    bio_ko: null,
+    styles: ["irezumi", "japanese traditional", "horimono", "color", "large-scale", "backpiece"],
+    starting_price_krw: null,
+    languages: ["English booking support", "Korean"],
+    location: "Sillim, Seoul",
+    is_active: true
+  },
+  {
+    id: "artist-woora",
+    name: "WOORA",
+    slug: "woora",
+    instagram: null,
+    bio_en:
+      "Irezumi artist focused on bold Japanese traditional sleeves, dragons, kabuto, peonies, backpiece outlines, and large-scale color composition.",
+    bio_ko: null,
+    styles: ["irezumi", "japanese traditional", "dragon", "kabuto", "color", "large-scale"],
+    starting_price_krw: null,
+    languages: ["English booking support", "Korean"],
+    location: "Sillim, Seoul",
+    is_active: true
   }
 ];
 
@@ -63,6 +91,8 @@ const yoonseulImageBase = "/images/artists/yoonseul";
 const mossImageBase = "/images/artists/moss";
 const seowooImageBase = "/images/artists/seowoo";
 const seroImageBase = "/images/artists/sero";
+const hadaImageBase = "/images/artists/hada";
+const wooraImageBase = "/images/artists/woora";
 
 export const sampleDesigns: FlashDesign[] = [
   {
@@ -74,6 +104,83 @@ export const sampleDesigns: FlashDesign[] = [
     price_from_krw: null,
     duration_minutes: null,
     image_url: `${yoonseulImageBase}/yoonseul-03-moon-whale.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-hada-samurai-backpiece",
+    artist_id: "artist-hada",
+    title: "Samurai backpiece",
+    style: "irezumi",
+    size_hint: "full backpiece",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${hadaImageBase}/hada-01-samurai-backpiece.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-woora-kabuto-thighs",
+    artist_id: "artist-woora",
+    title: "Kabuto thigh pair",
+    style: "irezumi",
+    size_hint: "both thighs",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${wooraImageBase}/woora-01-kabuto-thighs.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-hada-maneki-neko-backpiece",
+    artist_id: "artist-hada",
+    title: "Maneki-neko backpiece",
+    style: "japanese traditional",
+    size_hint: "full backpiece",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${hadaImageBase}/hada-02-maneki-neko-backpiece.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-woora-dragon-sleeve",
+    artist_id: "artist-woora",
+    title: "Dragon sleeve",
+    style: "japanese traditional",
+    size_hint: "full sleeve",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${wooraImageBase}/woora-02-dragon-sleeve.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-hada-snake-chest-arm",
+    artist_id: "artist-hada",
+    title: "Snake chest and arm",
+    style: "horimono",
+    size_hint: "chest and arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${hadaImageBase}/hada-03-snake-chest-arm.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-woora-back-outline",
+    artist_id: "artist-woora",
+    title: "Backpiece outline",
+    style: "irezumi",
+    size_hint: "full backpiece",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${wooraImageBase}/woora-03-back-outline.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-hada-leopard-chest",
+    artist_id: "artist-hada",
+    title: "Leopard chest panel",
+    style: "japanese traditional",
+    size_hint: "chest panel",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${hadaImageBase}/hada-04-leopard-chest.jpg`,
     is_available: true
   },
   {

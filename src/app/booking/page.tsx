@@ -16,6 +16,7 @@ export default async function BookingPage({
   const selectedDesignId = first(query?.design);
   const selectedDesign = designs.find((design) => design.id === selectedDesignId);
   const selectedArtistId = first(query?.artist) ?? selectedDesign?.artist_id;
+  const selectedStyle = first(query?.style);
   const kakaoChannelUrl = process.env.NEXT_PUBLIC_KAKAO_CHANNEL_URL;
 
   return (
@@ -63,7 +64,7 @@ export default async function BookingPage({
           preferred_artist_id={selectedArtistId}
           preferred_design_id={selectedDesignId}
           preferred_design_title={selectedDesign?.title}
-          initial_style={selectedDesign?.style ?? undefined}
+          initial_style={selectedDesign?.style ?? selectedStyle ?? undefined}
           kakaoChannelUrl={kakaoChannelUrl}
         />
       </div>

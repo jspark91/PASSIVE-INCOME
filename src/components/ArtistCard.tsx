@@ -7,7 +7,9 @@ const coverImages: Record<string, string> = {
   yoonseul: "/images/artists/yoonseul/yoonseul-03-moon-whale.jpg",
   moss: "/images/artists/moss/moss-02-geometric-sleeve.jpg",
   seowoo: "/images/artists/seowoo/seowoo-01-full-sleeve-collage.jpg",
-  sero: "/images/artists/sero/sero-01-plum-brushwork.jpg"
+  sero: "/images/artists/sero/sero-01-plum-brushwork.jpg",
+  hada: "/images/artists/hada/hada-01-samurai-backpiece.jpg",
+  woora: "/images/artists/woora/woora-02-dragon-sleeve.jpg"
 };
 
 export function ArtistCard({ artist }: { artist: Artist }) {
@@ -15,7 +17,7 @@ export function ArtistCard({ artist }: { artist: Artist }) {
   const styleLine = artist.styles.slice(0, 3).join(" / ");
 
   return (
-    <article className="min-w-0 w-full max-w-[calc(100vw-2rem)] overflow-hidden border border-ink-100 bg-white md:max-w-none">
+    <article className="flex h-full min-w-0 w-full max-w-[calc(100vw-2rem)] flex-col overflow-hidden border border-ink-100 bg-white md:max-w-none">
       <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden bg-ink-900 text-4xl font-semibold text-white">
         {coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -28,13 +30,13 @@ export function ArtistCard({ artist }: { artist: Artist }) {
           artist.name.slice(0, 1)
         )}
       </div>
-      <div className="min-w-0 p-5">
+      <div className="flex min-w-0 flex-1 flex-col p-5">
         <h3 className="mt-3 break-words text-2xl font-semibold text-ink-900">{artist.name}</h3>
-        <p className="mt-2 break-words text-sm text-ink-700">{styleLine}</p>
+        <p className="mt-2 min-h-10 break-words text-sm text-ink-700">{styleLine}</p>
         <p className="mt-4 text-sm font-semibold text-moss-700">
           {formatUsdStartingPrice(artist.starting_price_krw)}
         </p>
-        <div className="mt-5 grid gap-2">
+        <div className="mt-auto grid gap-2 pt-5">
           <Link
             href={`/artists/${artist.slug}`}
             className="inline-flex items-center justify-center gap-2 rounded-md border border-ink-200 px-4 py-2 text-sm font-semibold text-ink-900"

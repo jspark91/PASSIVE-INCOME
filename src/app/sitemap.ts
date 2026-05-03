@@ -11,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "", priority: 1 },
     { path: "/tattoo-in-seoul", priority: 0.9 },
     { path: "/korea-trip-tattoo", priority: 0.9 },
+    { path: "/irezumi", priority: 0.85 },
     { path: "/booking", priority: 0.8 },
     { path: "/artists", priority: 0.7 },
     { path: "/faq", priority: 0.6 },

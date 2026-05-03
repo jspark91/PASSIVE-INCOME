@@ -11,8 +11,9 @@ import {
 import { ArtistCard } from "@/components/ArtistCard";
 import { getArtists, getFlashDesigns } from "@/lib/data";
 import { formatUsdStartingPrice } from "@/lib/format";
+import { isIrezumiArtist } from "@/lib/irezumi";
 
-const styleFilters = ["All", "Fine-line", "Blackwork", "Abstract", "Oriental", "Realism"];
+const styleFilters = ["All", "Irezumi", "Fine-line", "Blackwork", "Abstract", "Oriental", "Realism"];
 
 const travelerPackages = [
   {
@@ -61,6 +62,11 @@ export default async function HomePage() {
   const [artists, designs] = await Promise.all([getArtists(), getFlashDesigns()]);
   const artistById = new Map(artists.map((artist) => [artist.id, artist]));
   const heroImage = designs[0]?.image_url ?? "/images/artists/yoonseul/yoonseul-03-moon-whale.jpg";
+  const irezumiArtists = artists.filter(isIrezumiArtist);
+  const irezumiArtistIds = new Set(irezumiArtists.map((artist) => artist.id));
+  const irezumiWork = designs
+    .filter((design) => irezumiArtistIds.has(design.artist_id))
+    .slice(0, 4);
   const recentWork = designs.slice(0, 12);
 
   return (
@@ -99,6 +105,70 @@ export default async function HomePage() {
                 View Work
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:py-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
+              Irezumi
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight text-ink-900 sm:text-5xl">
+              Japanese traditional tattoo in Seoul
+            </h2>
+            <p className="mt-4 max-w-md leading-7 text-ink-700">
+              Large-scale sleeves, backpieces, dragons, kabuto, flowers, and color work by HADA and
+              WOORA.
+            </p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/irezumi"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-ink-900 px-6 py-3 text-sm font-semibold text-white"
+              >
+                View Irezumi
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/booking?style=irezumi"
+                className="inline-flex items-center justify-center rounded-md border border-ink-200 px-6 py-3 text-sm font-semibold text-ink-900"
+              >
+                Book consultation
+              </Link>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {irezumiArtists.map((artist) => (
+                <Link
+                  key={artist.id}
+                  href={`/artists/${artist.slug}`}
+                  className="rounded-full bg-ink-50 px-3 py-1 text-xs font-semibold text-ink-700"
+                >
+                  {artist.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {irezumiWork.map((design) => (
+              <Link
+                key={design.id}
+                href={`/booking?design=${encodeURIComponent(design.id)}`}
+                className="group min-w-0 overflow-hidden bg-ink-900"
+              >
+                <div className="aspect-[4/5] overflow-hidden lg:aspect-[4/3]">
+                  {design.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={design.image_url}
+                      alt={design.title}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  ) : null}
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
