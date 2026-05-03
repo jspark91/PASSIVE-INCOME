@@ -111,6 +111,14 @@ http://192.168.0.10:3000/api/health
 
 The project should show `ethnic-house-app` running. It should not show `ethnic-house-caddy`.
 
+The Compose file also creates a named Docker volume for live chat history:
+
+```text
+ethnic_house_chat_data -> /data/chat
+```
+
+Keep this volume if you recreate the app container. Removing it deletes saved website chat sessions.
+
 ## 4. Synology Reverse Proxy
 
 Use Synology's built-in reverse proxy instead of binding a Caddy container to `80/443`. On DSM:

@@ -7,10 +7,13 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
+      CHAT_DATA_DIR: /data/chat
       NEXT_PUBLIC_SITE_URL: https://ethnichouseseoul.com
       NEXT_PUBLIC_KAKAO_CHANNEL_URL: ${NEXT_PUBLIC_KAKAO_CHANNEL_URL:-}
       NEXT_PUBLIC_GA_ID: ${NEXT_PUBLIC_GA_ID:-}
       NEXT_PUBLIC_META_PIXEL_ID: ${NEXT_PUBLIC_META_PIXEL_ID:-}
+    volumes:
+      - ethnic_house_chat_data:/data/chat
     ports:
       - "3000:3000"
     healthcheck:
@@ -25,3 +28,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+
+volumes:
+  ethnic_house_chat_data:

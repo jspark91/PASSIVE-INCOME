@@ -38,10 +38,14 @@ export default async function AdminPage({
           Login
         </Link>
       ) : (
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Link href="/admin/leads" className="rounded-lg bg-white p-5 shadow-sm">
             <h2 className="font-semibold text-ink-900">Leads</h2>
             <p className="mt-2 text-sm text-ink-700">Review requests and update status.</p>
+          </Link>
+          <Link href="/admin/chat" className="rounded-lg bg-white p-5 shadow-sm">
+            <h2 className="font-semibold text-ink-900">Live chat</h2>
+            <p className="mt-2 text-sm text-ink-700">Answer website consultations from this computer.</p>
           </Link>
           <Link href="/admin/artists" className="rounded-lg bg-white p-5 shadow-sm">
             <h2 className="font-semibold text-ink-900">Artists</h2>

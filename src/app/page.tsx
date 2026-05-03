@@ -9,8 +9,8 @@ import {
   ShieldCheck
 } from "lucide-react";
 import { ArtistCard } from "@/components/ArtistCard";
+import { WorkSlider } from "@/components/WorkSlider";
 import { getArtists, getFlashDesigns } from "@/lib/data";
-import { formatUsdStartingPrice } from "@/lib/format";
 import { isIrezumiArtist } from "@/lib/irezumi";
 
 const styleFilters = ["All", "Irezumi", "Fine-line", "Blackwork", "Abstract", "Oriental", "Realism"];
@@ -67,7 +67,10 @@ export default async function HomePage() {
   const irezumiWork = designs
     .filter((design) => irezumiArtistIds.has(design.artist_id))
     .slice(0, 4);
-  const recentWork = designs.slice(0, 12);
+  const recentWork = designs.slice(0, 12).map((design) => ({
+    ...design,
+    artistName: artistById.get(design.artist_id)?.name ?? "ETHNIC HOUSE"
+  }));
 
   return (
     <>
@@ -194,41 +197,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-            {recentWork.map((design) => {
-              const artist = artistById.get(design.artist_id);
-
-              return (
-                <Link
-                  key={design.id}
-                  href={`/booking?design=${encodeURIComponent(design.id)}`}
-                  className="group min-w-0 overflow-hidden bg-white text-ink-900"
-                >
-                  <div className="aspect-[4/5] overflow-hidden bg-ink-700">
-                    {design.image_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={design.image_url}
-                        alt={design.title}
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="h-full w-full bg-ink-700" />
-                    )}
-                  </div>
-                  <div className="space-y-1 p-3">
-                    <p className="truncate text-xs font-semibold text-ink-900">
-                      {artist?.name ?? "ETHNIC HOUSE"}
-                    </p>
-                    <p className="truncate text-xs text-ink-700">{design.style ?? "Custom"}</p>
-                    <p className="text-xs font-medium text-moss-700">
-                      {formatUsdStartingPrice(design.price_from_krw)}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <WorkSlider designs={recentWork} />
         </div>
       </section>
 
@@ -251,8 +220,8 @@ export default async function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="mt-8 grid gap-5 md:grid-cols-4">
-            {artists.slice(0, 4).map((artist) => (
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            {artists.slice(0, 6).map((artist) => (
               <ArtistCard key={artist.id} artist={artist} />
             ))}
           </div>

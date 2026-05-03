@@ -17,7 +17,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
+RUN addgroup -S nodejs && adduser -S nextjs -G nodejs && mkdir -p /data/chat && chown -R nextjs:nodejs /data
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./

@@ -11,8 +11,11 @@ services:
       NEXT_PUBLIC_KAKAO_CHANNEL_URL: ${NEXT_PUBLIC_KAKAO_CHANNEL_URL:-}
       NEXT_PUBLIC_GA_ID: ${NEXT_PUBLIC_GA_ID:-}
       NEXT_PUBLIC_META_PIXEL_ID: ${NEXT_PUBLIC_META_PIXEL_ID:-}
+      CHAT_DATA_DIR: /data/chat
     ports:
       - "3000:3000"
+    volumes:
+      - ethnic_house_chat_data:/data/chat
     healthcheck:
       test:
         [
@@ -25,3 +28,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+
+volumes:
+  ethnic_house_chat_data:

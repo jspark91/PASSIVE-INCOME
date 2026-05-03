@@ -24,6 +24,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# local runtime data
+.data
+
 # local deployment archives
 *.zip
 
