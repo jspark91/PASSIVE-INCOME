@@ -65,6 +65,11 @@ log "chat alert env values were written."
 
 cd "$APP_DIR"
 
+if docker ps -a --format '{{.Names}}' | grep -qx 'ethnic-house-app'; then
+  log "removing existing ethnic-house-app container before recreate"
+  docker rm -f ethnic-house-app >/dev/null
+fi
+
 if docker compose version >/dev/null 2>&1; then
   docker compose up -d --build --remove-orphans
 elif command -v docker-compose >/dev/null 2>&1; then
