@@ -12,6 +12,7 @@ import { ArtistCard } from "@/components/ArtistCard";
 import { WorkSlider } from "@/components/WorkSlider";
 import { getArtists, getFlashDesigns } from "@/lib/data";
 import { isIrezumiArtist } from "@/lib/irezumi";
+import { seoPageLinks } from "@/lib/seo-pages";
 
 const styleFilters = ["All", "Irezumi", "Fine-line", "Blackwork", "Abstract", "Oriental", "Realism"];
 
@@ -316,6 +317,40 @@ export default async function HomePage() {
                 <Icon className="h-5 w-5 text-moss-700" />
                 <p className="mt-4 text-sm font-semibold text-ink-900">{label}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-ink-50">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:py-20">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
+                Tattoo Guides
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold text-ink-900 sm:text-5xl">
+                Search by style
+              </h2>
+            </div>
+            <Link
+              href="/tattoo-in-seoul"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-moss-700"
+            >
+              Tattoo in Seoul
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="mt-8 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {seoPageLinks.map((page) => (
+              <Link
+                key={page.href}
+                href={page.href}
+                className="flex min-h-24 flex-col justify-between border border-ink-100 bg-white p-4 transition hover:border-ink-300"
+              >
+                <span className="text-sm font-semibold text-ink-900">{page.label}</span>
+                <span className="mt-3 text-xs font-semibold text-moss-700">{page.price}</span>
+              </Link>
             ))}
           </div>
         </div>

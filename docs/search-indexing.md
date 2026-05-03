@@ -36,6 +36,67 @@ https://ethnichouseseoul.com/sitemap.xml
 Google decides when and where the page appears. The code can provide clear brand signals, but it
 cannot force instant ranking before the site is deployed, crawled, and indexed.
 
+## Organic Keyword Page System
+
+Keyword landing pages are generated from:
+
+```text
+src/lib/seo-pages.json
+```
+
+The dynamic route is:
+
+```text
+src/app/(seo)/[slug]/page.tsx
+```
+
+Current pages include image-first routes such as:
+
+- `/small-tattoo-seoul`
+- `/fine-line-tattoo-seoul`
+- `/irezumi-tattoo-seoul`
+- `/hangul-tattoo-seoul`
+- `/blackwork-tattoo-seoul`
+- `/tattoo-price-seoul`
+- `/walk-in-tattoo-seoul`
+
+Do not create duplicate thin pages. Each keyword page should have:
+
+- real portfolio images
+- real artist names
+- a style-specific CTA
+- price guidance or `quote required`
+- visible FAQ if FAQ structured data is included
+
+## Social Export Scripts
+
+Generate reusable social content CSV files:
+
+```powershell
+npm run marketing:export
+```
+
+This writes:
+
+```text
+exports/pinterest-pins.csv
+exports/instagram-captions.csv
+exports/google-business-posts.csv
+```
+
+`exports/` is ignored because these are generated working files.
+
+Search Console opportunity export is scaffolded here:
+
+```powershell
+$env:SEARCH_CONSOLE_SITE_URL="https://ethnichouseseoul.com"
+$env:GOOGLE_OAUTH_ACCESS_TOKEN="<oauth_access_token>"
+npm run marketing:search-console
+```
+
+The report filters for queries with impressions but low clicks and mid-page rankings so those
+keyword pages can be strengthened with better titles, images, and CTAs.
+
 ## If Self Hosting From This PC
 
 The local LAN URL is not enough for Google. Google must reach the site from the public internet.

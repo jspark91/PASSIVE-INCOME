@@ -26,6 +26,7 @@ pnpm-debug.log*
 
 # local runtime data
 .data
+exports
 
 # local deployment archives
 *.zip

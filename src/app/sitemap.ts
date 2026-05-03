@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getArtists } from "@/lib/data";
+import { seoPages } from "@/lib/seo-pages";
 import { getSiteUrl } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -31,5 +32,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6
   }));
 
-  return [...publicRoutes, ...artistRoutes];
+  const seoRoutes = seoPages.map((page) => ({
+    url: `${siteUrl}/${page.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.82
+  }));
+
+  return [...publicRoutes, ...artistRoutes, ...seoRoutes];
 }

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "marketing:export": "node scripts/export-organic-marketing-assets.mjs",
+    "marketing:search-console": "node scripts/search-console-keyword-report.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",

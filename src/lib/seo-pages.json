@@ -1,0 +1,464 @@
+[
+  {
+    "slug": "seoul-tattoo-for-foreigners",
+    "title": "Seoul Tattoo for Foreigners | ETHNIC HOUSE",
+    "description": "Book tattoos in Seoul with English-friendly support. ETHNIC HOUSE helps travelers match with selected tattoo artists in Sillim.",
+    "h1": "Seoul Tattoo for Foreigners",
+    "subtitle": "English-friendly tattoo booking with selected artists in Korea.",
+    "styleTags": ["English support", "Travel tattoo", "Custom"],
+    "price": "quote required",
+    "galleryStyles": ["abstract brushwork", "geometric", "realism", "watercolor", "irezumi"],
+    "artistSlugs": ["yoonseul", "moss", "seowoo", "sero", "hada", "woora"],
+    "featuredDesignIds": [
+      "design-yoonseul-moon-whale",
+      "design-moss-compass-whale",
+      "design-seowoo-full-sleeve-collage",
+      "design-sero-plum-brushwork",
+      "design-hada-samurai-backpiece",
+      "design-woora-dragon-sleeve"
+    ],
+    "cta": "Book a Seoul Tattoo",
+    "faq": [
+      {
+        "q": "Can I book before arriving in Korea?",
+        "a": "Yes. Send your travel dates, idea, size, placement, and reference images before your trip."
+      },
+      {
+        "q": "Can you support English messages?",
+        "a": "Yes. ETHNIC HOUSE provides English-friendly booking support before matching your request with an artist."
+      }
+    ],
+    "socialHashtags": ["seoultattoo", "tattooinseoul", "koreatattoo", "koreatravel", "seoultravel"],
+    "pinBoard": "Seoul Tattoo Ideas"
+  },
+  {
+    "slug": "small-tattoo-seoul",
+    "title": "Small Tattoo in Seoul | ETHNIC HOUSE",
+    "description": "Small tattoo booking in Seoul for travelers. Mini symbols, butterflies, dates, character pieces, and simple custom ideas.",
+    "h1": "Small Tattoo in Seoul",
+    "subtitle": "Mini tattoos and travel-memory pieces by selected artists.",
+    "styleTags": ["Small tattoo", "Mini", "Travel memory"],
+    "price": "from $75",
+    "galleryStyles": ["fine-line", "blackwork", "butterfly", "watercolor"],
+    "artistSlugs": ["yoonseul", "moss", "sero"],
+    "featuredDesignIds": [
+      "design-moss-character-mini",
+      "design-yoonseul-star",
+      "design-yoonseul-butterflies",
+      "design-yoonseul-iris-flower",
+      "design-sero-blue-plum"
+    ],
+    "cta": "Book a Small Tattoo",
+    "faq": [
+      {
+        "q": "How much is a small tattoo in Seoul?",
+        "a": "Mini tattoos start from $75. Final price depends on size, placement, detail, color, and artist."
+      },
+      {
+        "q": "Can I get a small tattoo while traveling?",
+        "a": "Yes, but send your travel dates early so the studio can check realistic availability."
+      }
+    ],
+    "socialHashtags": ["smalltattoo", "minitattoo", "seoultattoo", "koreatravel", "tattooideas"],
+    "pinBoard": "Small Tattoo Seoul"
+  },
+  {
+    "slug": "fine-line-tattoo-seoul",
+    "title": "Fine-line Tattoo in Seoul | ETHNIC HOUSE",
+    "description": "Book fine-line tattoos in Seoul with selected artists. English-friendly booking support for travelers in Korea.",
+    "h1": "Fine-line Tattoo in Seoul",
+    "subtitle": "Small, delicate tattoos for travelers in Korea.",
+    "styleTags": ["Fine-line", "Minimal", "Small tattoo"],
+    "price": "from $90",
+    "galleryStyles": ["fine-line", "butterfly", "abstract brushwork"],
+    "artistSlugs": ["yoonseul", "moss"],
+    "featuredDesignIds": [
+      "design-yoonseul-iris-flower",
+      "design-yoonseul-moth-flow",
+      "design-yoonseul-butterflies",
+      "design-yoonseul-star",
+      "design-moss-character-mini"
+    ],
+    "cta": "Book a Fine-line Tattoo",
+    "faq": [
+      {
+        "q": "Can I book before my Korea trip?",
+        "a": "Yes. Send your travel dates, idea, size, placement, and references."
+      },
+      {
+        "q": "How much is a fine-line tattoo?",
+        "a": "Fine-line tattoos start from $90. Final price depends on size, placement, detail, and artist."
+      }
+    ],
+    "socialHashtags": ["finelinetattoo", "seoultattoo", "tattooinseoul", "smalltattoo", "koreatravel"],
+    "pinBoard": "Korean Fine-line Tattoo Ideas"
+  },
+  {
+    "slug": "irezumi-tattoo-seoul",
+    "title": "Irezumi Tattoo in Seoul | HADA and WOORA",
+    "description": "Japanese traditional irezumi tattoo booking in Seoul. Large-scale sleeves, backpieces, dragons, kabuto, flowers, and color work.",
+    "h1": "Irezumi Tattoo in Seoul",
+    "subtitle": "Japanese traditional tattoo work by HADA and WOORA.",
+    "styleTags": ["Irezumi", "Japanese traditional", "Large-scale"],
+    "price": "quote required",
+    "galleryStyles": ["irezumi", "japanese traditional", "horimono", "color"],
+    "artistSlugs": ["hada", "woora"],
+    "featuredDesignIds": [
+      "design-hada-samurai-backpiece",
+      "design-hada-maneki-neko-backpiece",
+      "design-woora-dragon-sleeve",
+      "design-woora-kabuto-thighs",
+      "design-woora-back-outline",
+      "design-hada-leopard-chest"
+    ],
+    "cta": "Book an Irezumi Consultation",
+    "faq": [
+      {
+        "q": "Can I book a full backpiece while visiting Korea?",
+        "a": "Large-scale irezumi usually needs planning and multiple sessions. Send dates and references first."
+      },
+      {
+        "q": "Is irezumi priced from a fixed menu?",
+        "a": "No. Large-scale Japanese traditional work is quoted by artist, body area, color, and session plan."
+      }
+    ],
+    "socialHashtags": ["irezumi", "japanesetraditionaltattoo", "seoultattoo", "koreatattoo", "backpiecetattoo"],
+    "pinBoard": "Irezumi Tattoo Seoul"
+  },
+  {
+    "slug": "japanese-traditional-tattoo-seoul",
+    "title": "Japanese Traditional Tattoo in Seoul | ETHNIC HOUSE",
+    "description": "Book Japanese traditional tattoo consultations in Seoul with irezumi artists HADA and WOORA.",
+    "h1": "Japanese Traditional Tattoo in Seoul",
+    "subtitle": "Bold backpieces, sleeves, dragons, flowers, and color composition.",
+    "styleTags": ["Japanese traditional", "Dragon", "Color"],
+    "price": "quote required",
+    "galleryStyles": ["japanese traditional", "irezumi", "dragon", "color"],
+    "artistSlugs": ["hada", "woora"],
+    "featuredDesignIds": [
+      "design-hada-maneki-neko-backpiece",
+      "design-woora-dragon-sleeve",
+      "design-hada-snake-chest-arm",
+      "design-hada-leopard-chest",
+      "design-woora-kabuto-thighs"
+    ],
+    "cta": "Book Japanese Traditional",
+    "faq": [
+      {
+        "q": "Which artists do Japanese traditional work?",
+        "a": "HADA and WOORA are the current ETHNIC HOUSE artists shown for irezumi and Japanese traditional work."
+      }
+    ],
+    "socialHashtags": ["japanesetattoo", "traditionaljapanesetattoo", "irezumi", "seoultattoo", "tattooseoul"],
+    "pinBoard": "Japanese Traditional Tattoo Seoul"
+  },
+  {
+    "slug": "hangul-tattoo-seoul",
+    "title": "Hangul Tattoo in Seoul | Korean Lettering Tattoos",
+    "description": "Book Hangul lettering tattoos in Seoul. Korean words, names, dates, and travel memory tattoos for international clients.",
+    "h1": "Hangul Tattoo in Seoul",
+    "subtitle": "Korean lettering tattoos for travelers.",
+    "styleTags": ["Hangul", "Lettering", "Travel memory"],
+    "price": "from $60",
+    "galleryStyles": ["fine-line", "blackwork"],
+    "artistSlugs": ["yoonseul", "moss"],
+    "featuredDesignIds": [
+      "design-yoonseul-star",
+      "design-yoonseul-iris-flower",
+      "design-moss-character-mini",
+      "design-yoonseul-moth-flow"
+    ],
+    "cta": "Book a Hangul Tattoo",
+    "faq": [
+      {
+        "q": "Can you help with Korean words?",
+        "a": "We can help check simple Korean lettering ideas before matching you with an artist."
+      },
+      {
+        "q": "Do I need to send the exact Hangul text?",
+        "a": "Send the English meaning and any Korean text you already have. The studio will confirm the request before booking."
+      }
+    ],
+    "socialHashtags": ["hangultattoo", "koreanlettering", "seoultattoo", "koreatravel", "tattooinseoul"],
+    "pinBoard": "Hangul Tattoo Ideas"
+  },
+  {
+    "slug": "lettering-tattoo-seoul",
+    "title": "Lettering Tattoo in Seoul | ETHNIC HOUSE",
+    "description": "Short lettering tattoo booking in Seoul. Names, dates, travel words, initials, and simple script tattoo requests.",
+    "h1": "Lettering Tattoo in Seoul",
+    "subtitle": "Names, dates, short words, and travel-memory lettering.",
+    "styleTags": ["Lettering", "Small tattoo", "Minimal"],
+    "price": "from $60",
+    "galleryStyles": ["fine-line", "blackwork"],
+    "artistSlugs": ["yoonseul", "moss"],
+    "featuredDesignIds": [
+      "design-moss-character-mini",
+      "design-yoonseul-star",
+      "design-yoonseul-butterflies",
+      "design-yoonseul-iris-flower"
+    ],
+    "cta": "Book Lettering",
+    "faq": [
+      {
+        "q": "What should I send for lettering?",
+        "a": "Send the exact text, font references, size, placement, and travel dates."
+      }
+    ],
+    "socialHashtags": ["letteringtattoo", "seoultattoo", "smalltattoo", "koreatattoo", "tattooideas"],
+    "pinBoard": "Lettering Tattoo Seoul"
+  },
+  {
+    "slug": "couple-tattoo-seoul",
+    "title": "Couple Tattoo in Seoul | Friend Tattoos in Korea",
+    "description": "Book couple tattoos, friend tattoos, and matching small designs in Seoul with English-friendly booking support.",
+    "h1": "Couple Tattoo in Seoul",
+    "subtitle": "Matching small tattoos for friends, couples, and travel groups.",
+    "styleTags": ["Couple", "Matching", "Small tattoo"],
+    "price": "from $60 / person",
+    "galleryStyles": ["fine-line", "butterfly", "blackwork", "watercolor"],
+    "artistSlugs": ["yoonseul", "moss", "sero", "woora"],
+    "featuredDesignIds": [
+      "design-yoonseul-butterflies",
+      "design-woora-kabuto-thighs",
+      "design-sero-birds-plum",
+      "design-yoonseul-star",
+      "design-moss-character-mini"
+    ],
+    "cta": "Book Matching Tattoos",
+    "faq": [
+      {
+        "q": "Can two people book together?",
+        "a": "Yes. Send the number of people, design idea, placement, and preferred schedule."
+      }
+    ],
+    "socialHashtags": ["coupletattoo", "friendtattoo", "matchingtattoos", "seoultattoo", "koreatravel"],
+    "pinBoard": "Couple Tattoo Seoul"
+  },
+  {
+    "slug": "tattoo-price-seoul",
+    "title": "Tattoo Price in Seoul | ETHNIC HOUSE",
+    "description": "See tattoo starting prices in Seoul for lettering, mini tattoos, fine-line work, blackwork, irezumi, and custom pieces.",
+    "h1": "Tattoo Price in Seoul",
+    "subtitle": "Starting prices before a custom quote.",
+    "styleTags": ["Price guide", "Quote", "Booking"],
+    "price": "from $60",
+    "galleryStyles": ["fine-line", "blackwork", "irezumi", "realism"],
+    "artistSlugs": ["yoonseul", "moss", "seowoo", "hada", "woora"],
+    "featuredDesignIds": [
+      "design-moss-character-mini",
+      "design-yoonseul-iris-flower",
+      "design-moss-compass-whale",
+      "design-seowoo-reaper-chest",
+      "design-hada-samurai-backpiece"
+    ],
+    "cta": "Get a Tattoo Quote",
+    "faq": [
+      {
+        "q": "Why is the final price different from the starting price?",
+        "a": "Final price depends on size, placement, detail, color, artist, and session length."
+      },
+      {
+        "q": "Can I get a price before booking?",
+        "a": "Yes. Send references, size, placement, artist preference, and travel dates for a quote."
+      }
+    ],
+    "socialHashtags": ["tattooprice", "seoultattoo", "tattooinseoul", "koreatattoo", "tattoobooking"],
+    "pinBoard": "Tattoo Price Seoul"
+  },
+  {
+    "slug": "english-speaking-tattoo-seoul",
+    "title": "English-speaking Tattoo Support in Seoul | ETHNIC HOUSE",
+    "description": "English-friendly tattoo booking support in Seoul for travelers who need artist matching, price checks, and appointment planning.",
+    "h1": "English-speaking Tattoo Support in Seoul",
+    "subtitle": "Send your idea in English and get matched with the right artist.",
+    "styleTags": ["English support", "Artist match", "Travel"],
+    "price": "quote required",
+    "galleryStyles": ["fine-line", "blackwork", "realism", "watercolor", "irezumi"],
+    "artistSlugs": ["yoonseul", "moss", "seowoo", "sero", "hada", "woora"],
+    "featuredDesignIds": [
+      "design-yoonseul-moon-flow",
+      "design-moss-compass-forearm",
+      "design-seowoo-eye-clock-sleeve",
+      "design-sero-wolf-plum",
+      "design-woora-dragon-sleeve"
+    ],
+    "cta": "Ask in English",
+    "faq": [
+      {
+        "q": "Can I send references in English?",
+        "a": "Yes. Send your idea, size, placement, travel dates, and reference images in English."
+      }
+    ],
+    "socialHashtags": ["englishtattooseoul", "seoultattoo", "tattooinseoul", "koreatravel", "tattoobooking"],
+    "pinBoard": "English Tattoo Seoul"
+  },
+  {
+    "slug": "korean-tattoo-artist-seoul",
+    "title": "Korean Tattoo Artists in Seoul | ETHNIC HOUSE",
+    "description": "View selected Korean tattoo artists in Seoul. Fine-line, blackwork, realism, watercolor, irezumi, and custom tattoo portfolios.",
+    "h1": "Korean Tattoo Artists in Seoul",
+    "subtitle": "Selected artists and real portfolio work at ETHNIC HOUSE.",
+    "styleTags": ["Artists", "Portfolio", "Seoul"],
+    "price": "quote required",
+    "galleryStyles": ["abstract brushwork", "geometric", "realism", "watercolor", "irezumi"],
+    "artistSlugs": ["yoonseul", "moss", "seowoo", "sero", "hada", "woora"],
+    "featuredDesignIds": [
+      "design-yoonseul-moon-whale",
+      "design-moss-geometric-sleeve",
+      "design-seowoo-gambler-sleeve",
+      "design-sero-blue-plum",
+      "design-hada-leopard-chest",
+      "design-woora-back-outline"
+    ],
+    "cta": "Choose an Artist",
+    "faq": [
+      {
+        "q": "Can I choose a specific artist?",
+        "a": "Yes. Use the artist profile or booking form to request a preferred artist."
+      }
+    ],
+    "socialHashtags": ["koreantattooartist", "seoultattooartist", "koreatattoo", "tattooseoul", "tattooportfolio"],
+    "pinBoard": "Korean Tattoo Artists"
+  },
+  {
+    "slug": "travel-tattoo-seoul",
+    "title": "Travel Tattoo in Seoul | Korea Memory Tattoos",
+    "description": "Book a travel-memory tattoo in Seoul before or during your Korea trip. Small symbols, dates, flowers, butterflies, and custom ideas.",
+    "h1": "Travel Tattoo in Seoul",
+    "subtitle": "Small tattoos to remember your Korea trip.",
+    "styleTags": ["Travel memory", "Small tattoo", "Seoul"],
+    "price": "from $75",
+    "galleryStyles": ["fine-line", "butterfly", "watercolor", "blackwork"],
+    "artistSlugs": ["yoonseul", "moss", "sero"],
+    "featuredDesignIds": [
+      "design-yoonseul-star",
+      "design-yoonseul-butterflies",
+      "design-sero-birds-plum",
+      "design-moss-character-mini",
+      "design-yoonseul-iris-flower"
+    ],
+    "cta": "Book a Travel Tattoo",
+    "faq": [
+      {
+        "q": "Can I book before I land in Korea?",
+        "a": "Yes. Send your itinerary and preferred date so the studio can check availability."
+      }
+    ],
+    "socialHashtags": ["traveltattoo", "koreatravel", "seoultravel", "seoultattoo", "memorytattoo"],
+    "pinBoard": "Korea Travel Tattoo Ideas"
+  },
+  {
+    "slug": "minimal-tattoo-seoul",
+    "title": "Minimal Tattoo in Seoul | ETHNIC HOUSE",
+    "description": "Minimal tattoo booking in Seoul for small symbols, fine-line florals, butterflies, and simple blackwork ideas.",
+    "h1": "Minimal Tattoo in Seoul",
+    "subtitle": "Clean small tattoos with simple placement and clear booking.",
+    "styleTags": ["Minimal", "Fine-line", "Small tattoo"],
+    "price": "from $75",
+    "galleryStyles": ["fine-line", "blackwork", "butterfly"],
+    "artistSlugs": ["yoonseul", "moss"],
+    "featuredDesignIds": [
+      "design-yoonseul-iris-flower",
+      "design-yoonseul-star",
+      "design-yoonseul-moth-flow",
+      "design-moss-character-mini",
+      "design-yoonseul-butterflies"
+    ],
+    "cta": "Book a Minimal Tattoo",
+    "faq": [
+      {
+        "q": "What size works best for minimal tattoos?",
+        "a": "Send the design idea and placement. The artist will suggest a size that keeps the lines readable."
+      }
+    ],
+    "socialHashtags": ["minimaltattoo", "smalltattoo", "finelinetattoo", "seoultattoo", "tattooideas"],
+    "pinBoard": "Minimal Tattoo Seoul"
+  },
+  {
+    "slug": "blackwork-tattoo-seoul",
+    "title": "Blackwork Tattoo in Seoul | ETHNIC HOUSE",
+    "description": "Blackwork tattoo booking in Seoul. Abstract, geometric, dotwork, ornamental, and black and grey portfolio work.",
+    "h1": "Blackwork Tattoo in Seoul",
+    "subtitle": "Bold blackwork, dotwork, abstract, and black and grey pieces.",
+    "styleTags": ["Blackwork", "Dotwork", "Black and grey"],
+    "price": "quote required",
+    "galleryStyles": ["blackwork", "dotwork", "black and grey", "ornamental", "dark art"],
+    "artistSlugs": ["yoonseul", "moss", "seowoo"],
+    "featuredDesignIds": [
+      "design-yoonseul-star",
+      "design-moss-compass-forearm",
+      "design-moss-aztec-calendar",
+      "design-seowoo-forearm-cards",
+      "design-seowoo-reaper-chest",
+      "design-yoonseul-pouring-moon"
+    ],
+    "cta": "Book Blackwork",
+    "faq": [
+      {
+        "q": "Can blackwork be priced from a fixed starting price?",
+        "a": "Small blackwork can start from a guide price, but larger pieces need a custom quote."
+      }
+    ],
+    "socialHashtags": ["blackworktattoo", "blackandgreytattoo", "dotworktattoo", "seoultattoo", "koreatattoo"],
+    "pinBoard": "Blackwork Tattoo Seoul"
+  },
+  {
+    "slug": "tattoo-aftercare-korea",
+    "title": "Tattoo Aftercare in Korea | ETHNIC HOUSE",
+    "description": "Tattoo aftercare guide for travelers in Korea. Learn how to care for a new tattoo during a Seoul trip.",
+    "h1": "Tattoo Aftercare in Korea",
+    "subtitle": "Simple aftercare tips for travelers after a Seoul tattoo appointment.",
+    "styleTags": ["Aftercare", "Travel", "Healing"],
+    "price": "guide",
+    "galleryStyles": ["fine-line", "blackwork", "watercolor", "irezumi"],
+    "artistSlugs": ["yoonseul", "moss", "sero", "hada", "woora"],
+    "featuredDesignIds": [
+      "design-yoonseul-iris-flower",
+      "design-moss-compass-whale",
+      "design-sero-blue-plum",
+      "design-hada-snake-chest-arm",
+      "design-woora-dragon-sleeve"
+    ],
+    "cta": "Book With Aftercare Support",
+    "faq": [
+      {
+        "q": "Can I travel after getting tattooed?",
+        "a": "Yes, but avoid swimming, sauna, direct sun, and friction while the tattoo heals."
+      },
+      {
+        "q": "Do you provide aftercare instructions?",
+        "a": "Yes. The booking flow links to aftercare guidance, and the artist will explain care after the session."
+      }
+    ],
+    "socialHashtags": ["tattooaftercare", "koreatattoo", "seoultattoo", "koreatravel", "tattootips"],
+    "pinBoard": "Tattoo Aftercare Korea"
+  },
+  {
+    "slug": "walk-in-tattoo-seoul",
+    "title": "Walk-in Tattoo in Seoul | Same-day by Availability",
+    "description": "Same-day tattoo requests in Seoul by availability. ETHNIC HOUSE is appointment-first, but travelers can ask about open slots.",
+    "h1": "Walk-in Tattoo in Seoul",
+    "subtitle": "Same-day requests by availability. Appointment-first booking is recommended.",
+    "styleTags": ["Same-day", "Small tattoo", "Availability"],
+    "price": "from $60",
+    "galleryStyles": ["fine-line", "blackwork", "butterfly", "watercolor"],
+    "artistSlugs": ["yoonseul", "moss", "sero"],
+    "featuredDesignIds": [
+      "design-moss-character-mini",
+      "design-yoonseul-star",
+      "design-yoonseul-butterflies",
+      "design-sero-plum-brushwork",
+      "design-yoonseul-iris-flower"
+    ],
+    "cta": "Check Same-day Availability",
+    "faq": [
+      {
+        "q": "Can I walk in without booking?",
+        "a": "ETHNIC HOUSE is appointment-first. Same-day slots may be possible, but you should message before visiting."
+      }
+    ],
+    "socialHashtags": ["walkintattoo", "samedaytattoo", "seoultattoo", "tattooinseoul", "koreatravel"],
+    "pinBoard": "Walk-in Tattoo Seoul"
+  }
+]
