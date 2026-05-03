@@ -88,11 +88,22 @@ For mobile/desktop alerts when a visitor sends a website chat message, set:
 ```text
 TELEGRAM_BOT_TOKEN=your-telegram-bot-token
 TELEGRAM_CHAT_ID=your-telegram-chat-id
+TELEGRAM_WEBHOOK_SECRET=optional-random-secret
 ```
 
 Telegram alerts include a direct `/admin/chat?sessionId=...` link. Open that
 link on your phone or another computer, log in once with `ADMIN_ACCESS_TOKEN`,
 and answer from the browser.
+
+The public Telegram button can also open your Telegram bot directly. The NAS
+configuration script reads `TELEGRAM_BOT_TOKEN`, derives the bot username,
+writes `NEXT_PUBLIC_TELEGRAM_URL=https://t.me/<bot>`, and registers the webhook
+at `/api/telegram/webhook`. Messages sent to the bot are forwarded to
+`TELEGRAM_CHAT_ID`; reply directly to the forwarded bot message, or use:
+
+```text
+/reply VISITOR_CHAT_ID your message
+```
 
 KakaoTalk personal-message alerts cannot be sent by a normal website account
 without an approved Kakao messaging provider or webhook bridge. If you connect a
@@ -111,8 +122,10 @@ GitHub, run:
 
 ```sh
 set -eu
+export NEXT_PUBLIC_SITE_URL='https://ethnichouseseoul.com'
 export TELEGRAM_BOT_TOKEN='your-telegram-bot-token'
 export TELEGRAM_CHAT_ID='your-telegram-chat-id'
+export TELEGRAM_WEBHOOK_SECRET='optional-random-secret'
 
 curl -fsSL \
   https://raw.githubusercontent.com/jspark91/PASSIVE-INCOME/main/scripts/nas-configure-chat-alerts.sh \

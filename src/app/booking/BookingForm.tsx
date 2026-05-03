@@ -47,6 +47,17 @@ function buildDmMessage(
   return lines.join("\n");
 }
 
+function buildInstagramDmUrl(message: string) {
+  try {
+    const url = new URL(instagramDmUrl);
+    url.searchParams.set("text", message);
+
+    return url.toString();
+  } catch {
+    return instagramDmUrl;
+  }
+}
+
 export function BookingForm({
   artists,
   preferred_artist_id,
@@ -56,25 +67,31 @@ export function BookingForm({
   kakaoChannelUrl
 }: BookingFormProps) {
   const [dmMessage, setDmMessage] = useState("");
+  const [dmHref, setDmHref] = useState(instagramDmUrl);
   const [copyState, setCopyState] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const message = buildDmMessage(new FormData(event.currentTarget), artists, preferred_design_title);
-    const dmWindow = window.open(instagramDmUrl, "_blank", "noopener,noreferrer");
+    const nextDmHref = buildInstagramDmUrl(message);
+    const copyPromise = navigator.clipboard?.writeText
+      ? navigator.clipboard.writeText(message)
+      : Promise.reject(new Error("Clipboard API is unavailable."));
+    const dmWindow = window.open(nextDmHref, "_blank", "noopener,noreferrer");
 
     setDmMessage(message);
+    setDmHref(nextDmHref);
     setCopyState("");
 
     try {
-      await navigator.clipboard.writeText(message);
+      await copyPromise;
       setCopyState(
         dmWindow
-          ? "Message copied. Paste it into Instagram DM."
-          : "Message copied. Open Instagram DM below."
+          ? "Request copied and DM opened. If Instagram does not paste automatically, paste the copied request."
+          : "Request copied. Open Instagram DM below and paste it."
       );
     } catch {
-      setCopyState("Copy the message below, then paste it into Instagram DM.");
+      setCopyState("Instagram DM opened. If the text is missing, copy the request below and paste it.");
     }
   }
 
@@ -156,7 +173,7 @@ export function BookingForm({
         </label>
 
         <button type="submit" className="bg-ink-900 px-5 py-3 text-sm font-semibold text-white">
-          Copy request and open DM
+          Open Instagram DM with request
         </button>
       </form>
 
@@ -180,13 +197,13 @@ export function BookingForm({
               Copy
             </button>
             <a
-              href={instagramDmUrl}
+              href={dmHref}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-ink-900 px-4 py-3 text-sm font-semibold text-white"
             >
               <Instagram className="h-4 w-4" />
-              Instagram DM
+              Open DM
             </a>
             {kakaoChannelUrl ? (
               <a
