@@ -1,8 +1,6 @@
 import { BookingForm } from "./BookingForm";
 import { getArtists, getFlashDesigns } from "@/lib/data";
-
-const instagramDmUrl = "https://ig.me/m/ETHNIC_HOUSE_SILLIM";
-const instagramProfileUrl = "https://www.instagram.com/ETHNIC_HOUSE_SILLIM/";
+import { instagramDmUrl, instagramProfileUrl } from "@/lib/site";
 
 function first(value?: string | string[]) {
   return Array.isArray(value) ? value[0] : value;
@@ -21,35 +19,41 @@ export default async function BookingPage({
   const kakaoChannelUrl = process.env.NEXT_PUBLIC_KAKAO_CHANNEL_URL;
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
-      <p className="text-sm font-semibold uppercase tracking-[0.18em] text-moss-700">
-        Booking request
-      </p>
-      <h1 className="mt-3 text-3xl font-semibold leading-tight text-ink-900 sm:text-4xl">
-        Book a tattoo in Seoul
-      </h1>
-      <p className="mt-4 max-w-[20rem] break-words leading-7 text-ink-700 sm:max-w-3xl">
-        Send your idea and travel dates. We will reply with artist availability and price.
-      </p>
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <a
-          href={instagramDmUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center justify-center rounded-md bg-ink-900 px-5 py-3 text-sm font-semibold text-white"
-        >
-          Open Instagram DM now
-        </a>
-        <a
-          href={instagramProfileUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center justify-center rounded-md border border-ink-200 px-5 py-3 text-sm font-semibold text-ink-900"
-        >
-          View ETHNIC HOUSE Instagram
-        </a>
+    <section className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:py-16">
+      <div>
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-moss-700">Book by DM</p>
+        <h1 className="mt-3 max-w-[20rem] text-3xl font-semibold leading-tight text-ink-900 sm:max-w-none sm:text-6xl">
+          Book a tattoo in Seoul
+        </h1>
+        <p className="mt-4 max-w-[20rem] leading-7 text-ink-700 sm:max-w-md">
+          Send a short request. We will reply with artist, quote, and available time.
+        </p>
+        <div className="mt-6 grid gap-3 sm:max-w-sm">
+          <a
+            href={instagramDmUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center bg-ink-900 px-5 py-3 text-sm font-semibold text-white"
+          >
+            Instagram DM
+          </a>
+          <a
+            href={instagramProfileUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center border border-ink-200 px-5 py-3 text-sm font-semibold text-ink-900"
+          >
+            View Instagram
+          </a>
+        </div>
+        <div className="mt-8 grid gap-3 text-sm text-ink-700">
+          <p>1. Send your idea</p>
+          <p>2. Get artist and quote</p>
+          <p>3. Confirm your booking</p>
+        </div>
       </div>
-      <div className="mt-8">
+
+      <div>
         <BookingForm
           artists={artists.map((artist) => ({ id: artist.id, name: artist.name }))}
           source={first(query?.source)}

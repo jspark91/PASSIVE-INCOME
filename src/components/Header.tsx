@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const nav = [
   { href: "/#work", label: "Work" },
@@ -8,6 +11,9 @@ const nav = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
+  const showMobileBookingCta = !pathname?.startsWith("/booking") && !pathname?.startsWith("/admin");
+
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-ink-100 bg-white/95 backdrop-blur">
@@ -30,12 +36,14 @@ export function Header() {
           </Link>
         </div>
       </header>
-      <Link
-        href="/booking"
-        className="fixed bottom-4 left-4 right-4 z-50 inline-flex items-center justify-center rounded-md bg-ink-900 px-5 py-3 text-sm font-semibold text-white shadow-soft sm:hidden"
-      >
-        Book a Tattoo
-      </Link>
+      {showMobileBookingCta ? (
+        <Link
+          href="/booking"
+          className="fixed bottom-4 left-4 right-4 z-50 inline-flex items-center justify-center rounded-md bg-ink-900 px-5 py-3 text-sm font-semibold text-white shadow-soft sm:hidden"
+        >
+          Book a Tattoo
+        </Link>
+      ) : null}
     </>
   );
 }

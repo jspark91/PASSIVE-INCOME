@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Analytics } from "@/components/Analytics";
+import { ChatWidget } from "@/components/ChatWidget";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { StructuredData } from "@/components/StructuredData";
@@ -81,6 +82,7 @@ export default function RootLayout({
         <StructuredData />
         <Header />
         <main>{children}</main>
+        <ChatWidget />
         <Footer />
       </body>
     </html>
