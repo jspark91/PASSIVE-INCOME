@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, CalendarDays, Images, MessageCircle } from "lucide-react";
+import { ArrowRight, Images } from "lucide-react";
 import { ArtistCard } from "@/components/ArtistCard";
 import { SeoJsonLd } from "@/components/SeoJsonLd";
 import type { SeoPage } from "@/lib/seo-pages";
@@ -224,40 +224,6 @@ export function SeoLandingPage({ page, artists, designs }: SeoLandingPageProps) 
             {relatedArtists.slice(0, 6).map((artist) => (
               <ArtistCard key={artist.id} artist={artist} />
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:py-20">
-          <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
-                Booking
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold text-ink-900 sm:text-5xl">
-                Send. Match. Confirm.
-              </h2>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {[
-                ["01", "Send your idea", MessageCircle],
-                ["02", "Get artist match & quote", BadgeCheck],
-                ["03", "Confirm your booking", CalendarDays]
-              ].map(([step, label, Icon]) => {
-                const StepIcon = Icon as typeof MessageCircle;
-
-                return (
-                  <div key={step as string} className="border border-ink-100 bg-ink-50 p-5">
-                    <StepIcon className="h-5 w-5 text-moss-700" />
-                    <p className="mt-4 text-xs font-semibold tracking-[0.2em] text-moss-700">
-                      {step as string}
-                    </p>
-                    <p className="mt-2 text-sm font-semibold text-ink-900">{label as string}</p>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </section>

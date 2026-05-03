@@ -6,6 +6,8 @@ TELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-}"
 TELEGRAM_CHAT_ID="${TELEGRAM_CHAT_ID:-}"
 KAKAO_ALERT_WEBHOOK_URL="${KAKAO_ALERT_WEBHOOK_URL:-}"
 KAKAO_ALERT_WEBHOOK_TOKEN="${KAKAO_ALERT_WEBHOOK_TOKEN:-}"
+NEXT_PUBLIC_WHATSAPP_URL="${NEXT_PUBLIC_WHATSAPP_URL:-}"
+NEXT_PUBLIC_TELEGRAM_URL="${NEXT_PUBLIC_TELEGRAM_URL:-}"
 
 log() {
   printf '%s %s\n' "[ethnic-house-chat-alerts]" "$1"
@@ -55,6 +57,14 @@ configure_env_file() {
 
   if [ -n "$KAKAO_ALERT_WEBHOOK_TOKEN" ]; then
     write_env_value "$file" "KAKAO_ALERT_WEBHOOK_TOKEN" "$KAKAO_ALERT_WEBHOOK_TOKEN"
+  fi
+
+  if [ -n "$NEXT_PUBLIC_WHATSAPP_URL" ]; then
+    write_env_value "$file" "NEXT_PUBLIC_WHATSAPP_URL" "$NEXT_PUBLIC_WHATSAPP_URL"
+  fi
+
+  if [ -n "$NEXT_PUBLIC_TELEGRAM_URL" ]; then
+    write_env_value "$file" "NEXT_PUBLIC_TELEGRAM_URL" "$NEXT_PUBLIC_TELEGRAM_URL"
   fi
 }
 

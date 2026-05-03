@@ -9,19 +9,20 @@ import {
   ShieldCheck
 } from "lucide-react";
 import { ArtistCard } from "@/components/ArtistCard";
+import { HeroImageRotator } from "@/components/HeroImageRotator";
+import { SocialContactRail } from "@/components/SocialContactRail";
 import { WorkSlider } from "@/components/WorkSlider";
 import { getArtists, getFlashDesigns } from "@/lib/data";
-import { isIrezumiArtist } from "@/lib/irezumi";
-import { seoPageLinks } from "@/lib/seo-pages";
+import { isIrezumiArtist, isIrezumiDesign } from "@/lib/irezumi";
 
-const styleFilters = ["All", "Irezumi", "Fine-line", "Blackwork", "Abstract", "Oriental", "Realism"];
+const styleFilters = ["All", "Fine-line", "Blackwork", "Abstract", "Oriental", "Realism"];
 
 const travelerPackages = [
   {
     title: "Seoul Memory",
     description: "Small symbols, dates, travel marks",
     price: "from $75",
-    image: "/images/artists/yoonseul/yoonseul-01-star.jpg"
+    image: "/images/artists/sero/sero-02-birds-plum.jpg"
   },
   {
     title: "Small Lettering",
@@ -33,13 +34,64 @@ const travelerPackages = [
     title: "Friend / Couple",
     description: "Matching small designs",
     price: "from $60 / person",
-    image: "/images/artists/yoonseul/yoonseul-07-butterflies.jpg"
+    image: "/images/artists/sero/sero-03-blue-plum.jpg"
   },
   {
     title: "Fine-line Custom",
     description: "Flowers, butterflies, minimal details",
     price: "from $90",
+    image: "/images/artists/moss/moss-01-compass-whale.jpg"
+  }
+];
+
+const styleSearchCards = [
+  {
+    href: "/fine-line-tattoo-seoul",
+    label: "Fine-line Tattoo",
+    price: "from $90",
+    image: "/images/artists/sero/sero-02-birds-plum.jpg"
+  },
+  {
+    href: "/blackwork-tattoo-seoul",
+    label: "Blackwork Tattoo",
+    price: "quote required",
+    image: "/images/artists/moss/moss-02-geometric-sleeve.jpg"
+  },
+  {
+    href: "/small-tattoo-seoul",
+    label: "Small Tattoo",
+    price: "from $75",
+    image: "/images/artists/moss/moss-05-mickey-mini.jpg"
+  },
+  {
+    href: "/travel-tattoo-seoul",
+    label: "Travel Tattoo",
+    price: "from $75",
+    image: "/images/artists/sero/sero-01-plum-brushwork.jpg"
+  },
+  {
+    href: "/minimal-tattoo-seoul",
+    label: "Minimal Tattoo",
+    price: "from $75",
     image: "/images/artists/yoonseul/yoonseul-08-iris-flower.jpg"
+  },
+  {
+    href: "/tattoo-price-seoul",
+    label: "Tattoo Price Seoul",
+    price: "guide",
+    image: "/images/artists/seowoo/seowoo-02-forearm-cards.jpg"
+  },
+  {
+    href: "/english-speaking-tattoo-seoul",
+    label: "English-speaking Booking",
+    price: "quote required",
+    image: "/images/artists/moss/moss-04-compass-forearm.jpg"
+  },
+  {
+    href: "/korean-tattoo-artist-seoul",
+    label: "Korean Tattoo Artist",
+    price: "selected artists",
+    image: "/images/artists/seowoo/seowoo-04-eye-clock-sleeve.jpg"
   }
 ];
 
@@ -62,13 +114,17 @@ const trustItems = [
 export default async function HomePage() {
   const [artists, designs] = await Promise.all([getArtists(), getFlashDesigns()]);
   const artistById = new Map(artists.map((artist) => [artist.id, artist]));
-  const heroImage = designs[0]?.image_url ?? "/images/artists/yoonseul/yoonseul-03-moon-whale.jpg";
   const irezumiArtists = artists.filter(isIrezumiArtist);
   const irezumiArtistIds = new Set(irezumiArtists.map((artist) => artist.id));
-  const irezumiWork = designs
-    .filter((design) => irezumiArtistIds.has(design.artist_id))
-    .slice(0, 4);
-  const recentWork = designs.slice(0, 12).map((design) => ({
+  const mainDesigns = designs.filter(
+    (design) => !irezumiArtistIds.has(design.artist_id) && !isIrezumiDesign(design)
+  );
+  const heroDesigns = mainDesigns.filter((design) => design.artist_id !== "artist-yoonseul").slice(0, 6);
+  const heroImages = (heroDesigns.length ? heroDesigns : mainDesigns.slice(0, 6)).map((design) => ({
+    src: design.image_url ?? "",
+    alt: design.title
+  }));
+  const recentWork = mainDesigns.slice(0, 12).map((design) => ({
     ...design,
     artistName: artistById.get(design.artist_id)?.name ?? "ETHNIC HOUSE"
   }));
@@ -76,12 +132,7 @@ export default async function HomePage() {
   return (
     <>
       <section className="relative isolate min-h-[78svh] overflow-hidden bg-ink-900 text-white">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={heroImage}
-          alt="ETHNIC HOUSE tattoo portfolio"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        <HeroImageRotator images={heroImages} />
         <div className="absolute inset-0 bg-black/55" />
         <div className="relative mx-auto flex min-h-[78svh] max-w-7xl items-end px-4 pb-10 pt-24 sm:px-6 lg:pb-14">
           <div className="max-w-2xl">
@@ -111,70 +162,7 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="bg-white">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:py-16">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
-              Irezumi
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight text-ink-900 sm:text-5xl">
-              Japanese traditional tattoo in Seoul
-            </h2>
-            <p className="mt-4 max-w-md leading-7 text-ink-700">
-              Large-scale sleeves, backpieces, dragons, kabuto, flowers, and color work by HADA and
-              WOORA.
-            </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/irezumi"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-ink-900 px-6 py-3 text-sm font-semibold text-white"
-              >
-                View Irezumi
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/booking?style=irezumi"
-                className="inline-flex items-center justify-center rounded-md border border-ink-200 px-6 py-3 text-sm font-semibold text-ink-900"
-              >
-                Book consultation
-              </Link>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {irezumiArtists.map((artist) => (
-                <Link
-                  key={artist.id}
-                  href={`/artists/${artist.slug}`}
-                  className="rounded-full bg-ink-50 px-3 py-1 text-xs font-semibold text-ink-700"
-                >
-                  {artist.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            {irezumiWork.map((design) => (
-              <Link
-                key={design.id}
-                href={`/booking?design=${encodeURIComponent(design.id)}`}
-                className="group min-w-0 overflow-hidden bg-ink-900"
-              >
-                <div className="aspect-[4/5] overflow-hidden lg:aspect-[4/3]">
-                  {design.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={design.image_url}
-                      alt={design.title}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  ) : null}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+        <SocialContactRail />
       </section>
 
       <section id="work" className="bg-ink-900 text-white">
@@ -260,29 +248,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-ink-900 text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:py-20">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-ink-100">
-              How It Works
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-5xl">Send. Match. Confirm.</h2>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-3">
-            {[
-              ["01", "Send your idea"],
-              ["02", "Get artist match & quote"],
-              ["03", "Confirm with deposit"]
-            ].map(([step, label]) => (
-              <div key={step} className="border border-white/10 p-5">
-                <p className="text-xs font-semibold tracking-[0.2em] text-ink-100">{step}</p>
-                <p className="mt-4 text-lg font-semibold">{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section id="prices" className="bg-ink-50">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:py-20">
           <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
@@ -341,17 +306,62 @@ export default async function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="mt-8 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            {seoPageLinks.map((page) => (
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {styleSearchCards.map((page) => (
               <Link
                 key={page.href}
                 href={page.href}
-                className="flex min-h-24 flex-col justify-between border border-ink-100 bg-white p-4 transition hover:border-ink-300"
+                className="group overflow-hidden bg-white transition hover:-translate-y-0.5 hover:shadow-soft"
               >
-                <span className="text-sm font-semibold text-ink-900">{page.label}</span>
-                <span className="mt-3 text-xs font-semibold text-moss-700">{page.price}</span>
+                <div className="aspect-[4/5] overflow-hidden bg-ink-900">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={page.image}
+                    alt={page.label}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-3 p-4">
+                  <span className="text-sm font-semibold text-ink-900">{page.label}</span>
+                  <span className="shrink-0 text-xs font-semibold text-moss-700">{page.price}</span>
+                </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="location" className="bg-white">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:py-20">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss-700">
+              Location
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold text-ink-900 sm:text-5xl">
+              Sillim Station 10-644
+            </h2>
+            <p className="mt-4 max-w-md leading-7 text-ink-700">
+              ETHNIC HOUSE SEOUL near Sillim Station. Book before visiting so we can confirm artist
+              availability.
+            </p>
+            <Link
+              href="https://www.google.com/maps/search/?api=1&query=%EC%8B%A0%EB%A6%BC%EC%97%AD%2010-644"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-7 inline-flex items-center gap-2 rounded-md bg-ink-900 px-6 py-3 text-sm font-semibold text-white"
+            >
+              Open Google Maps
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="overflow-hidden bg-ink-100">
+            <iframe
+              title="ETHNIC HOUSE Seoul map"
+              src="https://www.google.com/maps?q=%EC%8B%A0%EB%A6%BC%EC%97%AD%2010-644&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="h-[360px] w-full border-0 sm:h-[440px]"
+            />
           </div>
         </div>
       </section>

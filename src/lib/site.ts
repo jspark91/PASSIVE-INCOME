@@ -4,6 +4,8 @@ export const siteDescription =
   "ETHNIC HOUSE SEOUL. English-friendly tattoo booking for travelers in Sillim, Seoul.";
 export const instagramProfileUrl = "https://www.instagram.com/ETHNIC_HOUSE_SILLIM/";
 export const instagramDmUrl = "https://ig.me/m/ETHNIC_HOUSE_SILLIM";
+export const whatsappContactUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() || "/booking";
+export const telegramContactUrl = process.env.NEXT_PUBLIC_TELEGRAM_URL?.trim() || "/booking";
 
 export function getSiteUrl() {
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
