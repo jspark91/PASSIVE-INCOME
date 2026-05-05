@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>DesktopCalendar</AssemblyName>
+    <RootNamespace>DesktopCalendar.Host</RootNamespace>
+    <Product>Desktop Calendar</Product>
+    <Authors>Desktop Calendar</Authors>
+    <Version>0.1.0</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <Copyright>Copyright 2026</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\index.html" Link="app\index.html" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\src\**\*.*" LinkBase="app\src" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3912.50" />
+  </ItemGroup>
+</Project>

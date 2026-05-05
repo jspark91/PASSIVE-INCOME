@@ -1,0 +1,4 @@
+artifacts/
+dist/
+windows-host/**/bin/
+windows-host/**/obj/

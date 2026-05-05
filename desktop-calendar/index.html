@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f4f6f8" />
+    <title>Desktop Calendar</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <span class="eyebrow">LOCAL DESKTOP</span>
+          <h1>Desktop Calendar</h1>
+        </div>
+
+        <div class="month-controls" aria-label="월 이동">
+          <button class="icon-button" id="prevMonth" type="button" aria-label="이전 달">‹</button>
+          <button class="plain-button" id="todayButton" type="button">오늘</button>
+          <button class="icon-button" id="nextMonth" type="button" aria-label="다음 달">›</button>
+        </div>
+
+        <div class="current-month" id="currentMonth" aria-live="polite"></div>
+
+        <div class="toolbar">
+          <label class="search-box" for="searchInput">
+            <span aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" placeholder="검색" autocomplete="off" />
+          </label>
+          <select id="categoryFilter" aria-label="카테고리 필터"></select>
+          <button class="plain-button" id="exportButton" type="button">내보내기</button>
+          <label class="plain-button file-button" for="importInput">가져오기</label>
+          <input id="importInput" class="visually-hidden" type="file" accept="application/json,.json" />
+          <button class="plain-button" id="notificationButton" type="button">알림</button>
+          <button class="plain-button" id="fullscreenButton" type="button">전체화면</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="calendar-panel" aria-label="월간 달력">
+          <div class="weekday-row" id="weekdayRow"></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </section>
+
+        <aside class="side-panel" aria-label="일정 편집">
+          <section class="editor-section">
+            <div class="section-heading">
+              <span>선택 날짜</span>
+              <strong id="selectedDateLabel"></strong>
+            </div>
+
+            <form class="event-form" id="eventForm">
+              <input id="eventId" type="hidden" />
+
+              <div class="field-row">
+                <label for="eventDate">날짜</label>
+                <input id="eventDate" type="date" required />
+              </div>
+
+              <div class="field-grid">
+                <div class="field-row">
+                  <label for="eventTime">시간</label>
+                  <input id="eventTime" type="time" />
+                </div>
+                <div class="field-row">
+                  <label for="eventCategory">분류</label>
+                  <select id="eventCategory"></select>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <label for="eventTitle">일정</label>
+                <input id="eventTitle" type="text" maxlength="80" required autocomplete="off" />
+              </div>
+
+              <div class="field-grid">
+                <div class="field-row">
+                  <label for="eventRepeat">반복</label>
+                  <select id="eventRepeat">
+                    <option value="none">없음</option>
+                    <option value="daily">매일</option>
+                    <option value="weekly">매주</option>
+                    <option value="monthly">매월</option>
+                    <option value="yearly">매년</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <label for="eventReminder">알림</label>
+                  <select id="eventReminder">
+                    <option value="none">없음</option>
+                    <option value="10">10분 전</option>
+                    <option value="30">30분 전</option>
+                    <option value="60">1시간 전</option>
+                    <option value="1440">하루 전</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <label for="eventNotes">메모</label>
+                <textarea id="eventNotes" rows="4" maxlength="600"></textarea>
+              </div>
+
+              <label class="check-row" for="eventDone">
+                <input id="eventDone" type="checkbox" />
+                <span>완료</span>
+              </label>
+
+              <div class="form-actions">
+                <button class="primary-button" type="submit">저장</button>
+                <button class="plain-button" id="newEventButton" type="button">새 일정</button>
+                <button class="danger-button" id="deleteEventButton" type="button">삭제</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="agenda-section">
+            <div class="section-heading">
+              <span>오늘</span>
+              <strong id="todayCount"></strong>
+            </div>
+            <div class="agenda-list" id="todayList"></div>
+          </section>
+
+          <section class="agenda-section">
+            <div class="section-heading">
+              <span>다음 7일</span>
+              <strong id="weekCount"></strong>
+            </div>
+            <div class="agenda-list" id="weekList"></div>
+          </section>
+
+          <section class="agenda-section">
+            <div class="section-heading">
+              <span>검색 결과</span>
+              <strong id="searchCount"></strong>
+            </div>
+            <div class="agenda-list" id="searchResults"></div>
+          </section>
+        </aside>
+      </main>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <script src="./src/app.js"></script>
+  </body>
+</html>
