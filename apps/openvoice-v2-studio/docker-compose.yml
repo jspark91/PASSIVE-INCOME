@@ -1,0 +1,30 @@
+services:
+  openvoice-v2-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openvoice-v2-studio-api
+    restart: unless-stopped
+    environment:
+      ALLOW_ADULT_CONSENSUAL_CONTENT: ${ALLOW_ADULT_CONSENSUAL_CONTENT:-false}
+      OPENVOICE_CHECKPOINT_ROOT: /workspace/models/openvoice/checkpoints_v2
+      OPENVOICE_DEVICE: ${OPENVOICE_DEVICE:-auto}
+      OPENVOICE_MOCK_MODE: ${OPENVOICE_MOCK_MODE:-false}
+      OPENVOICE_WORKSPACE: /workspace
+      OPENVOICE_MAX_TEXT_CHARS: ${OPENVOICE_MAX_TEXT_CHARS:-900}
+    volumes:
+      - ./workspace:/workspace
+    ports:
+      - "${OPENVOICE_API_PORT:-8088}:8088"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8088/health', timeout=3).read()"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

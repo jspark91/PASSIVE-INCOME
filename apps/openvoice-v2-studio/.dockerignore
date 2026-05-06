@@ -1,0 +1,13 @@
+.venv
+__pycache__
+.pytest_cache
+workspace
+models
+outputs
+reference_voices
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.zip
+*.log

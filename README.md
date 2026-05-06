@@ -89,6 +89,14 @@ npm run typecheck
 npm run build
 ```
 
+## Separate Passive-Income Projects
+
+This repository can hold isolated experiments when they are intentionally kept
+outside the ETHNIC HOUSE web app.
+
+- `apps/openvoice-v2-studio`: self-hosted OpenVoice V2 API scaffold for
+  consent-first adult audio production. See `docs/openvoice-v2-studio.md`.
+
 ## Booking Flow
 
 Dedicated foreign ad landing pages:

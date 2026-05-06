@@ -1,0 +1,31 @@
+name: OpenVoice V2 Studio
+
+on:
+  pull_request:
+    paths:
+      - "apps/openvoice-v2-studio/**"
+      - ".github/workflows/openvoice-v2-studio.yml"
+      - "docs/openvoice-v2-studio.md"
+  push:
+    paths:
+      - "apps/openvoice-v2-studio/**"
+      - ".github/workflows/openvoice-v2-studio.yml"
+      - "docs/openvoice-v2-studio.md"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/openvoice-v2-studio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate Python syntax
+        run: python -m compileall -q app tests
+      - name: Run guardrail tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}/apps/openvoice-v2-studio
+        run: python -m unittest discover -s tests

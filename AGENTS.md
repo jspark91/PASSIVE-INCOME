@@ -1,10 +1,19 @@
-# AGENTS.md - ETHNIC HOUSE
+# AGENTS.md - PASSIVE-INCOME
 
 ## Project Identity
 
-This repository is a standalone project for ETHNIC HOUSE.
+The root web app remains a standalone project for ETHNIC HOUSE.
 
 Do not use assumptions, files, architecture, naming conventions, database schema, routes, or business logic from any previous project. This project is separate from all existing engineering, CAD, tunnel, and internal tooling work.
+
+Separate subprojects may live under their own folders when explicitly requested.
+When a subproject has a deeper `AGENTS.md`, apply that file for work inside the
+subproject and do not mix its business logic with the ETHNIC HOUSE app.
+
+Current separate subprojects:
+
+- `apps/openvoice-v2-studio/`: consent-first self-hosted OpenVoice V2 API for
+  audio production. Apply `apps/openvoice-v2-studio/AGENTS.md`.
 
 ## Product Goal
 
@@ -67,6 +76,8 @@ Before saying a task is complete:
 
 - Run `npm run lint` when Node is available.
 - Run `npm run build` when Node is available.
+- For `apps/openvoice-v2-studio`, run its PowerShell validation script instead
+  of the root Next.js checks unless root app files were changed.
 - Confirm booking form data writes to `booking_requests` when Supabase is configured.
 - Confirm admin lead pages can read and update lead status.
 - Confirm UTM values are captured.
