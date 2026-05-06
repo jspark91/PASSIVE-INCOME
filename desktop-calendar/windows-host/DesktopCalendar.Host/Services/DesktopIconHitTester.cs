@@ -47,6 +47,12 @@ internal static class DesktopIconHitTester
         return GetDesktopIconRects().Count;
     }
 
+    internal static void ClearCache()
+    {
+        _cacheExpiresUtc = DateTime.MinValue;
+        _cachedIconRects = [];
+    }
+
     private static IReadOnlyList<WpfRect> GetDesktopIconRects()
     {
         if (DateTime.UtcNow < _cacheExpiresUtc)

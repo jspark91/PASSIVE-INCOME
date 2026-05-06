@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Desktop Calendar version, for example 0.1.0
+        description: Desktop Calendar version, for example 0.1.21
         required: false
-        default: 0.1.0
+        default: 0.1.21
   push:
     paths:
       - desktop-calendar/**

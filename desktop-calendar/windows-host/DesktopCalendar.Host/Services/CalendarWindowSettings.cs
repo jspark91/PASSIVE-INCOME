@@ -18,5 +18,6 @@ internal sealed class CalendarWindowSettings
     public bool HasCustomPosition { get; set; }
     public double CustomLeft { get; set; }
     public double CustomTop { get; set; }
+    public bool InteractionLocked { get; set; } = true;
     public string? OriginalWallpaperPath { get; set; }
 }

@@ -31,7 +31,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build-desktop-cale
 다운로드 배포용 zip 패키지 생성:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\package-desktop-calendar-release.ps1 -Version 0.1.0 -Runtimes win-x64
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\package-desktop-calendar-release.ps1 -Version 0.1.21 -Runtimes win-x64
 ```
 
 로컬 설치:
@@ -48,7 +48,7 @@ GitHub Actions workflow `.github/workflows/desktop-calendar-release.yml`가 배�
 
 - 일반 push: Actions artifact로 `DesktopCalendar-<version>-win-x64.zip`, `DesktopCalendar-<version>-win-arm64.zip` 생성
 - 수동 실행: GitHub Actions에서 `Desktop Calendar Release` workflow를 실행하고 version 입력
-- 릴리스 생성: `desktop-calendar-v0.1.0` 같은 tag를 push하면 GitHub Release에 zip과 `SHA256SUMS.txt`가 첨부됨
+- 릴리스 생성: `desktop-calendar-v0.1.21` 같은 tag를 push하면 GitHub Release에 zip과 `SHA256SUMS.txt`가 첨부됨
 
 사용자 설치 순서:
 
@@ -67,19 +67,21 @@ GitHub Actions workflow `.github/workflows/desktop-calendar-release.yml`가 배�
 - 오늘/선택 날짜 강조
 - 일정 드래그 이동
 - 오늘 일정, 다음 7일 일정, 검색 결과 패널
-- 반복 일정: 매일, 매주, 매월, 매년
-- 알림: 브라우저가 열려 있을 때 지정 시간 전에 알림
+- 반복 일정: 매일, 매주, 매월, 매년. 월말/윤년 일정은 해당 달의 마지막 날짜로 보정
+- 알림: 정시, 10분 전, 30분 전, 1시간 전, 하루 전
 - 로컬 저장: 브라우저 `localStorage`
-- JSON 내보내기/가져오기
 - WPF/WebView2 Windows 호스트
-- 바탕화면 레이어 고정 시도
+- Desktop Calendar 방식의 바탕화면 오버레이 고정
 - 트레이 아이콘: 바탕화면 고정, 일반 창, 숨기기, 시작프로그램, 종료
 - 해상도 기반 자동 창 크기
 - 트레이 크기 설정: Auto, Compact, Normal, Large, Full desktop, Custom
-- 앱 상단 `창 설정` 패널에서 폭/높이와 X/Y 위치 직접 조절
-- 앱 상단 `이동` 버튼을 켠 뒤 빈 공간을 드래그해서 창 이동
+- 앱 상단 `설정` 패널에서 편집 잠금, 투명도, 글자 크기, 색상 테마 조절
+- 편집 잠금 상태에서는 바탕화면 아이콘 클릭이 캘린더보다 우선됨
+- 편집 잠금 해제 상태에서는 앱 빈 공간 드래그로 창 이동, 테두리 드래그로 크기 조절
+- Explorer 재시작, DPI 변경, 디스플레이 변경 시 바탕화면 레이어 재부착
 - 투명 배경 모드: 달력 뒤로 바탕화면이 보이도록 WebView2/WPF 배경 투명 처리
 - 앱 우상단 창 버튼: 최소화, 최대화/복원, 종료
+- GitHub Actions 자동 패키징: push artifact와 tag 기반 GitHub Release 생성
 
 ## Common Calendar Features To Consider
 

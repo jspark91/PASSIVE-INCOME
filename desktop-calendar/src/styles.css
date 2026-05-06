@@ -14,6 +14,12 @@
   --accent: #22746b;
   --accent-strong: #165f58;
   --danger: #b23445;
+  --calendar-alpha: 0.22;
+  --font-scale: 1;
+  --month-cell-rgb: 8, 57, 68;
+  --outside-cell-rgb: 92, 55, 34;
+  --weekday-rgb: 6, 50, 60;
+  --grid-rgb: 4, 16, 19;
   --shadow: 0 18px 40px rgba(0, 0, 0, 0.10);
   font-family:
     "Segoe UI",
@@ -39,7 +45,38 @@ body {
 body {
   background: var(--bg);
   color: var(--ink);
+  font-size: calc(14px * var(--font-scale));
   overflow: hidden;
+}
+
+body[data-theme="graphite"] {
+  --frame-line: #8fa1b2;
+  --accent: #56616c;
+  --accent-strong: #3f4954;
+  --month-cell-rgb: 28, 36, 44;
+  --outside-cell-rgb: 61, 47, 42;
+  --weekday-rgb: 30, 38, 46;
+  --grid-rgb: 12, 16, 20;
+}
+
+body[data-theme="forest"] {
+  --frame-line: #72c791;
+  --accent: #2d7450;
+  --accent-strong: #1c5b3b;
+  --month-cell-rgb: 18, 74, 51;
+  --outside-cell-rgb: 69, 55, 31;
+  --weekday-rgb: 16, 64, 46;
+  --grid-rgb: 8, 24, 18;
+}
+
+body[data-theme="sunset"] {
+  --frame-line: #e5b25f;
+  --accent: #9d5d36;
+  --accent-strong: #714022;
+  --month-cell-rgb: 84, 45, 32;
+  --outside-cell-rgb: 60, 45, 68;
+  --weekday-rgb: 77, 47, 36;
+  --grid-rgb: 24, 14, 12;
 }
 
 button,
@@ -132,27 +169,27 @@ body.is-desktop-overlay-mode .topbar {
 }
 
 body.is-desktop-overlay-mode .calendar-grid {
-  background: rgba(4, 16, 19, 0.18);
+  background: rgba(var(--grid-rgb), calc(var(--calendar-alpha) * 0.75));
 }
 
 body.is-desktop-overlay-mode .weekday-row {
-  background: rgba(6, 50, 60, 0.20);
+  background: rgba(var(--weekday-rgb), calc(var(--calendar-alpha) * 0.9));
 }
 
 body.is-desktop-overlay-mode .day-cell {
-  background: rgba(8, 57, 68, 0.16);
+  background: rgba(var(--month-cell-rgb), var(--calendar-alpha));
 }
 
 body.is-desktop-overlay-mode .day-cell:hover {
-  background: rgba(12, 83, 98, 0.28);
+  background: rgba(var(--month-cell-rgb), calc(var(--calendar-alpha) + 0.12));
 }
 
 body.is-desktop-overlay-mode .day-cell.outside-month {
-  background: rgba(92, 55, 34, 0.15);
+  background: rgba(var(--outside-cell-rgb), calc(var(--calendar-alpha) * 0.85));
 }
 
 body.is-desktop-overlay-mode .day-cell.outside-month:hover {
-  background: rgba(112, 67, 42, 0.22);
+  background: rgba(var(--outside-cell-rgb), calc(var(--calendar-alpha) + 0.08));
 }
 
 body.is-desktop-overlay-mode .side-panel,
@@ -160,6 +197,14 @@ body.is-desktop-overlay-mode .editor-section,
 body.is-desktop-overlay-mode .agenda-section,
 body.is-desktop-overlay-mode .modal-panel {
   background: rgba(7, 25, 30, 0.20);
+}
+
+body.is-interaction-locked .resize-handle {
+  display: none;
+}
+
+body.is-interaction-locked .app-shell {
+  cursor: default;
 }
 
 .resize-handle {
@@ -963,6 +1008,16 @@ textarea {
 
 .size-control-grid input[type="range"] {
   width: 100%;
+  padding: 0;
+}
+
+.settings-panel {
+  width: min(460px, 100%);
+}
+
+.settings-panel input[type="range"] {
+  width: 100%;
+  height: 28px;
   padding: 0;
 }
 

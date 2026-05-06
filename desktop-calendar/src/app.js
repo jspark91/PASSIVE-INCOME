@@ -3,6 +3,7 @@
 
   const STORAGE_KEY = "desktop-calendar.events.v1";
   const NOTIFICATION_KEY = "desktop-calendar.notifications.enabled";
+  const APP_SETTINGS_KEY = "desktop-calendar.app-settings.v1";
   const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
   const DEFAULT_WINDOW_SETTINGS = {
     mode: "Auto",
@@ -29,6 +30,13 @@
     task: { label: "할일", color: "#56616c" }
   };
 
+  const DEFAULT_APP_SETTINGS = {
+    locked: true,
+    opacity: 22,
+    fontScale: 100,
+    theme: "cyan"
+  };
+
   const state = {
     viewDate: startOfMonth(new Date()),
     selectedDate: toISODate(new Date()),
@@ -38,6 +46,7 @@
     filterCategory: "all",
     notifiedKeys: new Set(),
     windowSettings: { ...DEFAULT_WINDOW_SETTINGS },
+    appSettings: loadAppSettings(),
     windowDrag: null,
     windowResizeDrag: null,
     suppressNextClick: false
@@ -92,6 +101,18 @@
     dayDetailNewButton: document.getElementById("dayDetailNewButton"),
     dayEventList: document.getElementById("dayEventList"),
     notificationButton: document.getElementById("notificationButton"),
+    lockToggleButton: document.getElementById("lockToggleButton"),
+    appearanceButton: document.getElementById("appearanceButton"),
+    appearanceModal: document.getElementById("appearanceModal"),
+    appearanceClose: document.getElementById("appearanceClose"),
+    lockWindowSetting: document.getElementById("lockWindowSetting"),
+    themeSelect: document.getElementById("themeSelect"),
+    overlayOpacityRange: document.getElementById("overlayOpacityRange"),
+    overlayOpacityValue: document.getElementById("overlayOpacityValue"),
+    fontScaleRange: document.getElementById("fontScaleRange"),
+    fontScaleValue: document.getElementById("fontScaleValue"),
+    appearanceApply: document.getElementById("appearanceApply"),
+    appearanceReset: document.getElementById("appearanceReset"),
     searchInput: document.getElementById("searchInput"),
     categoryFilter: document.getElementById("categoryFilter"),
     todayList: document.getElementById("todayList"),
@@ -107,15 +128,23 @@
     renderWeekdays();
     renderCategoryOptions();
     bindEvents();
+    applyAppSettings();
     resetEditor(state.selectedDate);
     render();
     syncEventsToHost();
+    updateNotificationButton();
 
     if (localStorage.getItem(NOTIFICATION_KEY) === "1") {
       requestNotificationPermission(false);
     }
 
     window.setInterval(checkReminders, 30000);
+    window.addEventListener("focus", checkReminders);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) {
+        checkReminders();
+      }
+    });
   }
 
   function bindEvents() {
@@ -157,6 +186,24 @@
     });
     els.windowCloseButton.addEventListener("click", function () {
       postHostMessage({ type: "window:close" });
+    });
+    els.lockToggleButton.addEventListener("click", function () {
+      setInteractionLocked(!state.appSettings.locked, true);
+    });
+    els.appearanceButton.addEventListener("click", openAppearanceModal);
+    els.appearanceClose.addEventListener("click", closeAppearanceModal);
+    els.appearanceApply.addEventListener("click", applyAppearanceFromControls);
+    els.appearanceReset.addEventListener("click", resetAppearanceSettings);
+    els.lockWindowSetting.addEventListener("change", function () {
+      setInteractionLocked(els.lockWindowSetting.checked, false);
+    });
+    els.themeSelect.addEventListener("change", applyAppearanceFromControls);
+    els.overlayOpacityRange.addEventListener("input", applyAppearanceFromControls);
+    els.fontScaleRange.addEventListener("input", applyAppearanceFromControls);
+    els.appearanceModal.addEventListener("click", function (event) {
+      if (event.target === els.appearanceModal) {
+        closeAppearanceModal();
+      }
     });
 
     els.windowSizeClose.addEventListener("click", closeWindowSizeModal);
@@ -285,6 +332,10 @@
         }
         if (!els.windowSizeModal.hidden) {
           closeWindowSizeModal();
+          return;
+        }
+        if (!els.appearanceModal.hidden) {
+          closeAppearanceModal();
           return;
         }
         resetEditor(state.selectedDate);
@@ -549,8 +600,80 @@
     els.windowSizeModal.hidden = true;
   }
 
+  function openAppearanceModal() {
+    hydrateAppearanceControls();
+    els.appearanceModal.hidden = false;
+  }
+
+  function closeAppearanceModal() {
+    els.appearanceModal.hidden = true;
+  }
+
+  function hydrateAppearanceControls() {
+    els.lockWindowSetting.checked = state.appSettings.locked;
+    els.themeSelect.value = state.appSettings.theme;
+    els.overlayOpacityRange.value = state.appSettings.opacity;
+    els.fontScaleRange.value = state.appSettings.fontScale;
+    syncAppearanceLabels();
+  }
+
+  function applyAppearanceFromControls() {
+    state.appSettings = normalizeAppSettings({
+      locked: els.lockWindowSetting.checked,
+      theme: els.themeSelect.value,
+      opacity: Number(els.overlayOpacityRange.value),
+      fontScale: Number(els.fontScaleRange.value)
+    });
+    saveAppSettings();
+    applyAppSettings();
+  }
+
+  function resetAppearanceSettings() {
+    state.appSettings = { ...DEFAULT_APP_SETTINGS };
+    saveAppSettings();
+    applyAppSettings();
+    hydrateAppearanceControls();
+    showToast("표시 설정 초기화");
+  }
+
+  function setInteractionLocked(locked, showResult) {
+    state.appSettings.locked = Boolean(locked);
+    saveAppSettings();
+    applyAppSettings();
+    hydrateAppearanceControls();
+    if (showResult) {
+      showToast(state.appSettings.locked ? "편집 잠금" : "편집 잠금 해제");
+    }
+  }
+
+  function applyAppSettings() {
+    const settings = normalizeAppSettings(state.appSettings);
+    state.appSettings = settings;
+    document.body.classList.toggle("is-interaction-locked", settings.locked);
+    document.body.dataset.theme = settings.theme;
+    document.documentElement.style.setProperty("--calendar-alpha", String(settings.opacity / 100));
+    document.documentElement.style.setProperty("--font-scale", String(settings.fontScale / 100));
+    els.lockToggleButton.classList.toggle("is-active", settings.locked);
+    els.lockToggleButton.textContent = settings.locked ? "잠금" : "편집";
+    syncAppearanceLabels();
+    postHostMessage({
+      type: "window:setInteractionLocked",
+      locked: settings.locked
+    });
+  }
+
+  function syncAppearanceLabels() {
+    els.overlayOpacityValue.textContent = `${els.overlayOpacityRange.value}%`;
+    els.fontScaleValue.textContent = `${els.fontScaleRange.value}%`;
+  }
+
   function beginWindowResize(event) {
     if (event.button !== 0) {
+      return;
+    }
+
+    if (state.appSettings.locked) {
+      showToast("잠금 해제 후 크기를 조절할 수 있습니다.");
       return;
     }
 
@@ -603,6 +726,10 @@
       return;
     }
 
+    if (state.appSettings.locked) {
+      return;
+    }
+
     if (!isWindowDragTarget(event.target)) {
       return;
     }
@@ -647,6 +774,10 @@
   }
 
   function handleFrameDoubleClick(event) {
+    if (state.appSettings.locked) {
+      return;
+    }
+
     if (!isFrameDoubleClickTarget(event.target)) {
       return;
     }
@@ -720,6 +851,11 @@
       ...DEFAULT_WINDOW_SETTINGS,
       ...message
     };
+    if (typeof message.locked === "boolean" && message.locked !== state.appSettings.locked) {
+      state.appSettings.locked = message.locked;
+      saveAppSettings();
+      applyAppSettings();
+    }
     hydrateWindowSizeControls(state.windowSettings);
   }
 
@@ -918,11 +1054,15 @@
     }
 
     if (event.repeat === "monthly") {
-      return target.getDate() === start.getDate();
+      return target.getDate() === Math.min(start.getDate(), daysInMonth(target));
     }
 
     if (event.repeat === "yearly") {
-      return target.getMonth() === start.getMonth() && target.getDate() === start.getDate();
+      if (target.getMonth() !== start.getMonth()) {
+        return false;
+      }
+
+      return target.getDate() === Math.min(start.getDate(), daysInMonth(target));
     }
 
     return false;
@@ -973,19 +1113,42 @@
   function requestNotificationPermission(showResult) {
     if (!("Notification" in window)) {
       if (showResult) showToast("이 브라우저는 알림을 지원하지 않습니다.");
+      updateNotificationButton();
       return;
     }
 
     Notification.requestPermission().then(function (permission) {
       if (permission === "granted") {
         localStorage.setItem(NOTIFICATION_KEY, "1");
+        updateNotificationButton();
         if (showResult) showToast("알림 켜짐");
         checkReminders();
         return;
       }
 
+      localStorage.removeItem(NOTIFICATION_KEY);
+      updateNotificationButton();
       if (showResult) showToast("알림 권한이 필요합니다.");
     });
+  }
+
+  function updateNotificationButton() {
+    if (!("Notification" in window)) {
+      els.notificationButton.textContent = "알림 없음";
+      els.notificationButton.disabled = true;
+      return;
+    }
+
+    const enabled = localStorage.getItem(NOTIFICATION_KEY) === "1" && Notification.permission === "granted";
+    els.notificationButton.disabled = false;
+    els.notificationButton.classList.toggle("is-active", enabled);
+
+    if (Notification.permission === "denied") {
+      els.notificationButton.textContent = "알림 차단";
+      return;
+    }
+
+    els.notificationButton.textContent = enabled ? "알림 켜짐" : "알림";
   }
 
   function checkReminders() {
@@ -1002,11 +1165,15 @@
         if (!event.time || !event.reminder || event.reminder === "none" || event.done) return;
 
         const eventStart = new Date(`${dateIso}T${event.time}:00`);
-        const remindAt = new Date(eventStart.getTime() - Number(event.reminder) * 60000);
+        const reminderMinutes = Number(event.reminder);
+        if (Number.isNaN(reminderMinutes)) return;
+
+        const remindAt = new Date(eventStart.getTime() - reminderMinutes * 60000);
         const key = `${event.id}:${dateIso}:${event.reminder}`;
+        const staleAt = new Date(eventStart.getTime() + 5 * 60000);
 
         if (state.notifiedKeys.has(key)) return;
-        if (now < remindAt || now > eventStart) return;
+        if (now < remindAt || now > staleAt) return;
 
         state.notifiedKeys.add(key);
         const category = CATEGORIES[event.category] || CATEGORIES.task;
@@ -1027,6 +1194,31 @@
     } catch (error) {
       return [];
     }
+  }
+
+  function loadAppSettings() {
+    try {
+      const raw = localStorage.getItem(APP_SETTINGS_KEY);
+      return normalizeAppSettings(raw ? JSON.parse(raw) : {});
+    } catch (error) {
+      return { ...DEFAULT_APP_SETTINGS };
+    }
+  }
+
+  function saveAppSettings() {
+    localStorage.setItem(APP_SETTINGS_KEY, JSON.stringify(state.appSettings));
+  }
+
+  function normalizeAppSettings(settings) {
+    const theme = ["cyan", "graphite", "forest", "sunset"].includes(settings.theme)
+      ? settings.theme
+      : DEFAULT_APP_SETTINGS.theme;
+    return {
+      locked: typeof settings.locked === "boolean" ? settings.locked : DEFAULT_APP_SETTINGS.locked,
+      opacity: clampNumber(settings.opacity ?? DEFAULT_APP_SETTINGS.opacity, 10, 70),
+      fontScale: clampNumber(settings.fontScale ?? DEFAULT_APP_SETTINGS.fontScale, 85, 125),
+      theme
+    };
   }
 
   function saveEvents() {
@@ -1069,6 +1261,10 @@
   function parseISODate(iso) {
     const parts = iso.split("-").map(Number);
     return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  function daysInMonth(date) {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   }
 
   function toISODate(date) {

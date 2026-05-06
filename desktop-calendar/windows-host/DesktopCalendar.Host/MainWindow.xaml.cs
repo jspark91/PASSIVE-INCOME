@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Interop;
 using DesktopCalendar.Host.Interop;
 using DesktopCalendar.Host.Services;
+using Microsoft.Win32;
 using Microsoft.Web.WebView2.Core;
 using Forms = System.Windows.Forms;
 
@@ -15,6 +16,9 @@ public partial class MainWindow : Window
     private const double MinWindowWidth = 760;
     private const double MinWindowHeight = 460;
     private const int WmNcHitTest = 0x0084;
+    private const int WmDisplayChange = 0x007E;
+    private const int WmSettingChange = 0x001A;
+    private const int WmDpiChanged = 0x02E0;
     private const int HtTransparent = -1;
     private const int HtClient = 1;
     private const int HtLeft = 10;
@@ -31,10 +35,12 @@ public partial class MainWindow : Window
     private readonly CalendarWindowSettings _settings;
     private readonly System.Windows.Threading.DispatcherTimer _persistWindowTimer;
     private readonly System.Windows.Threading.DispatcherTimer _desktopIconPassThroughTimer;
+    private readonly System.Windows.Threading.DispatcherTimer _desktopAttachmentTimer;
     private Forms.NotifyIcon? _trayIcon;
     private Forms.ToolStripMenuItem? _startupMenuItem;
     private Forms.ToolStripMenuItem? _backgroundModeMenuItem;
     private Forms.ToolStripMenuItem? _editModeMenuItem;
+    private Forms.ToolStripMenuItem? _interactionLockMenuItem;
     private readonly Dictionary<CalendarWindowSizeMode, Forms.ToolStripMenuItem> _sizeMenuItems = new();
     private IntPtr _desktopParentHandle;
     private bool _isApplyingBounds;
@@ -42,6 +48,7 @@ public partial class MainWindow : Window
     private bool _isClickThrough;
     private bool _isDesktopOverlay;
     private bool _isIconPassThrough;
+    private IntPtr _desktopShellHandle;
     private string _latestEventsJson = "[]";
 
     public MainWindow()
@@ -59,11 +66,17 @@ public partial class MainWindow : Window
             Interval = TimeSpan.FromMilliseconds(120)
         };
         _desktopIconPassThroughTimer.Tick += (_, _) => SyncDesktopIconPassThrough();
+        _desktopAttachmentTimer = new System.Windows.Threading.DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(2)
+        };
+        _desktopAttachmentTimer.Tick += (_, _) => RefreshDesktopAttachmentIfNeeded("timer");
 
         Loaded += OnLoaded;
         Closing += OnClosing;
         SizeChanged += OnWindowBoundsChanged;
         LocationChanged += OnWindowBoundsChanged;
+        SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
     }
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -128,6 +141,13 @@ public partial class MainWindow : Window
         };
         _editModeMenuItem.Click += (_, _) => ShowAsNormalWindow();
         menu.Items.Add(_editModeMenuItem);
+
+        _interactionLockMenuItem = new Forms.ToolStripMenuItem("편집 잠금 - 바탕화면 클릭 우선")
+        {
+            CheckOnClick = false
+        };
+        _interactionLockMenuItem.Click += (_, _) => SetInteractionLocked(!_settings.InteractionLocked);
+        menu.Items.Add(_interactionLockMenuItem);
 
         menu.Items.Add("Wallpaper image mode (fallback)", null, (_, _) => ShowAsDesktopBackground());
         menu.Items.Add("배경화면 달력 새로고침", null, (_, _) => ApplyDesktopWallpaper());
@@ -225,6 +245,11 @@ public partial class MainWindow : Window
 
     private void SetWindowPosition(double left, double top)
     {
+        if (_settings.InteractionLocked)
+        {
+            return;
+        }
+
         var workingArea = GetWorkingArea();
         _settings.HasCustomPosition = true;
         _settings.CustomLeft = Clamp(left, workingArea.Left, Math.Max(workingArea.Left, workingArea.Right - Width));
@@ -237,6 +262,11 @@ public partial class MainWindow : Window
 
     private void MoveWindowBy(double dx, double dy, bool persist)
     {
+        if (_settings.InteractionLocked)
+        {
+            return;
+        }
+
         var workingArea = GetWorkingArea();
         var left = Clamp(Left + dx, workingArea.Left, Math.Max(workingArea.Left, workingArea.Right - Width));
         var top = Clamp(Top + dy, workingArea.Top, Math.Max(workingArea.Top, workingArea.Bottom - Height));
@@ -255,6 +285,11 @@ public partial class MainWindow : Window
 
     private void ResizeWindowBy(string edge, double dx, double dy, bool persist)
     {
+        if (_settings.InteractionLocked)
+        {
+            return;
+        }
+
         var workingArea = GetWorkingArea();
         var left = Left;
         var top = Top;
@@ -399,9 +434,11 @@ public partial class MainWindow : Window
     private void ShowAsDesktopBackground()
     {
         _desktopIconPassThroughTimer.Stop();
+        _desktopAttachmentTimer.Stop();
         DesktopHost.SetHitTestPassThrough(GetWindowHandle(), enabled: false);
         _isDesktopOverlay = false;
         _isIconPassThrough = false;
+        _desktopShellHandle = IntPtr.Zero;
         _desktopParentHandle = IntPtr.Zero;
         _isClickThrough = true;
         ShowInTaskbar = false;
@@ -420,13 +457,13 @@ public partial class MainWindow : Window
         DesktopHost.DetachFromDesktop(handle);
         DesktopHost.SetHitTestPassThrough(handle, enabled: false);
         DesktopHost.SetDesktopWidgetWindow(handle);
+        _desktopShellHandle = DesktopHost.GetDesktopShellViewHandle();
 
         _desktopParentHandle = IntPtr.Zero;
         _isClickThrough = false;
         _isDesktopOverlay = true;
         _isIconPassThrough = false;
         ShowInTaskbar = false;
-        SetCalendarInteraction(enabled: true);
 
         try
         {
@@ -439,7 +476,9 @@ public partial class MainWindow : Window
 
         ApplyDesktopBounds();
         Show();
+        ApplyInteractionLock();
         _desktopIconPassThroughTimer.Start();
+        _desktopAttachmentTimer.Start();
         LogDiagnostic($"overlay started; iconRects={GetDesktopIconRectCountForDiagnostics()}");
         SyncDesktopIconPassThrough();
         SyncInteractionMenuItems();
@@ -450,6 +489,7 @@ public partial class MainWindow : Window
     {
         var handle = GetWindowHandle();
         _desktopIconPassThroughTimer.Stop();
+        _desktopAttachmentTimer.Stop();
         DesktopHost.DetachFromDesktop(handle);
         DesktopHost.SetHitTestPassThrough(handle, enabled: false);
         _desktopParentHandle = IntPtr.Zero;
@@ -461,6 +501,7 @@ public partial class MainWindow : Window
         DesktopHost.SetAppWindow(handle);
         _isClickThrough = false;
         ShowInTaskbar = true;
+        _desktopShellHandle = IntPtr.Zero;
 
         ApplyDesktopBounds();
 
@@ -474,6 +515,18 @@ public partial class MainWindow : Window
     {
         if (!_isDesktopOverlay || !IsVisible)
         {
+            return;
+        }
+
+        if (_settings.InteractionLocked)
+        {
+            if (!_isIconPassThrough)
+            {
+                _isIconPassThrough = true;
+                DesktopHost.SetHitTestPassThrough(GetWindowHandle(), enabled: true);
+                LogDiagnostic("iconPassThrough=True (interaction locked)");
+            }
+
             return;
         }
 
@@ -508,6 +561,51 @@ public partial class MainWindow : Window
             LogDiagnostic($"icon rect count failed: {ex.GetType().Name}: {ex.Message}");
             return -1;
         }
+    }
+
+    private void RefreshDesktopAttachmentIfNeeded(string reason)
+    {
+        if (!_isDesktopOverlay || !IsVisible)
+        {
+            return;
+        }
+
+        var currentShell = DesktopHost.GetDesktopShellViewHandle();
+        if (currentShell == IntPtr.Zero || currentShell == _desktopShellHandle)
+        {
+            return;
+        }
+
+        RefreshDesktopAttachment(reason);
+    }
+
+    private void RefreshDesktopAttachment(string reason)
+    {
+        if (!_isDesktopOverlay)
+        {
+            return;
+        }
+
+        var handle = GetWindowHandle();
+        DesktopHost.SetHitTestPassThrough(handle, enabled: false);
+        DesktopHost.SetDesktopWidgetWindow(handle);
+        _desktopShellHandle = DesktopHost.GetDesktopShellViewHandle();
+        _isIconPassThrough = false;
+        DesktopIconHitTester.ClearCache();
+        ApplyDesktopBounds();
+        ApplyInteractionLock();
+        PostWindowSettings();
+        LogDiagnostic($"desktop attachment refreshed: {reason}; shell=0x{_desktopShellHandle.ToInt64():X}; iconRects={GetDesktopIconRectCountForDiagnostics()}");
+    }
+
+    private void OnDisplaySettingsChanged(object? sender, EventArgs e)
+    {
+        Dispatcher.InvokeAsync(() =>
+        {
+            DesktopIconHitTester.ClearCache();
+            ApplyDesktopBounds();
+            RefreshDesktopAttachment("display settings changed");
+        });
     }
 
     private static void LogDiagnostic(string message)
@@ -550,6 +648,30 @@ public partial class MainWindow : Window
         CalendarWebView.Focusable = enabled;
     }
 
+    private void SetInteractionLocked(bool locked)
+    {
+        _settings.InteractionLocked = locked;
+        WindowSettingsStore.Save(_settings);
+        ApplyInteractionLock();
+        SyncInteractionMenuItems();
+        PostWindowSettings();
+    }
+
+    private void ApplyInteractionLock()
+    {
+        var handle = GetWindowHandle();
+        var passThrough = _isDesktopOverlay && _settings.InteractionLocked;
+
+        SetCalendarInteraction(!passThrough);
+        DesktopHost.SetHitTestPassThrough(handle, passThrough);
+        _isIconPassThrough = passThrough;
+
+        if (!passThrough && _isDesktopOverlay)
+        {
+            SyncDesktopIconPassThrough();
+        }
+    }
+
     private void SyncInteractionMenuItems()
     {
         if (_backgroundModeMenuItem is not null)
@@ -560,6 +682,14 @@ public partial class MainWindow : Window
         if (_editModeMenuItem is not null)
         {
             _editModeMenuItem.Checked = !_isClickThrough && !_isDesktopOverlay;
+        }
+
+        if (_interactionLockMenuItem is not null)
+        {
+            _interactionLockMenuItem.Checked = _settings.InteractionLocked;
+            _interactionLockMenuItem.Text = _settings.InteractionLocked
+                ? "편집 잠금 해제 - 캘린더 클릭"
+                : "편집 잠금 - 바탕화면 클릭 우선";
         }
     }
 
@@ -718,6 +848,11 @@ public partial class MainWindow : Window
 
             if (type == "window:moveBy")
             {
+                if (_settings.InteractionLocked)
+                {
+                    return;
+                }
+
                 var dx = root.TryGetProperty("dx", out var dxElement)
                     ? dxElement.GetDouble()
                     : 0;
@@ -730,6 +865,11 @@ public partial class MainWindow : Window
 
             if (type == "window:resizeBy")
             {
+                if (_settings.InteractionLocked)
+                {
+                    return;
+                }
+
                 var edge = root.TryGetProperty("edge", out var edgeElement)
                     ? edgeElement.GetString()
                     : null;
@@ -758,6 +898,11 @@ public partial class MainWindow : Window
 
             if (type == "window:maximize")
             {
+                if (_settings.InteractionLocked)
+                {
+                    return;
+                }
+
                 ToggleMaximize();
                 return;
             }
@@ -777,11 +922,29 @@ public partial class MainWindow : Window
 
             if (type == "window:center")
             {
+                if (_settings.InteractionLocked)
+                {
+                    return;
+                }
+
                 CenterWindow();
                 return;
             }
 
+            if (type == "window:setInteractionLocked")
+            {
+                var locked = root.TryGetProperty("locked", out var lockedElement)
+                             && lockedElement.GetBoolean();
+                SetInteractionLocked(locked);
+                return;
+            }
+
             if (type != "window:setSize")
+            {
+                return;
+            }
+
+            if (_settings.InteractionLocked)
             {
                 return;
             }
@@ -868,7 +1031,8 @@ public partial class MainWindow : Window
             minHeight = MinWindowHeight,
             maxHeight = Math.Round(Math.Min(ResolveMaxHeight(workingArea.Height), workingArea.Height)),
             screenWidth = workingArea.Width,
-            screenHeight = workingArea.Height
+            screenHeight = workingArea.Height,
+            locked = _settings.InteractionLocked
         };
 
         CalendarWebView.CoreWebView2.PostWebMessageAsJson(JsonSerializer.Serialize(payload));
@@ -906,6 +1070,7 @@ public partial class MainWindow : Window
 
         e.Cancel = true;
         _desktopIconPassThroughTimer.Stop();
+        _desktopAttachmentTimer.Stop();
         DesktopHost.SetHitTestPassThrough(GetWindowHandle(), enabled: false);
         _isIconPassThrough = false;
         Hide();
@@ -915,6 +1080,8 @@ public partial class MainWindow : Window
     {
         _exitRequested = true;
         _desktopIconPassThroughTimer.Stop();
+        _desktopAttachmentTimer.Stop();
+        SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
         DesktopHost.SetHitTestPassThrough(GetWindowHandle(), enabled: false);
         _trayIcon?.Dispose();
         Close();
@@ -942,6 +1109,12 @@ public partial class MainWindow : Window
 
         if (msg == WmNcHitTest && _isDesktopOverlay)
         {
+            if (_settings.InteractionLocked)
+            {
+                handled = true;
+                return new IntPtr(HtTransparent);
+            }
+
             var screenPoint = new System.Windows.Point(GetSignedLowWord(lParam), GetSignedHighWord(lParam));
             if (DesktopIconHitTester.IsPointOverDesktopIcon(screenPoint))
             {
@@ -950,7 +1123,23 @@ public partial class MainWindow : Window
             }
         }
 
+        if ((msg == WmDisplayChange || msg == WmSettingChange || msg == WmDpiChanged) && _isDesktopOverlay)
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                DesktopIconHitTester.ClearCache();
+                ApplyDesktopBounds();
+                RefreshDesktopAttachment($"window message 0x{msg:X}");
+            });
+            return IntPtr.Zero;
+        }
+
         if (msg != WmNcHitTest || WindowState != WindowState.Normal)
+        {
+            return IntPtr.Zero;
+        }
+
+        if (_settings.InteractionLocked)
         {
             return IntPtr.Zero;
         }

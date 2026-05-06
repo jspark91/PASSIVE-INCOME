@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f4f6f8" />
     <title>Desktop Calendar</title>
-    <link rel="stylesheet" href="./src/styles.css?v=0.1.20" />
+    <link rel="stylesheet" href="./src/styles.css?v=0.1.21" />
   </head>
   <body>
     <div class="app-shell">
@@ -39,6 +39,8 @@
           </label>
           <select id="categoryFilter" aria-label="분류 필터"></select>
           <button class="plain-button" id="notificationButton" type="button">알림</button>
+          <button class="plain-button" id="lockToggleButton" type="button">잠금</button>
+          <button class="plain-button" id="appearanceButton" type="button">설정</button>
           <button class="plain-button" id="fullscreenButton" type="button">전체화면</button>
         </div>
 
@@ -107,6 +109,7 @@
                   <label for="eventReminder">알림</label>
                   <select id="eventReminder">
                     <option value="none">없음</option>
+                    <option value="0">정시</option>
                     <option value="10">10분 전</option>
                     <option value="30">30분 전</option>
                     <option value="60">1시간 전</option>
@@ -253,8 +256,47 @@
           </div>
         </section>
       </div>
+
+      <div class="modal-backdrop" id="appearanceModal" hidden>
+        <section class="modal-panel settings-panel" role="dialog" aria-modal="true" aria-labelledby="appearanceTitle">
+          <div class="modal-heading">
+            <h2 id="appearanceTitle">표시 설정</h2>
+            <button class="icon-button" id="appearanceClose" type="button" aria-label="닫기">×</button>
+          </div>
+
+          <label class="check-row" for="lockWindowSetting">
+            <input id="lockWindowSetting" type="checkbox" />
+            <span>편집 잠금 시 바탕화면 아이콘 우선 클릭</span>
+          </label>
+
+          <div class="field-row">
+            <label for="themeSelect">테마</label>
+            <select id="themeSelect">
+              <option value="cyan">청록</option>
+              <option value="graphite">흑연</option>
+              <option value="forest">녹색</option>
+              <option value="sunset">붉은 갈색</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="overlayOpacityRange">투명도 <strong id="overlayOpacityValue"></strong></label>
+            <input id="overlayOpacityRange" type="range" min="10" max="70" step="5" />
+          </div>
+
+          <div class="field-row">
+            <label for="fontScaleRange">글자 크기 <strong id="fontScaleValue"></strong></label>
+            <input id="fontScaleRange" type="range" min="85" max="125" step="5" />
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-button" id="appearanceApply" type="button">적용</button>
+            <button class="plain-button" id="appearanceReset" type="button">기본값</button>
+          </div>
+        </section>
+      </div>
     </div>
 
-    <script src="./src/app.js?v=0.1.20"></script>
+    <script src="./src/app.js?v=0.1.21"></script>
   </body>
 </html>

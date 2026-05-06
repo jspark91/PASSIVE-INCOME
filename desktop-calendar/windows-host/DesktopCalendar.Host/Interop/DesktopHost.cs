@@ -118,6 +118,11 @@ internal static class DesktopHost
         return progman;
     }
 
+    internal static IntPtr GetDesktopShellViewHandle()
+    {
+        return FindDesktopShellView();
+    }
+
     internal static void AttachToDesktop(IntPtr windowHandle, IntPtr desktopHandle)
     {
         var style = GetWindowLongPtr(windowHandle, GwlStyle).ToInt64();
