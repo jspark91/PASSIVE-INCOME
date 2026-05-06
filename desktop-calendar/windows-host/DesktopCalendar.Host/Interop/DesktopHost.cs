@@ -255,6 +255,17 @@ internal static class DesktopHost
 
     internal static void SetHitTestPassThrough(IntPtr windowHandle, bool enabled)
     {
+        SetSingleWindowHitTestPassThrough(windowHandle, enabled);
+
+        EnumChildWindows(windowHandle, (childHandle, _) =>
+        {
+            SetSingleWindowHitTestPassThrough(childHandle, enabled);
+            return true;
+        }, IntPtr.Zero);
+    }
+
+    private static void SetSingleWindowHitTestPassThrough(IntPtr windowHandle, bool enabled)
+    {
         var style = GetWindowLongPtr(windowHandle, GwlExStyle).ToInt64();
         if (enabled)
         {
@@ -383,6 +394,9 @@ internal static class DesktopHost
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool EnumChildWindows(IntPtr hWndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);

@@ -31,7 +31,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build-desktop-cale
 다운로드 배포용 zip 패키지 생성:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\package-desktop-calendar-release.ps1 -Version 0.1.21 -Runtimes win-x64
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\package-desktop-calendar-release.ps1 -Version 0.1.22 -Runtimes win-x64
 ```
 
 로컬 설치:
@@ -48,7 +48,7 @@ GitHub Actions workflow `.github/workflows/desktop-calendar-release.yml`가 배�
 
 - 일반 push: Actions artifact로 `DesktopCalendar-<version>-win-x64.zip`, `DesktopCalendar-<version>-win-arm64.zip` 생성
 - 수동 실행: GitHub Actions에서 `Desktop Calendar Release` workflow를 실행하고 version 입력
-- 릴리스 생성: `desktop-calendar-v0.1.21` 같은 tag를 push하면 GitHub Release에 zip과 `SHA256SUMS.txt`가 첨부됨
+- 릴리스 생성: `desktop-calendar-v0.1.22` 같은 tag를 push하면 GitHub Release에 zip과 `SHA256SUMS.txt`가 첨부됨
 
 사용자 설치 순서:
 
@@ -76,8 +76,9 @@ GitHub Actions workflow `.github/workflows/desktop-calendar-release.yml`가 배�
 - 해상도 기반 자동 창 크기
 - 트레이 크기 설정: Auto, Compact, Normal, Large, Full desktop, Custom
 - 앱 상단 `설정` 패널에서 편집 잠금, 투명도, 글자 크기, 색상 테마 조절
-- 편집 잠금 상태에서는 바탕화면 아이콘 클릭이 캘린더보다 우선됨
+- 편집 잠금 상태에서는 WebView2 자식 창까지 클릭 통과 처리해서 바탕화면 아이콘 클릭이 캘린더보다 우선됨
 - 편집 잠금 해제 상태에서는 앱 빈 공간 드래그로 창 이동, 테두리 드래그로 크기 조절
+- 투명도 설정은 달력 칸뿐 아니라 상단바, 패널, 입력칸, 일정 칩에 일괄 적용
 - Explorer 재시작, DPI 변경, 디스플레이 변경 시 바탕화면 레이어 재부착
 - 투명 배경 모드: 달력 뒤로 바탕화면이 보이도록 WebView2/WPF 배경 투명 처리
 - 앱 우상단 창 버튼: 최소화, 최대화/복원, 종료

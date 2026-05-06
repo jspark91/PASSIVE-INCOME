@@ -32,7 +32,7 @@
 
   const DEFAULT_APP_SETTINGS = {
     locked: true,
-    opacity: 22,
+    opacity: 18,
     fontScale: 100,
     theme: "cyan"
   };
@@ -648,13 +648,31 @@
 
   function applyAppSettings() {
     const settings = normalizeAppSettings(state.appSettings);
+    const alpha = settings.opacity / 100;
+    const uiAlpha = clampNumber(alpha + 0.10, 0.12, 0.62);
+    const panelAlpha = clampNumber(alpha + 0.04, 0.08, 0.52);
+    const controlAlpha = clampNumber(alpha + 0.08, 0.12, 0.64);
+    const hoverAlpha = clampNumber(alpha + 0.10, 0.14, 0.72);
+    const lineAlpha = clampNumber(alpha + 0.22, 0.28, 0.78);
+    const frameAlpha = clampNumber(alpha + 0.34, 0.45, 0.86);
+
     state.appSettings = settings;
     document.body.classList.toggle("is-interaction-locked", settings.locked);
     document.body.dataset.theme = settings.theme;
     document.documentElement.style.setProperty("--calendar-alpha", String(settings.opacity / 100));
+    document.documentElement.style.setProperty("--overlay-ui-alpha", String(uiAlpha));
+    document.documentElement.style.setProperty("--overlay-panel-alpha", String(panelAlpha));
+    document.documentElement.style.setProperty("--overlay-control-alpha", String(controlAlpha));
+    document.documentElement.style.setProperty("--overlay-hover-alpha", String(hoverAlpha));
+    document.documentElement.style.setProperty("--overlay-line-alpha", String(lineAlpha));
+    document.documentElement.style.setProperty("--overlay-frame-alpha", String(frameAlpha));
     document.documentElement.style.setProperty("--font-scale", String(settings.fontScale / 100));
+    els.lockWindowSetting.checked = settings.locked;
+    els.themeSelect.value = settings.theme;
+    els.overlayOpacityRange.value = settings.opacity;
+    els.fontScaleRange.value = settings.fontScale;
     els.lockToggleButton.classList.toggle("is-active", settings.locked);
-    els.lockToggleButton.textContent = settings.locked ? "잠금" : "편집";
+    els.lockToggleButton.textContent = settings.locked ? "잠금" : "편집중";
     syncAppearanceLabels();
     postHostMessage({
       type: "window:setInteractionLocked",
@@ -663,8 +681,8 @@
   }
 
   function syncAppearanceLabels() {
-    els.overlayOpacityValue.textContent = `${els.overlayOpacityRange.value}%`;
-    els.fontScaleValue.textContent = `${els.fontScaleRange.value}%`;
+    els.overlayOpacityValue.textContent = `${els.overlayOpacityRange.value || state.appSettings.opacity}%`;
+    els.fontScaleValue.textContent = `${els.fontScaleRange.value || state.appSettings.fontScale}%`;
   }
 
   function beginWindowResize(event) {
@@ -1215,7 +1233,7 @@
       : DEFAULT_APP_SETTINGS.theme;
     return {
       locked: typeof settings.locked === "boolean" ? settings.locked : DEFAULT_APP_SETTINGS.locked,
-      opacity: clampNumber(settings.opacity ?? DEFAULT_APP_SETTINGS.opacity, 10, 70),
+      opacity: clampNumber(settings.opacity ?? DEFAULT_APP_SETTINGS.opacity, 5, 65),
       fontScale: clampNumber(settings.fontScale ?? DEFAULT_APP_SETTINGS.fontScale, 85, 125),
       theme
     };

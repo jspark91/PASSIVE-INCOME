@@ -114,6 +114,7 @@ public partial class MainWindow : Window
         {
             PostWindowSettings();
             PostInteractionMode();
+            ApplyInteractionLock();
         };
 
         CalendarWebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
@@ -520,10 +521,10 @@ public partial class MainWindow : Window
 
         if (_settings.InteractionLocked)
         {
+            DesktopHost.SetHitTestPassThrough(GetWindowHandle(), enabled: true);
             if (!_isIconPassThrough)
             {
                 _isIconPassThrough = true;
-                DesktopHost.SetHitTestPassThrough(GetWindowHandle(), enabled: true);
                 LogDiagnostic("iconPassThrough=True (interaction locked)");
             }
 

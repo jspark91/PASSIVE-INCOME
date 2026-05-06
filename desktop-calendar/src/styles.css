@@ -14,7 +14,14 @@
   --accent: #22746b;
   --accent-strong: #165f58;
   --danger: #b23445;
-  --calendar-alpha: 0.22;
+  --calendar-alpha: 0.18;
+  --overlay-ui-alpha: 0.28;
+  --overlay-panel-alpha: 0.22;
+  --overlay-control-alpha: 0.26;
+  --overlay-hover-alpha: 0.28;
+  --overlay-line-alpha: 0.40;
+  --overlay-frame-alpha: 0.52;
+  --overlay-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.90), 0 0 6px rgba(0, 0, 0, 0.76);
   --font-scale: 1;
   --month-cell-rgb: 8, 57, 68;
   --outside-cell-rgb: 92, 55, 34;
@@ -159,44 +166,82 @@ body.is-background-mode .calendar-panel {
 }
 
 body.is-desktop-overlay-mode .app-shell {
-  border-color: rgba(53, 182, 214, 0.72);
-  background: rgba(0, 0, 0, 0.01);
-  box-shadow: inset 0 0 0 1px rgba(6, 11, 15, 0.18);
+  border-color: rgba(53, 182, 214, var(--overlay-frame-alpha));
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(6, 11, 15, calc(var(--overlay-line-alpha) * 0.42));
+}
+
+body.is-desktop-overlay-mode {
+  --panel: rgba(7, 25, 30, var(--overlay-panel-alpha));
+  --panel-strong: rgba(8, 39, 47, var(--overlay-control-alpha));
+  --line: rgba(4, 16, 19, var(--overlay-line-alpha));
+  --line-strong: rgba(152, 221, 235, var(--overlay-line-alpha));
+  --shadow: none;
 }
 
 body.is-desktop-overlay-mode .topbar {
-  background: rgba(5, 8, 12, 0.78);
+  background: rgba(5, 8, 12, var(--overlay-ui-alpha));
+  text-shadow: var(--overlay-text-shadow);
+}
+
+body.is-desktop-overlay-mode .topbar .plain-button,
+body.is-desktop-overlay-mode .topbar .icon-button,
+body.is-desktop-overlay-mode .topbar .search-box,
+body.is-desktop-overlay-mode .topbar select {
+  border-color: rgba(154, 218, 232, var(--overlay-line-alpha));
+  background: rgba(10, 18, 24, var(--overlay-control-alpha));
+  box-shadow: none;
+  text-shadow: var(--overlay-text-shadow);
 }
 
 body.is-desktop-overlay-mode .calendar-grid {
-  background: rgba(var(--grid-rgb), calc(var(--calendar-alpha) * 0.75));
+  background: rgba(var(--grid-rgb), calc(var(--calendar-alpha) * 0.58));
 }
 
 body.is-desktop-overlay-mode .weekday-row {
-  background: rgba(var(--weekday-rgb), calc(var(--calendar-alpha) * 0.9));
+  background: rgba(var(--weekday-rgb), calc(var(--calendar-alpha) * 0.68));
+  text-shadow: var(--overlay-text-shadow);
 }
 
 body.is-desktop-overlay-mode .day-cell {
   background: rgba(var(--month-cell-rgb), var(--calendar-alpha));
+  text-shadow: var(--overlay-text-shadow);
 }
 
 body.is-desktop-overlay-mode .day-cell:hover {
-  background: rgba(var(--month-cell-rgb), calc(var(--calendar-alpha) + 0.12));
+  background: rgba(var(--month-cell-rgb), var(--overlay-hover-alpha));
 }
 
 body.is-desktop-overlay-mode .day-cell.outside-month {
-  background: rgba(var(--outside-cell-rgb), calc(var(--calendar-alpha) * 0.85));
+  background: rgba(var(--outside-cell-rgb), calc(var(--calendar-alpha) * 0.72));
 }
 
 body.is-desktop-overlay-mode .day-cell.outside-month:hover {
-  background: rgba(var(--outside-cell-rgb), calc(var(--calendar-alpha) + 0.08));
+  background: rgba(var(--outside-cell-rgb), calc(var(--overlay-hover-alpha) * 0.86));
 }
 
 body.is-desktop-overlay-mode .side-panel,
 body.is-desktop-overlay-mode .editor-section,
 body.is-desktop-overlay-mode .agenda-section,
 body.is-desktop-overlay-mode .modal-panel {
-  background: rgba(7, 25, 30, 0.20);
+  background: rgba(7, 25, 30, var(--overlay-panel-alpha));
+  text-shadow: var(--overlay-text-shadow);
+}
+
+body.is-desktop-overlay-mode .event-chip {
+  border: 1px solid rgba(240, 250, 252, calc(var(--overlay-line-alpha) * 0.70));
+  border-left: 4px solid var(--event-color);
+  background: color-mix(in srgb, var(--event-color) 30%, rgba(5, 25, 31, var(--overlay-control-alpha)));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.30);
+  text-shadow: var(--overlay-text-shadow);
+}
+
+body.is-desktop-overlay-mode .agenda-item,
+body.is-desktop-overlay-mode input,
+body.is-desktop-overlay-mode select,
+body.is-desktop-overlay-mode textarea {
+  background: rgba(6, 23, 29, var(--overlay-control-alpha));
+  text-shadow: var(--overlay-text-shadow);
 }
 
 body.is-interaction-locked .resize-handle {
