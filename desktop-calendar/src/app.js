@@ -4,14 +4,29 @@
   const STORAGE_KEY = "desktop-calendar.events.v1";
   const NOTIFICATION_KEY = "desktop-calendar.notifications.enabled";
   const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
+  const DEFAULT_WINDOW_SETTINGS = {
+    mode: "Auto",
+    left: 0,
+    top: 0,
+    width: 1280,
+    height: 760,
+    minLeft: 0,
+    maxLeft: 1200,
+    minTop: 0,
+    maxTop: 800,
+    minWidth: 760,
+    maxWidth: 1800,
+    minHeight: 460,
+    maxHeight: 1100
+  };
 
   const CATEGORIES = {
     work: { label: "업무", color: "#2f6fbd" },
     personal: { label: "개인", color: "#17855c" },
-    money: { label: "돈", color: "#b46900" },
+    money: { label: "금전", color: "#b46900" },
     health: { label: "건강", color: "#b4325a" },
     family: { label: "가족", color: "#7c4dcb" },
-    task: { label: "할 일", color: "#56616c" }
+    task: { label: "할일", color: "#56616c" }
   };
 
   const state = {
@@ -21,7 +36,11 @@
     events: loadEvents(),
     query: "",
     filterCategory: "all",
-    notifiedKeys: new Set()
+    notifiedKeys: new Set(),
+    windowSettings: { ...DEFAULT_WINDOW_SETTINGS },
+    windowDrag: null,
+    windowResizeDrag: null,
+    suppressNextClick: false
   };
 
   const els = {
@@ -45,9 +64,34 @@
     nextMonth: document.getElementById("nextMonth"),
     todayButton: document.getElementById("todayButton"),
     fullscreenButton: document.getElementById("fullscreenButton"),
+    windowMinimizeButton: document.getElementById("windowMinimizeButton"),
+    windowMaximizeButton: document.getElementById("windowMaximizeButton"),
+    windowCloseButton: document.getElementById("windowCloseButton"),
+    windowSizeModal: document.getElementById("windowSizeModal"),
+    windowSizeClose: document.getElementById("windowSizeClose"),
+    windowSizeMode: document.getElementById("windowSizeMode"),
+    windowWidthRange: document.getElementById("windowWidthRange"),
+    windowHeightRange: document.getElementById("windowHeightRange"),
+    windowLeftRange: document.getElementById("windowLeftRange"),
+    windowTopRange: document.getElementById("windowTopRange"),
+    windowWidthValue: document.getElementById("windowWidthValue"),
+    windowHeightValue: document.getElementById("windowHeightValue"),
+    windowLeftValue: document.getElementById("windowLeftValue"),
+    windowTopValue: document.getElementById("windowTopValue"),
+    windowSizeApply: document.getElementById("windowSizeApply"),
+    windowCenterButton: document.getElementById("windowCenterButton"),
+    windowSizeRefresh: document.getElementById("windowSizeRefresh"),
+    dayDetailModal: document.getElementById("dayDetailModal"),
+    dayDetailClose: document.getElementById("dayDetailClose"),
+    dayDetailDate: document.getElementById("dayDetailDate"),
+    dayQuickForm: document.getElementById("dayQuickForm"),
+    dayQuickTime: document.getElementById("dayQuickTime"),
+    dayQuickCategory: document.getElementById("dayQuickCategory"),
+    dayQuickTitle: document.getElementById("dayQuickTitle"),
+    dayQuickNotes: document.getElementById("dayQuickNotes"),
+    dayDetailNewButton: document.getElementById("dayDetailNewButton"),
+    dayEventList: document.getElementById("dayEventList"),
     notificationButton: document.getElementById("notificationButton"),
-    exportButton: document.getElementById("exportButton"),
-    importInput: document.getElementById("importInput"),
     searchInput: document.getElementById("searchInput"),
     categoryFilter: document.getElementById("categoryFilter"),
     todayList: document.getElementById("todayList"),
@@ -65,6 +109,7 @@
     bindEvents();
     resetEditor(state.selectedDate);
     render();
+    syncEventsToHost();
 
     if (localStorage.getItem(NOTIFICATION_KEY) === "1") {
       requestNotificationPermission(false);
@@ -90,18 +135,74 @@
       state.selectedDate = toISODate(today);
       resetEditor(state.selectedDate);
       render();
+      openDayDetail(state.selectedDate);
     });
 
     els.fullscreenButton.addEventListener("click", function () {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(function () {
-          showToast("브라우저가 전체화면을 허용하지 않았습니다.");
+          showToast("전체화면을 사용할 수 없습니다.");
         });
         return;
       }
 
       document.exitFullscreen();
     });
+
+    els.windowMinimizeButton.addEventListener("click", function () {
+      postHostMessage({ type: "window:minimize" });
+    });
+    els.windowMaximizeButton.addEventListener("click", function () {
+      postHostMessage({ type: "window:maximize" });
+    });
+    els.windowCloseButton.addEventListener("click", function () {
+      postHostMessage({ type: "window:close" });
+    });
+
+    els.windowSizeClose.addEventListener("click", closeWindowSizeModal);
+    els.windowSizeRefresh.addEventListener("click", requestWindowSettings);
+    els.windowSizeApply.addEventListener("click", applyWindowSizeSettings);
+    els.windowCenterButton.addEventListener("click", centerWindow);
+    els.windowSizeMode.addEventListener("change", syncWindowSizeControls);
+    els.windowWidthRange.addEventListener("input", syncWindowSizeControls);
+    els.windowHeightRange.addEventListener("input", syncWindowSizeControls);
+    els.windowLeftRange.addEventListener("input", syncWindowSizeControls);
+    els.windowTopRange.addEventListener("input", syncWindowSizeControls);
+    els.windowSizeModal.addEventListener("click", function (event) {
+      if (event.target === els.windowSizeModal) {
+        closeWindowSizeModal();
+      }
+    });
+
+    els.dayDetailClose.addEventListener("click", closeDayDetail);
+    els.dayDetailModal.addEventListener("click", function (event) {
+      if (event.target === els.dayDetailModal) {
+        closeDayDetail();
+      }
+    });
+    els.dayQuickForm.addEventListener("submit", saveQuickEventFromDayPanel);
+    els.dayDetailNewButton.addEventListener("click", resetDayQuickForm);
+    els.dayEventList.addEventListener("click", handleDayEventListClick);
+
+    if (window.chrome?.webview) {
+      window.chrome.webview.addEventListener("message", function (event) {
+        handleHostMessage(event.data);
+      });
+      requestWindowSettings();
+    }
+
+    document.querySelectorAll(".resize-handle").forEach(function (handle) {
+      handle.addEventListener("pointerdown", beginWindowResize);
+    });
+    document.addEventListener("pointermove", moveWindowResize);
+    document.addEventListener("pointerup", endWindowResize);
+    document.addEventListener("pointercancel", endWindowResize);
+
+    document.addEventListener("pointerdown", beginWindowDrag);
+    document.addEventListener("pointermove", moveWindowDrag);
+    document.addEventListener("pointerup", endWindowDrag);
+    document.addEventListener("pointercancel", endWindowDrag);
+    document.addEventListener("dblclick", handleFrameDoubleClick);
 
     els.notificationButton.addEventListener("click", function () {
       requestNotificationPermission(true);
@@ -116,9 +217,7 @@
       resetEditor(state.selectedDate);
     });
 
-    els.deleteEventButton.addEventListener("click", function () {
-      deleteSelectedEvent();
-    });
+    els.deleteEventButton.addEventListener("click", deleteSelectedEvent);
 
     els.searchInput.addEventListener("input", function () {
       state.query = els.searchInput.value.trim().toLowerCase();
@@ -130,13 +229,16 @@
       render();
     });
 
-    els.exportButton.addEventListener("click", exportEvents);
-    els.importInput.addEventListener("change", importEvents);
-
     els.calendarGrid.addEventListener("click", function (event) {
+      if (state.suppressNextClick) {
+        state.suppressNextClick = false;
+        return;
+      }
+
       const chip = event.target.closest(".event-chip");
       if (chip) {
         selectEvent(chip.dataset.eventId);
+        openDayDetail(state.selectedDate);
         return;
       }
 
@@ -145,6 +247,7 @@
         state.selectedDate = cell.dataset.date;
         resetEditor(state.selectedDate);
         render();
+        openDayDetail(state.selectedDate);
       }
     });
 
@@ -176,6 +279,14 @@
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
+        if (!els.dayDetailModal.hidden) {
+          closeDayDetail();
+          return;
+        }
+        if (!els.windowSizeModal.hidden) {
+          closeWindowSizeModal();
+          return;
+        }
         resetEditor(state.selectedDate);
       }
     });
@@ -186,6 +297,7 @@
     renderCalendar();
     renderAgenda();
     renderEditorState();
+    syncOpenDayDetail();
   }
 
   function renderWeekdays() {
@@ -200,6 +312,7 @@
     }).join("");
 
     els.eventCategory.innerHTML = categoryOptions;
+    els.dayQuickCategory.innerHTML = categoryOptions;
     els.categoryFilter.innerHTML = `<option value="all">전체</option>${categoryOptions}`;
   }
 
@@ -224,14 +337,14 @@
       if (iso === state.selectedDate) classes.push("selected");
 
       const events = eventsForDate(iso).filter(matchesVisibleFilters);
-      const chips = events.map(renderEventChip).join("");
+      const chips = events.slice(0, 3).map(renderEventChip).join("");
       const countLabel = events.length > 3 ? `<span class="more-count">+${events.length - 3}</span>` : "";
 
       return `
         <div class="${classes.join(" ")}" data-date="${iso}" tabindex="0" role="button" aria-label="${formatLongDate(iso)}">
           <div class="day-head">
             <span>${date.getDate()}</span>
-            ${iso === today ? `<strong>오늘</strong>` : ""}
+            ${iso === today ? "<strong>오늘</strong>" : ""}
           </div>
           <div class="event-stack">
             ${chips}
@@ -249,7 +362,7 @@
     const repeat = event.repeat && event.repeat !== "none" ? `<span class="repeat-mark">↻</span>` : "";
 
     return `
-      <button class="event-chip${doneClass}" draggable="true" data-event-id="${event.id}" type="button" style="--event-color: ${category.color}">
+      <button class="event-chip${doneClass}" draggable="true" data-event-id="${escapeHTML(event.id)}" type="button" style="--event-color: ${category.color}">
         ${time}
         <span class="chip-title">${escapeHTML(event.title)}</span>
         ${repeat}
@@ -312,6 +425,354 @@
 
     els.selectedDateLabel.textContent = formatLongDate(state.selectedDate);
     els.deleteEventButton.disabled = !selected;
+  }
+
+  function openDayDetail(dateIso) {
+    state.selectedDate = dateIso;
+    resetDayQuickForm();
+    syncOpenDayDetail();
+    els.dayDetailModal.hidden = false;
+    window.setTimeout(function () {
+      els.dayQuickTitle.focus();
+    }, 0);
+  }
+
+  function closeDayDetail() {
+    els.dayDetailModal.hidden = true;
+  }
+
+  function syncOpenDayDetail() {
+    if (els.dayDetailModal.hidden) {
+      return;
+    }
+
+    els.dayDetailDate.textContent = formatLongDate(state.selectedDate);
+    renderDayEventList();
+  }
+
+  function resetDayQuickForm() {
+    els.dayQuickTime.value = "";
+    els.dayQuickCategory.value = "work";
+    els.dayQuickTitle.value = "";
+    els.dayQuickNotes.value = "";
+  }
+
+  function saveQuickEventFromDayPanel(event) {
+    event.preventDefault();
+    const title = els.dayQuickTitle.value.trim();
+
+    if (!title) {
+      showToast("일정을 입력하세요.");
+      return;
+    }
+
+    const calendarEvent = {
+      id: createId(),
+      date: state.selectedDate,
+      time: els.dayQuickTime.value,
+      title,
+      category: els.dayQuickCategory.value,
+      repeat: "none",
+      reminder: "none",
+      notes: els.dayQuickNotes.value.trim(),
+      done: false,
+      updatedAt: new Date().toISOString()
+    };
+
+    state.events.push(calendarEvent);
+    state.selectedEventId = calendarEvent.id;
+    saveEvents();
+    resetDayQuickForm();
+    render();
+    showToast("일정 저장됨");
+  }
+
+  function renderDayEventList() {
+    const items = eventsForDate(state.selectedDate);
+
+    if (items.length === 0) {
+      els.dayEventList.innerHTML = `<div class="empty-state">이 날짜의 일정 없음</div>`;
+      return;
+    }
+
+    els.dayEventList.innerHTML = items.map(function (event) {
+      const category = CATEGORIES[event.category] || CATEGORIES.task;
+      const doneClass = event.done ? " is-done" : "";
+      const time = event.time ? escapeHTML(event.time) : "종일";
+
+      return `
+        <div class="day-event-item${doneClass}" data-event-id="${escapeHTML(event.id)}">
+          <span class="agenda-dot" style="background: ${category.color}"></span>
+          <button class="day-event-main" type="button" data-action="select" data-event-id="${escapeHTML(event.id)}">
+            <strong>${escapeHTML(event.title)}</strong>
+            <small>${time} · ${escapeHTML(category.label)}${event.repeat && event.repeat !== "none" ? " · 반복" : ""}</small>
+          </button>
+          <button class="day-event-delete" type="button" data-action="delete" data-event-id="${escapeHTML(event.id)}" aria-label="일정 삭제">삭제</button>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function handleDayEventListClick(event) {
+    const button = event.target.closest("button[data-action]");
+    if (!button) {
+      return;
+    }
+
+    const id = button.dataset.eventId;
+    const action = button.dataset.action;
+
+    if (action === "delete") {
+      state.events = state.events.filter(function (item) {
+        return item.id !== id;
+      });
+      if (state.selectedEventId === id) {
+        state.selectedEventId = "";
+      }
+      saveEvents();
+      render();
+      showToast("삭제됨");
+      return;
+    }
+
+    selectEvent(id);
+    showToast("우측 편집폼에 불러옴");
+  }
+
+  function openWindowSizeModal() {
+    hydrateWindowSizeControls(state.windowSettings);
+    els.windowSizeModal.hidden = false;
+    requestWindowSettings();
+  }
+
+  function closeWindowSizeModal() {
+    els.windowSizeModal.hidden = true;
+  }
+
+  function beginWindowResize(event) {
+    if (event.button !== 0) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    state.windowResizeDrag = {
+      pointerId: event.pointerId,
+      edge: event.currentTarget.dataset.resizeEdge,
+      screenX: event.screenX,
+      screenY: event.screenY
+    };
+    document.body.classList.add("is-window-resizing");
+  }
+
+  function moveWindowResize(event) {
+    if (!state.windowResizeDrag || event.pointerId !== state.windowResizeDrag.pointerId) {
+      return;
+    }
+
+    const dx = event.screenX - state.windowResizeDrag.screenX;
+    const dy = event.screenY - state.windowResizeDrag.screenY;
+
+    if (dx === 0 && dy === 0) {
+      return;
+    }
+
+    state.windowResizeDrag.screenX = event.screenX;
+    state.windowResizeDrag.screenY = event.screenY;
+    postHostMessage({
+      type: "window:resizeBy",
+      edge: state.windowResizeDrag.edge,
+      dx,
+      dy
+    });
+  }
+
+  function endWindowResize(event) {
+    if (!state.windowResizeDrag || event.pointerId !== state.windowResizeDrag.pointerId) {
+      return;
+    }
+
+    state.windowResizeDrag = null;
+    document.body.classList.remove("is-window-resizing");
+    postHostMessage({ type: "window:resizeEnd" });
+  }
+
+  function beginWindowDrag(event) {
+    if (event.button !== 0) {
+      return;
+    }
+
+    if (!isWindowDragTarget(event.target)) {
+      return;
+    }
+
+    event.target.setPointerCapture?.(event.pointerId);
+    document.body.classList.add("is-window-dragging");
+    state.windowDrag = {
+      pointerId: event.pointerId,
+      screenX: event.screenX,
+      screenY: event.screenY,
+      moved: false
+    };
+  }
+
+  function moveWindowDrag(event) {
+    if (!state.windowDrag || event.pointerId !== state.windowDrag.pointerId) {
+      return;
+    }
+
+    const dx = event.screenX - state.windowDrag.screenX;
+    const dy = event.screenY - state.windowDrag.screenY;
+    if (dx === 0 && dy === 0) {
+      return;
+    }
+
+    event.preventDefault();
+    state.windowDrag.moved = true;
+    state.windowDrag.screenX = event.screenX;
+    state.windowDrag.screenY = event.screenY;
+    postHostMessage({ type: "window:moveBy", dx, dy });
+  }
+
+  function endWindowDrag(event) {
+    if (!state.windowDrag || event.pointerId !== state.windowDrag.pointerId) {
+      return;
+    }
+
+    state.suppressNextClick = Boolean(state.windowDrag.moved);
+    state.windowDrag = null;
+    document.body.classList.remove("is-window-dragging");
+    postHostMessage({ type: "window:moveEnd" });
+  }
+
+  function handleFrameDoubleClick(event) {
+    if (!isFrameDoubleClickTarget(event.target)) {
+      return;
+    }
+
+    event.preventDefault();
+    postHostMessage({ type: "window:maximize" });
+  }
+
+  function isWindowDragTarget(target) {
+    return Boolean(target)
+      && !target.closest("button, input, select, textarea, label, .modal-panel, .event-chip, .agenda-item, .resize-handle, .window-controls");
+  }
+
+  function isFrameDoubleClickTarget(target) {
+    return Boolean(target)
+      && target.closest(".topbar, .app-shell")
+      && !target.closest("button, input, select, textarea, label, .modal-panel, .event-chip, .agenda-item, .day-cell, .calendar-grid, .side-panel, .resize-handle, .window-controls");
+  }
+
+  function requestWindowSettings() {
+    if (!postHostMessage({ type: "window:getSettings" })) {
+      showToast("Windows 앱에서만 창 설정을 사용할 수 있습니다.");
+    }
+  }
+
+  function applyWindowSizeSettings() {
+    const mode = els.windowSizeMode.value;
+    const payload = {
+      type: "window:setSize",
+      mode,
+      left: Number(els.windowLeftRange.value),
+      top: Number(els.windowTopRange.value),
+      width: Number(els.windowWidthRange.value),
+      height: Number(els.windowHeightRange.value)
+    };
+
+    if (!postHostMessage(payload)) {
+      showToast("Windows 앱에서만 창 설정을 사용할 수 있습니다.");
+      return;
+    }
+
+    showToast("창 크기 적용");
+  }
+
+  function centerWindow() {
+    if (!postHostMessage({ type: "window:center" })) {
+      showToast("Windows 앱에서만 창 설정을 사용할 수 있습니다.");
+      return;
+    }
+
+    showToast("가운데로 이동");
+  }
+
+  function handleHostMessage(message) {
+    if (!message) {
+      return;
+    }
+
+    if (message.type === "window:interactionMode") {
+      const mode = message.mode || (message.background ? "wallpaper" : "window");
+      document.body.classList.toggle("is-background-mode", mode === "wallpaper");
+      document.body.classList.toggle("is-desktop-overlay-mode", mode === "overlay");
+      return;
+    }
+
+    if (message.type !== "window:settings") {
+      return;
+    }
+
+    state.windowSettings = {
+      ...DEFAULT_WINDOW_SETTINGS,
+      ...message
+    };
+    hydrateWindowSizeControls(state.windowSettings);
+  }
+
+  function hydrateWindowSizeControls(settings) {
+    els.windowSizeMode.value = settings.mode || DEFAULT_WINDOW_SETTINGS.mode;
+    els.windowWidthRange.min = settings.minWidth || DEFAULT_WINDOW_SETTINGS.minWidth;
+    els.windowWidthRange.max = settings.maxWidth || DEFAULT_WINDOW_SETTINGS.maxWidth;
+    els.windowHeightRange.min = settings.minHeight || DEFAULT_WINDOW_SETTINGS.minHeight;
+    els.windowHeightRange.max = settings.maxHeight || DEFAULT_WINDOW_SETTINGS.maxHeight;
+    els.windowLeftRange.min = settings.minLeft ?? DEFAULT_WINDOW_SETTINGS.minLeft;
+    els.windowLeftRange.max = settings.maxLeft ?? DEFAULT_WINDOW_SETTINGS.maxLeft;
+    els.windowTopRange.min = settings.minTop ?? DEFAULT_WINDOW_SETTINGS.minTop;
+    els.windowTopRange.max = settings.maxTop ?? DEFAULT_WINDOW_SETTINGS.maxTop;
+    els.windowLeftRange.value = clampNumber(
+      settings.left ?? DEFAULT_WINDOW_SETTINGS.left,
+      Number(els.windowLeftRange.min),
+      Number(els.windowLeftRange.max)
+    );
+    els.windowTopRange.value = clampNumber(
+      settings.top ?? DEFAULT_WINDOW_SETTINGS.top,
+      Number(els.windowTopRange.min),
+      Number(els.windowTopRange.max)
+    );
+    els.windowWidthRange.value = clampNumber(
+      settings.width || DEFAULT_WINDOW_SETTINGS.width,
+      Number(els.windowWidthRange.min),
+      Number(els.windowWidthRange.max)
+    );
+    els.windowHeightRange.value = clampNumber(
+      settings.height || DEFAULT_WINDOW_SETTINGS.height,
+      Number(els.windowHeightRange.min),
+      Number(els.windowHeightRange.max)
+    );
+    syncWindowSizeControls();
+  }
+
+  function syncWindowSizeControls() {
+    const customEnabled = els.windowSizeMode.value === "Custom";
+    els.windowWidthRange.disabled = !customEnabled;
+    els.windowHeightRange.disabled = !customEnabled;
+    els.windowWidthValue.textContent = `${els.windowWidthRange.value}px`;
+    els.windowHeightValue.textContent = `${els.windowHeightRange.value}px`;
+    els.windowLeftValue.textContent = `${els.windowLeftRange.value}px`;
+    els.windowTopValue.textContent = `${els.windowTopRange.value}px`;
+  }
+
+  function postHostMessage(payload) {
+    if (!window.chrome?.webview) {
+      return false;
+    }
+
+    window.chrome.webview.postMessage(payload);
+    return true;
   }
 
   function resetEditor(dateIso) {
@@ -509,56 +970,6 @@
     return timeA.localeCompare(timeB) || a.title.localeCompare(b.title, "ko-KR");
   }
 
-  function exportEvents() {
-    const payload = {
-      exportedAt: new Date().toISOString(),
-      events: state.events
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `desktop-calendar-${toISODate(new Date())}.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
-  }
-
-  function importEvents(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function () {
-      try {
-        const parsed = JSON.parse(String(reader.result));
-        const importedEvents = Array.isArray(parsed) ? parsed : parsed.events;
-        if (!Array.isArray(importedEvents)) {
-          throw new Error("Invalid calendar export");
-        }
-
-        const byId = new Map(state.events.map(function (item) {
-          return [item.id, item];
-        }));
-
-        importedEvents.forEach(function (item) {
-          if (!item.title || !item.date) return;
-          byId.set(item.id || createId(), normalizeEvent(item));
-        });
-
-        state.events = Array.from(byId.values());
-        saveEvents();
-        render();
-        showToast("가져오기 완료");
-      } catch (error) {
-        showToast("가져오기 실패");
-      } finally {
-        els.importInput.value = "";
-      }
-    };
-
-    reader.readAsText(file);
-  }
-
   function requestNotificationPermission(showResult) {
     if (!("Notification" in window)) {
       if (showResult) showToast("이 브라우저는 알림을 지원하지 않습니다.");
@@ -620,6 +1031,16 @@
 
   function saveEvents() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state.events));
+    syncEventsToHost();
+  }
+
+  function syncEventsToHost() {
+    postHostMessage({
+      type: "calendar:eventsChanged",
+      events: state.events,
+      selectedDate: state.selectedDate,
+      viewDate: toISODate(state.viewDate)
+    });
   }
 
   function normalizeEvent(item) {
@@ -700,8 +1121,13 @@
       .replace(/'/g, "&#039;");
   }
 
+  function clampNumber(value, minimum, maximum) {
+    return Math.min(Math.max(Number(value), minimum), maximum);
+  }
+
   window.DesktopCalendar = {
-    selectEvent
+    selectEvent,
+    openDayDetail
   };
 
   init();

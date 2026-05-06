@@ -5,11 +5,15 @@
         Title="Desktop Calendar"
         Width="1280"
         Height="820"
+        MinWidth="760"
+        MinHeight="460"
         WindowStyle="None"
-        ResizeMode="NoResize"
-        ShowInTaskbar="False"
-        Background="#F4F6F8">
+        ResizeMode="CanResize"
+        ShowInTaskbar="True"
+        AllowsTransparency="True"
+        Background="Transparent">
   <Grid>
-    <wv2:WebView2 x:Name="CalendarWebView" />
+    <wv2:WebView2CompositionControl x:Name="CalendarWebView"
+                                    DefaultBackgroundColor="Transparent" />
   </Grid>
 </Window>

@@ -74,6 +74,12 @@ GitHub Actions workflow `.github/workflows/desktop-calendar-release.yml`가 배�
 - WPF/WebView2 Windows 호스트
 - 바탕화면 레이어 고정 시도
 - 트레이 아이콘: 바탕화면 고정, 일반 창, 숨기기, 시작프로그램, 종료
+- 해상도 기반 자동 창 크기
+- 트레이 크기 설정: Auto, Compact, Normal, Large, Full desktop, Custom
+- 앱 상단 `창 설정` 패널에서 폭/높이와 X/Y 위치 직접 조절
+- 앱 상단 `이동` 버튼을 켠 뒤 빈 공간을 드래그해서 창 이동
+- 투명 배경 모드: 달력 뒤로 바탕화면이 보이도록 WebView2/WPF 배경 투명 처리
+- 앱 우상단 창 버튼: 최소화, 최대화/복원, 종료
 
 ## Common Calendar Features To Consider
 

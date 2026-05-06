@@ -5,17 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f4f6f8" />
     <title>Desktop Calendar</title>
-    <link rel="stylesheet" href="./src/styles.css" />
+    <link rel="stylesheet" href="./src/styles.css?v=0.1.20" />
   </head>
   <body>
     <div class="app-shell">
+      <div class="resize-handle resize-n" data-resize-edge="n" aria-hidden="true"></div>
+      <div class="resize-handle resize-e" data-resize-edge="e" aria-hidden="true"></div>
+      <div class="resize-handle resize-s" data-resize-edge="s" aria-hidden="true"></div>
+      <div class="resize-handle resize-w" data-resize-edge="w" aria-hidden="true"></div>
+      <div class="resize-handle resize-ne" data-resize-edge="ne" aria-hidden="true"></div>
+      <div class="resize-handle resize-nw" data-resize-edge="nw" aria-hidden="true"></div>
+      <div class="resize-handle resize-se" data-resize-edge="se" aria-hidden="true"></div>
+      <div class="resize-handle resize-sw" data-resize-edge="sw" aria-hidden="true"></div>
+
       <header class="topbar">
         <div class="brand-block">
           <span class="eyebrow">LOCAL DESKTOP</span>
           <h1>Desktop Calendar</h1>
         </div>
 
-        <div class="month-controls" aria-label="월 이동">
+        <div class="month-controls" aria-label="달 이동">
           <button class="icon-button" id="prevMonth" type="button" aria-label="이전 달">‹</button>
           <button class="plain-button" id="todayButton" type="button">오늘</button>
           <button class="icon-button" id="nextMonth" type="button" aria-label="다음 달">›</button>
@@ -28,12 +37,21 @@
             <span aria-hidden="true">⌕</span>
             <input id="searchInput" type="search" placeholder="검색" autocomplete="off" />
           </label>
-          <select id="categoryFilter" aria-label="카테고리 필터"></select>
-          <button class="plain-button" id="exportButton" type="button">내보내기</button>
-          <label class="plain-button file-button" for="importInput">가져오기</label>
-          <input id="importInput" class="visually-hidden" type="file" accept="application/json,.json" />
+          <select id="categoryFilter" aria-label="분류 필터"></select>
           <button class="plain-button" id="notificationButton" type="button">알림</button>
           <button class="plain-button" id="fullscreenButton" type="button">전체화면</button>
+        </div>
+
+        <div class="window-controls" aria-label="창 제어">
+          <button class="window-control-button" id="windowMinimizeButton" type="button" aria-label="최소화" title="최소화">
+            <span class="control-icon control-icon-minimize"></span>
+          </button>
+          <button class="window-control-button" id="windowMaximizeButton" type="button" aria-label="최대화 또는 복원" title="최대화/복원">
+            <span class="control-icon control-icon-maximize"></span>
+          </button>
+          <button class="window-control-button close" id="windowCloseButton" type="button" aria-label="닫기" title="닫기">
+            <span class="control-icon control-icon-close"></span>
+          </button>
         </div>
       </header>
 
@@ -142,8 +160,101 @@
       </main>
 
       <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+      <div class="modal-backdrop" id="dayDetailModal" hidden>
+        <section class="modal-panel day-detail-panel" role="dialog" aria-modal="true" aria-labelledby="dayDetailTitle">
+          <div class="modal-heading">
+            <div>
+              <span class="eyebrow">DAY SCHEDULE</span>
+              <h2 id="dayDetailTitle">일정 입력</h2>
+            </div>
+            <button class="icon-button" id="dayDetailClose" type="button" aria-label="닫기">×</button>
+          </div>
+
+          <strong class="day-detail-date" id="dayDetailDate"></strong>
+
+          <form class="quick-event-form" id="dayQuickForm">
+            <div class="field-grid">
+              <div class="field-row">
+                <label for="dayQuickTime">시간</label>
+                <input id="dayQuickTime" type="time" />
+              </div>
+              <div class="field-row">
+                <label for="dayQuickCategory">분류</label>
+                <select id="dayQuickCategory"></select>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <label for="dayQuickTitle">일정</label>
+              <input id="dayQuickTitle" type="text" maxlength="80" required autocomplete="off" />
+            </div>
+
+            <div class="field-row">
+              <label for="dayQuickNotes">메모</label>
+              <textarea id="dayQuickNotes" rows="3" maxlength="600"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button class="primary-button" type="submit">이 날짜에 추가</button>
+              <button class="plain-button" id="dayDetailNewButton" type="button">입력 비우기</button>
+            </div>
+          </form>
+
+          <div class="day-event-list" id="dayEventList"></div>
+        </section>
+      </div>
+
+      <div class="modal-backdrop" id="windowSizeModal" hidden>
+        <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="windowSizeTitle">
+          <div class="modal-heading">
+            <h2 id="windowSizeTitle">창 크기와 위치</h2>
+            <button class="icon-button" id="windowSizeClose" type="button" aria-label="닫기">×</button>
+          </div>
+
+          <div class="field-row">
+            <label for="windowSizeMode">모드</label>
+            <select id="windowSizeMode">
+              <option value="Auto">자동</option>
+              <option value="Compact">작게</option>
+              <option value="Normal">보통</option>
+              <option value="Large">크게</option>
+              <option value="FullDesktop">전체 바탕화면</option>
+              <option value="Custom">직접 설정</option>
+            </select>
+          </div>
+
+          <div class="size-control-grid">
+            <div class="field-row">
+              <label for="windowWidthRange">너비 <strong id="windowWidthValue"></strong></label>
+              <input id="windowWidthRange" type="range" min="760" max="1800" step="10" />
+            </div>
+            <div class="field-row">
+              <label for="windowHeightRange">높이 <strong id="windowHeightValue"></strong></label>
+              <input id="windowHeightRange" type="range" min="460" max="1100" step="10" />
+            </div>
+          </div>
+
+          <div class="size-control-grid">
+            <div class="field-row">
+              <label for="windowLeftRange">가로 위치 <strong id="windowLeftValue"></strong></label>
+              <input id="windowLeftRange" type="range" min="0" max="1200" step="10" />
+            </div>
+            <div class="field-row">
+              <label for="windowTopRange">세로 위치 <strong id="windowTopValue"></strong></label>
+              <input id="windowTopRange" type="range" min="0" max="800" step="10" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-button" id="windowSizeApply" type="button">적용</button>
+            <button class="plain-button" id="windowCenterButton" type="button">가운데</button>
+            <button class="plain-button" id="windowSizeRefresh" type="button">현재값 읽기</button>
+          </div>
+        </section>
+      </div>
     </div>
 
-    <script src="./src/app.js"></script>
+    <script src="./src/app.js?v=0.1.20"></script>
   </body>
 </html>
