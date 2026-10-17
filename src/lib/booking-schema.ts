@@ -15,7 +15,7 @@ export const bookingPayloadSchema = z.object({
   size_cm: z.string().optional(),
   placement: z.string().optional(),
   budget_krw: z.coerce.number().int().positive().optional().or(z.literal("")),
-  reference_image_url: z.string().url().optional().or(z.literal("")),
+  reference_image_url: z.string().url().refine((value) => ["https:", "http:"].includes(new URL(value).protocol), "Please use an http or https reference link.").optional().or(z.literal("")),
   preferred_artist_id: z.string().optional(),
   preferred_design_id: z.string().optional(),
   source: z.string().optional(),

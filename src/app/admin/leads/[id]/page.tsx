@@ -4,6 +4,7 @@ import { LeadStatusBadge } from "@/components/LeadStatusBadge";
 import { getAdminAccess } from "@/lib/admin-session";
 import { getArtists, getBookingRequest, getFlashDesigns, getLeadEvents } from "@/lib/data";
 import { formatDate, formatKrw } from "@/lib/format";
+import { readBookingIntake } from "@/lib/booking-storage";
 import { getStatusLabel, leadStatuses } from "@/lib/status";
 import { updateLeadStatus } from "../actions";
 
@@ -40,6 +41,7 @@ export default async function LeadDetailPage({
   ]);
   const preferredDesign = designs.find((design) => design.id === lead.preferred_design_id);
   const preferredArtist = artists.find((artist) => artist.id === lead.preferred_artist_id);
+  const intake = readBookingIntake(events);
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
@@ -52,6 +54,7 @@ export default async function LeadDetailPage({
             <div>
               <p className="text-sm text-ink-700">{formatDate(lead.created_at)}</p>
               <h1 className="mt-2 text-3xl font-semibold text-ink-900">{lead.name}</h1>
+              <p className="mt-2 break-all text-xs text-ink-700">Inquiry: {lead.id}</p>
             </div>
             <LeadStatusBadge status={lead.status} />
           </div>
@@ -100,11 +103,11 @@ export default async function LeadDetailPage({
             </div>
             <div>
               <dt className="text-sm font-semibold text-ink-900">Preferred artist</dt>
-              <dd className="mt-1 text-ink-700">{preferredArtist?.name ?? lead.preferred_artist_id ?? "-"}</dd>
+              <dd className="mt-1 text-ink-700">{intake?.artist_label ?? preferredArtist?.name ?? lead.preferred_artist_id ?? "-"}</dd>
             </div>
             <div>
               <dt className="text-sm font-semibold text-ink-900">Preferred design</dt>
-              <dd className="mt-1 text-ink-700">{preferredDesign?.title ?? lead.preferred_design_id ?? "-"}</dd>
+              <dd className="mt-1 text-ink-700">{intake?.design_label ?? preferredDesign?.title ?? lead.preferred_design_id ?? "-"}</dd>
             </div>
             <div>
               <dt className="text-sm font-semibold text-ink-900">Reference</dt>
@@ -132,6 +135,50 @@ export default async function LeadDetailPage({
               <dd className="mt-1 text-ink-700">{lead.lost_reason ?? "-"}</dd>
             </div>
           </dl>
+          {intake ? (
+            <section className="mt-6 border-t border-ink-100 pt-6">
+              <h2 className="text-xl font-semibold text-ink-900">Original inquiry</h2>
+              <p className="mt-2 text-sm text-ink-700">Saved at submission. Updating the staff note does not change these details.</p>
+              {intake.fields.description ? (
+                <p className="mt-4 whitespace-pre-wrap break-words text-ink-700">{String(intake.fields.description)}</p>
+              ) : null}
+              <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+                {[
+                  ["Travel status", intake.fields.visitor_status],
+                  ["Phone", intake.fields.phone],
+                  ["Dates not confirmed", intake.fields.dates_flexible],
+                  ["Preferred time", intake.fields.preferred_time],
+                  ["Size", intake.fields.size_unsure ? "Not sure yet" : lead.size_cm],
+                  ["Age 18+ confirmed", intake.fields.age_confirmation],
+                  ["Privacy agreed", intake.fields.privacy_agreement]
+                ].map(([label, value]) => (
+                  <div key={String(label)}><dt className="font-semibold text-ink-900">{label}</dt><dd className="mt-1 break-words text-ink-700">{typeof value === "boolean" ? value ? "Yes" : "No" : value || "-"}</dd></div>
+                ))}
+              </dl>
+              {intake.attachments.length ? (
+                <div className="mt-5">
+                  <h3 className="font-semibold text-ink-900">Private reference images</h3>
+                  <ul className="mt-2 grid gap-2 text-sm">
+                    {intake.attachments.map((attachment) => (
+                      <li key={attachment.id}>
+                        <a href={`/api/admin/leads/${encodeURIComponent(lead.id)}/attachments/${encodeURIComponent(attachment.id)}`} className="break-all text-moss-700 underline">
+                          {attachment.filename} ({Math.ceil(attachment.size / 1024)} KB)
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              <details className="mt-5 text-sm text-ink-700">
+                <summary className="cursor-pointer font-semibold">All submitted fields</summary>
+                <dl className="mt-3 grid gap-2">
+                  {Object.entries(intake.fields).map(([key, value]) => (
+                    <div key={key}><dt className="font-medium">{key.replaceAll("_", " ")}</dt><dd className="whitespace-pre-wrap break-all">{typeof value === "boolean" ? value ? "Yes" : "No" : value ?? "-"}</dd></div>
+                  ))}
+                </dl>
+              </details>
+            </section>
+          ) : null}
           <div className="mt-6 rounded-lg bg-ink-50 p-4">
             <h2 className="font-semibold text-ink-900">Tracking</h2>
             <p className="mt-2 text-sm text-ink-700">
@@ -145,7 +192,7 @@ export default async function LeadDetailPage({
           <h2 className="text-xl font-semibold text-ink-900">Update lead</h2>
           {!configured ? (
             <p className="mt-4 text-sm leading-6 text-ink-700">
-              Set Supabase and `ADMIN_ACCESS_TOKEN` before saving live status changes.
+              Set `ADMIN_ACCESS_TOKEN` before saving status changes.
             </p>
           ) : (
             <form action={updateLeadStatus} className="mt-5 grid gap-4">
@@ -232,7 +279,7 @@ export default async function LeadDetailPage({
             {events.map((event) => (
               <article key={event.id} className="border-l-2 border-ink-100 pl-4">
                 <p className="text-sm font-semibold text-ink-900">{event.event_type}</p>
-                <p className="mt-1 text-sm text-ink-700">{event.note ?? "-"}</p>
+                <p className="mt-1 whitespace-pre-wrap break-words text-sm text-ink-700">{event.event_type === "booking_created" && intake ? "Original inquiry saved. See the submission details above." : event.note ?? "-"}</p>
                 <p className="mt-1 text-xs text-ink-700">
                   {formatDate(event.created_at)} / {event.created_by ?? "system"}
                 </p>

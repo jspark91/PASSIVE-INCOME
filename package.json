@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
+    "test:booking": "node scripts/test-booking-inquiries.cjs",
+    "test:booking:http": "node scripts/check-booking-inquiry-http.mjs",
     "marketing:export": "node scripts/export-organic-marketing-assets.mjs",
     "marketing:search-console": "node scripts/search-console-keyword-report.mjs"
   },

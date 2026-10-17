@@ -5,7 +5,7 @@ const eslintConfig = [
   ...coreWebVitals,
   ...nextTypescript,
   {
-    ignores: [".next/**", "node_modules/**", ".tools/**"]
+    ignores: [".next/**", "node_modules/**", ".tools/**", "desktop-calendar/**"]
   }
 ];
 

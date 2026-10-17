@@ -1,20 +1,7 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import { isValidAdminToken } from "@/lib/admin";
-import { getAdminSupabase } from "@/lib/supabase";
-import { leadStatuses } from "@/lib/status";
-
-const statusSchema = z.object({
-  status: z.enum(leadStatuses as [string, ...string[]]),
-  note: z.string().optional(),
-  matched_artist_id: z.string().optional().nullable(),
-  quoted_price_krw: z.coerce.number().int().positive().optional().nullable(),
-  lost_reason: z.string().optional().nullable()
-});
-
-function getToken(request: Request) {
-  return request.headers.get("x-admin-token") ?? null;
-}
+import { isAuthorizedAdminRequest } from "@/lib/admin-request";
+import { leadUpdateSchema } from "@/lib/lead-update-schema";
+import { updateBooking } from "@/lib/booking-storage";
 
 export async function PATCH(
   request: Request,
@@ -22,7 +9,7 @@ export async function PATCH(
 ) {
   const { id } = await params;
 
-  if (!isValidAdminToken(getToken(request))) {
+  if (!isAuthorizedAdminRequest(request)) {
     return NextResponse.json({ ok: false, message: "Unauthorized." }, { status: 401 });
   }
 
@@ -34,7 +21,7 @@ export async function PATCH(
     return NextResponse.json({ ok: false, message: "Invalid JSON body." }, { status: 400 });
   }
 
-  const parsed = statusSchema.safeParse(body);
+  const parsed = leadUpdateSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(
@@ -43,33 +30,16 @@ export async function PATCH(
     );
   }
 
-  const supabase = getAdminSupabase();
-
-  if (!supabase) {
-    return NextResponse.json({ ok: false, message: "Supabase is not configured." }, { status: 500 });
-  }
-
-  const { error: updateError } = await supabase
-    .from("booking_requests")
-    .update({
+  try {
+    await updateBooking(id, {
       status: parsed.data.status,
       memo: parsed.data.note ?? null,
       matched_artist_id: parsed.data.matched_artist_id || null,
       quoted_price_krw: parsed.data.quoted_price_krw ?? null,
       lost_reason: parsed.data.lost_reason || null
-    })
-    .eq("id", id);
-
-  if (updateError) {
-    return NextResponse.json({ ok: false, message: updateError.message }, { status: 500 });
+    }, "api");
+    return NextResponse.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
+  } catch {
+    return NextResponse.json({ ok: false, message: "Could not update booking inquiry. Please check the lead and try again." }, { status: 503 });
   }
-
-  await supabase.from("lead_events").insert({
-    booking_request_id: id,
-    event_type: "status_changed",
-    note: parsed.data.note || `Status changed to ${parsed.data.status}`,
-    created_by: "api"
-  });
-
-  return NextResponse.json({ ok: true });
 }
