@@ -75,6 +75,10 @@ submission tests against production customer records.
 4. Check `https://ethnichouseseoul.com/booking` for the heading "Plan your tattoo
    before your Korea trip." and the structured inquiry fields. Review inquiries
    through the existing admin login at `/admin/leads`.
+5. Confirm RIBERO appears alongside the existing artists on `/` and `/artists`.
+   Open `/artists/ribero` to check all five supplied portfolio photographs, then
+   use the artist or artwork inquiry links to check the RIBERO selection on
+   `/booking`. The release preserves the supplied JPEG photographs without edits.
 
 The existing GitHub Actions SSH workflow skips deployment when NAS credentials
 are not configured. A GitHub push alone does not update a manually deployed NAS.

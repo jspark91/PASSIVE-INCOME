@@ -9,7 +9,8 @@ const coverImages: Record<string, string> = {
   seowoo: "/images/artists/seowoo/seowoo-01-full-sleeve-collage.jpg",
   sero: "/images/artists/sero/sero-01-plum-brushwork.jpg",
   hada: "/images/artists/hada/hada-01-samurai-backpiece.jpg",
-  woora: "/images/artists/woora/woora-02-dragon-sleeve.jpg"
+  woora: "/images/artists/woora/woora-02-dragon-sleeve.jpg",
+  ribero: "/images/artists/ribero/ribero-01-leopard-realism.jpg"
 };
 
 export function ArtistCard({ artist }: { artist: Artist }) {

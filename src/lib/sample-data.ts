@@ -84,6 +84,20 @@ export const sampleArtists: Artist[] = [
     languages: ["English booking support", "Korean"],
     location: "Sillim, Seoul",
     is_active: true
+  },
+  {
+    id: "artist-ribero",
+    name: "RIBERO",
+    slug: "ribero",
+    instagram: null,
+    bio_en:
+      "Realism tattoo artist creating detailed animal portraits, black and grey sleeves, large-scale backpieces, and color pet portraits.",
+    bio_ko: null,
+    styles: ["realism", "black and grey", "animal portrait", "color portrait", "large-scale", "backpiece"],
+    starting_price_krw: null,
+    languages: ["English booking support", "Korean"],
+    location: "Sillim, Seoul",
+    is_active: true
   }
 ];
 
@@ -93,6 +107,7 @@ const seowooImageBase = "/images/artists/seowoo";
 const seroImageBase = "/images/artists/sero";
 const hadaImageBase = "/images/artists/hada";
 const wooraImageBase = "/images/artists/woora";
+const riberoImageBase = "/images/artists/ribero";
 
 export const sampleDesigns: FlashDesign[] = [
   {
@@ -184,6 +199,17 @@ export const sampleDesigns: FlashDesign[] = [
     is_available: true
   },
   {
+    id: "design-ribero-leopard-realism",
+    artist_id: "artist-ribero",
+    title: "Leopard realism",
+    style: "black and grey",
+    size_hint: "upper arm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${riberoImageBase}/ribero-01-leopard-realism.jpg`,
+    is_available: true
+  },
+  {
     id: "design-moss-compass-whale",
     artist_id: "artist-moss",
     title: "Compass whale forearm",
@@ -225,6 +251,17 @@ export const sampleDesigns: FlashDesign[] = [
     price_from_krw: null,
     duration_minutes: null,
     image_url: `${yoonseulImageBase}/yoonseul-04-pouring-moon.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-ribero-tiger-feather",
+    artist_id: "artist-ribero",
+    title: "Tiger feather portrait",
+    style: "realism",
+    size_hint: "shoulder and upper back",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${riberoImageBase}/ribero-02-tiger-feather.jpg`,
     is_available: true
   },
   {
@@ -456,6 +493,39 @@ export const sampleDesigns: FlashDesign[] = [
     price_from_krw: null,
     duration_minutes: null,
     image_url: `${seroImageBase}/sero-04-wolf-plum.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-ribero-puppy-portrait",
+    artist_id: "artist-ribero",
+    title: "Color puppy portrait",
+    style: "color realism",
+    size_hint: "forearm",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${riberoImageBase}/ribero-03-puppy-portrait.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-ribero-reaper-sleeve",
+    artist_id: "artist-ribero",
+    title: "Grim reaper sleeve",
+    style: "black and grey",
+    size_hint: "full sleeve",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${riberoImageBase}/ribero-04-reaper-sleeve.jpg`,
+    is_available: true
+  },
+  {
+    id: "design-ribero-tiger-backpiece",
+    artist_id: "artist-ribero",
+    title: "Tiger and bamboo backpiece",
+    style: "realism",
+    size_hint: "full backpiece",
+    price_from_krw: null,
+    duration_minutes: null,
+    image_url: `${riberoImageBase}/ribero-05-tiger-backpiece.jpg`,
     is_available: true
   }
 ];
