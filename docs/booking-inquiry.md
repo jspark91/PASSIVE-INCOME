@@ -53,3 +53,28 @@ same directory, then run `npm run test:booking:http`. The default test URL is
 rejects non-local hosts and requires the local database to be unconfigured.
 Synthetic records remain available for manual administrator review. Do not run
 submission tests against production customer records.
+
+## Manual ZIP deployment on the existing NAS
+
+1. Upload the release ZIP to `/volume1/docker` and extract it there. Its top-level
+   folder is `ethnic-house`; merge/overwrite source files in the existing folder
+   rather than creating `ethnic-house/ethnic-house`.
+2. Keep the existing `/volume1/docker/ethnic-house/.env` and Docker named data
+   volume. The release ZIP excludes secrets, customer records, and local test data.
+3. Rebuild the existing Container Manager project using the updated Compose file.
+   Alternatively run this from the NAS terminal or a one-time DSM user-defined task:
+
+   ```sh
+   APP_DIR=/volume1/docker/ethnic-house /bin/sh /volume1/docker/ethnic-house/scripts/nas-deploy-manual.sh
+   ```
+
+   The manual script builds before replacing the app container, does not pull Git,
+   does not edit `.env`, and does not delete volumes. Retain the existing Compose
+   project identity; if it uses a custom project name, set `COMPOSE_PROJECT_NAME`
+   to that same name when running the script.
+4. Check `https://ethnichouseseoul.com/booking` for the heading "Plan your tattoo
+   before your Korea trip." and the structured inquiry fields. Review inquiries
+   through the existing admin login at `/admin/leads`.
+
+The existing GitHub Actions SSH workflow skips deployment when NAS credentials
+are not configured. A GitHub push alone does not update a manually deployed NAS.
